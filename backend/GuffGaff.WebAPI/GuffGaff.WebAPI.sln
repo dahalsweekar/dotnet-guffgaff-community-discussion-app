@@ -5,6 +5,10 @@ VisualStudioVersion = 17.14.36301.6 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuffGaff.WebAPI", "GuffGaff.WebAPI\GuffGaff.WebAPI.csproj", "{8631A89F-90B1-457C-B044-6B5403B78D2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuffGaff.Database", "GuffGaff.Database\GuffGaff.Database.csproj", "{0E5B063A-CCA3-4A1C-854B-24CE84063A4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuffGaff.Services", "GuffGaff.Services\GuffGaff.Services.csproj", "{9D5D0E64-021B-47E5-84D0-BA79986B3D7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{8631A89F-90B1-457C-B044-6B5403B78D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8631A89F-90B1-457C-B044-6B5403B78D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8631A89F-90B1-457C-B044-6B5403B78D2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E5B063A-CCA3-4A1C-854B-24CE84063A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E5B063A-CCA3-4A1C-854B-24CE84063A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E5B063A-CCA3-4A1C-854B-24CE84063A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E5B063A-CCA3-4A1C-854B-24CE84063A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D5D0E64-021B-47E5-84D0-BA79986B3D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D5D0E64-021B-47E5-84D0-BA79986B3D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D5D0E64-021B-47E5-84D0-BA79986B3D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D5D0E64-021B-47E5-84D0-BA79986B3D7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
