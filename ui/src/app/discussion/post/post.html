@@ -1,1 +1,8 @@
-<p>post works!</p>
+<div class="container">
+  <h2>Post Your Thought</h2>
+
+  <textarea [(ngModel)]="thoughtText" rows="4" cols="50" placeholder="Write your thought here..."></textarea>
+  <br />
+  <button (click)="postThought()">Post</button>
+  
+</div>
