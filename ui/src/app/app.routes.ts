@@ -1,16 +1,11 @@
 import { Routes } from '@angular/router';
-import { Post } from './discussion/post/post';
-import { Discussion } from './discussion/discussion';
-import { Feed } from './feed/feed';
-import { Comments } from './discussion/comments/comments';
-import { Login } from './login/login';
-import { Register } from './register/register';
+import { PostComponent } from './main/discussion.component/post.component/post.component';
+import { DiscussionComponent } from './main/discussion.component/discussion.component';
+import { FeedComponent } from './main/feed.component/feed.component';
+import { CommentComponent } from './main/discussion.component/comment.component/comment.component';
 
 export const routes: Routes = [
-    {path: 'register', component:Register},
-    {path: 'login', component: Login},
-    {path: 'post', component:Post},
-    {path: 'discussion', component: Discussion},
-    {path: 'feed', component: Feed},
-    {path: 'comments', component: Comments}
+    {path: 'feed', component: FeedComponent},
+    {path: 'discussion', component: DiscussionComponent},
+    {path: '', redirectTo: 'feed', pathMatch: 'full' }
 ];
