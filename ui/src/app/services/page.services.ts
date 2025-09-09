@@ -3,6 +3,10 @@ import { HttpClient,HttpHeaders } from "@angular/common/http";
 import { Observable, ObservedValueOf } from "rxjs";
 import { Router } from "@angular/router";
 
+@Injectable({
+  providedIn: 'root'
+})
+
 export class PageServices{
 
         constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){}
