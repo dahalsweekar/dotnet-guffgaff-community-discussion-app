@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { PostServices } from '../../services/post.services';
+import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
+import { PageServices } from '../../common/page.services';
 
 @Component({
   selector: 'app-post',
@@ -17,7 +19,7 @@ export class Post implements OnInit{
   thoughtText: string = '';
   thoughts: string = '';
 
-  constructor(private postServices: PostServices){
+  constructor(private postServices: PostServices, private dialogServices: DialogBoxServices, private pageServices: PageServices){
 
   }
 
@@ -32,10 +34,14 @@ export class Post implements OnInit{
     }
     this.postServices.postThoughtfn(thought).subscribe({
       next: (response) => {
-
+        this.dialogServices.showInfo('Information', 'Post successful.')
+        .afterClosed()
+        .subscribe(() => {
+          this.pageServices.reloadComponent('post');
+        })
       },
       error: (error) => {
-
+        this.dialogServices.showError('Failed', 'Failed to save post.');
       }
     });
   }
