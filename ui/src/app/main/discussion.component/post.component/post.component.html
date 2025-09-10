@@ -1,8 +1,25 @@
-<div class="container">
-  <h2>Post Your Thought</h2>
-
-  <textarea [(ngModel)]="thoughtText" rows="4" cols="50" placeholder="Write your thought here..."></textarea>
-  <br />
-  <button (click)="postThought()">Post</button>
-  
+@if(currentPostId == 0)
+{
+  <div class="container-unposted">
+    <h2>Post Your Thought</h2>
+    <label id="post-title">Title </label>
+    <textarea [(ngModel)]="post.title" rows="1" cols="50" placeholder="Title..."></textarea>
+    <label id="post-description">Description </label>
+    <textarea [(ngModel)]="post.description" rows="4" cols="50" placeholder="Write your thought here..."></textarea>
+    <label id="post-category">Category</label>
+    <input type="text" [(ngModel)]="post.category" placeholder="Tag">
+    <br />
+    <button (click)="postThought()">Post</button>
+  </div>
+}
+@else{
+<div class="container-posted">
+  <label id="post-title-p">{{post.title}}</label>
+  <span id="post-description-p">{{post.description}}</span>
+  <div class="up-down-votebtns">
+    <button type="button" (click)="updateVote(1)">UpVote</button>
+    <button type="button" (click)="updateVote(-1)">DownVote</button>
+  </div>
 </div>
+}
+

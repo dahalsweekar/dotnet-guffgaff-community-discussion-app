@@ -11,7 +11,7 @@ namespace GuffGaff.Services.Services
             _postServices = postServices;
         }
 
-        public async Task<ResponseModel> SaveThoughtAsync(Thought thought)
+        public async Task<ResponseModel> SaveThoughtAsync(Post thought)
         {
             try
             {
