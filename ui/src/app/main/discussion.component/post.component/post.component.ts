@@ -31,7 +31,7 @@ export class PostComponent implements OnInit{
   vote: VoteModel = {
     owner: '',
     voter: '',
-    postId: '',
+    postId: 0,
     upVote: true
   }
 
@@ -54,7 +54,7 @@ export class PostComponent implements OnInit{
       error: (error) => {
         this.dialogServices.showError("Failed", "Could not load post.");
       }
-    })
+    });
   }
 
   validatePost(): boolean{
