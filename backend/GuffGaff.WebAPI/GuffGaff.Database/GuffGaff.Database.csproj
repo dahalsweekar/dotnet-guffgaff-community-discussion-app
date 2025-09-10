@@ -7,11 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Model\ResponseModel.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Model\ResponseModel.cs" />
+    <Compile Remove="Model\**" />
+    <Content Remove="Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <None Remove="Model\**" />
   </ItemGroup>
 
   <ItemGroup>

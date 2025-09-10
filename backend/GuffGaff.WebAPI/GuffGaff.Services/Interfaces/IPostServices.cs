@@ -4,6 +4,6 @@ namespace GuffGaff.Services.Interfaces
 {
     public interface IPostServices
     {
-        public Task<ResponseModel> SaveThoughtAsync(Thought thought);
+        public Task<ResponseModel> SaveThoughtAsync(Post thought);
     }
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-oauth.component',
+  selector: 'app-oauth',
   imports: [],
   templateUrl: './oauth.component.html',
   styleUrl: './oauth.component.scss'

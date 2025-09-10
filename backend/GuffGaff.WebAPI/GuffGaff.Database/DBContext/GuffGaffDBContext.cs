@@ -7,6 +7,7 @@ namespace GuffGaff.Database.DBContext
     {
         public GuffGaffDBContext(DbContextOptions<GuffGaffDBContext> options) : base(options) { }
 
-        public DbSet<Thought> Thoughts { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }

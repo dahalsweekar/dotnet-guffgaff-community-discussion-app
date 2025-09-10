@@ -8,12 +8,22 @@ import { Observable } from "rxjs";
 })
 
 export class PostServices{
-    private postThoughtApi = '/api/postthought';
-    private getThoughtApi = '/api/getthought';
+    private putPostApi = '/api/putpost';
+    private getPostApi = '/api/getpost';
+    private updateVoteApi = '/api/updatevote';
 
     constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){}
 
-    postThoughtfn(thought: any): Observable<any>{
-        return this.http.post(this.postThoughtApi, thought);
+    putPostfn(post: any): Observable<any>{
+        return this.http.post(this.putPostApi, post);
     }
+
+    getPostfn(post: number): Observable<any>{
+        return this.http.post(this.getPostApi, post)
+    }
+
+    updateVotefn(userId: any):Observable<any>{
+        return this.http.post(this.updateVoteApi, userId)
+    }
+
 }
