@@ -1,21 +1,64 @@
-﻿using GuffGaff.Database.Models;
+﻿using GuffGaff.Database.DBContext;
+using GuffGaff.Database.Models;
 using GuffGaff.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace GuffGaff.Services.Services
 {
     public class PostServices : IPostServices
     {
         private IPostServices _postServices;
-        public PostServices(IPostServices postServices)
+        private GuffGaffDBContext _dbContext;
+        public PostServices(IPostServices postServices, GuffGaffDBContext dbContext)
         {
             _postServices = postServices;
+            _dbContext = dbContext;
         }
 
-        public async Task<ResponseModel> SaveThoughtAsync(Post thought)
+        public async Task<ResponseModel> SavePostAsync(Post post)
         {
             try
             {
+                var result = await _dbContext.Posts.AddAsync(post);
+                _dbContext.SaveChanges();
                 return new ResponseModel(true);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, "[Failed]: " + ex.Message);
+            }
+        }
+        public async Task<ResponseModelTask<Post>> GetPostAsync(Post post)
+        {
+            try
+            {
+                var result = await _dbContext.Posts.Where(x => x.PostId == post.PostId).FirstOrDefaultAsync();
+                if (result == null)
+                    return new ResponseModelTask<Post>(new Post());
+                return new ResponseModelTask<Post>(result);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModelTask<Post>(new Post(), "[Failed]: " + ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> UpdateVoteAsync(Vote vote)
+        {
+            try
+            {
+                var votedPost = await _dbContext.Posts.Where(x => x.PostId == vote.PostId).FirstOrDefaultAsync();
+                if (votedPost != null)
+                {
+                    if (vote.UpVote)
+                        votedPost.UpVotes++;
+                    else
+                        votedPost.DownVotes++;
+
+                    await _dbContext.SaveChangesAsync();
+                    return new ResponseModel(true, "Success");
+                }
+                return new ResponseModel(true, "No post found.");
             }
             catch (Exception ex)
             {

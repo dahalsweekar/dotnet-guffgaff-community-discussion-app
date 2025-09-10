@@ -40,7 +40,9 @@ export class FeedComponent implements OnInit {
     checkUserLogin(): void{
       if (this.loggedInUser.email === ''){
         this.redirectToLogin();
-      }else{
+      }
+      else
+      {
         this.redirectToPost(0);
       }
     }
