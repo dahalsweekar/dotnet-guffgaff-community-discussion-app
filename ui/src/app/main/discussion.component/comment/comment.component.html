@@ -1,0 +1,26 @@
+<div class="comments-container card-container">
+  <!-- Top-level add new comment -->
+  <div class="card new-comment-card">
+    <button *ngIf="!topLevelBoxOpen" (click)="openNewCommentBox()">Add Comment</button>
+    <div *ngIf="topLevelBoxOpen" class="comment-form">
+      <textarea [(ngModel)]="newCommentText" placeholder="Write a comment"></textarea>
+      <div class="form-buttons">
+        <button (click)="saveNewComment()">Save</button>
+        <button (click)="cancelNewComment()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- List of comments -->
+  <ng-container *ngFor="let comment of comments">
+    <app-comment-item 
+      [comment]="comment"
+      [replyBoxOpenFor]="replyBoxOpenFor"
+      [replyTextByComment]="replyTextByComment"
+      (openReply)="openReplyBox($event)"
+      (cancelReply)="cancelReply($event)"
+      (saveReply)="saveReply($event)"
+    >
+    </app-comment-item>
+  </ng-container>
+</div>

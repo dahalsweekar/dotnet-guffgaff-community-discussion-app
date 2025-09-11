@@ -7,11 +7,9 @@ namespace GuffGaff.Services.Services
 {
     public class PostServices : IPostServices
     {
-        private IPostServices _postServices;
         private GuffGaffDBContext _dbContext;
-        public PostServices(IPostServices postServices, GuffGaffDBContext dbContext)
+        public PostServices(GuffGaffDBContext dbContext)
         {
-            _postServices = postServices;
             _dbContext = dbContext;
         }
 

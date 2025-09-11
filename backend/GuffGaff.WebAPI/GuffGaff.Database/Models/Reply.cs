@@ -2,7 +2,7 @@
 
 namespace GuffGaff.Database.Models
 {
-    public class Comment
+    public class Reply
     {
         [Key]
         public int CommentId { get; set; }
@@ -12,12 +12,6 @@ namespace GuffGaff.Database.Models
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public int parentId { get; set; }
-        public DateTime CommentDate { get; set; }
-    }
-
-    public class CommentReply
-    {
-        public List<Comment> comments { get; set; }
-        public List<Reply> replies { get; set; }
+        public DateTime ReplyDate { get; set; }
     }
 }
