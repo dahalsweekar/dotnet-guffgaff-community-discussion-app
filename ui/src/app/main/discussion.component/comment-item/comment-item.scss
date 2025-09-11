@@ -1,0 +1,79 @@
+.card-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.comment-card {
+  margin-left: 0;
+  &.reply {
+    margin-left: 2rem; /* indentation for replies */
+  }
+}
+
+.comment-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-id {
+  font-weight: bold;
+  color: #555;
+}
+
+.comment-text {
+  margin: 0.5rem 0;
+}
+
+.reply-button {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.comment-form {
+  margin-top: 0.5rem;
+  textarea {
+    width: 100%;
+    min-height: 60px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: .5rem;
+    resize: vertical;
+  }
+  .form-buttons {
+    margin-top: 0.5rem;
+    button {
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      &.save {
+        background-color: #28a745;
+        color: #fff;
+      }
+      &.cancel {
+        background-color: #dc3545;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.replies {
+  margin-left: 2rem; /* indent nested replies */
+  margin-top: 1rem;
+}

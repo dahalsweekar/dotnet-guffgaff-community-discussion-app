@@ -1,0 +1,30 @@
+<div class="card comment-card">
+  <div class="comment-content">
+    <span class="comment-id">#{{comment.commentId}}</span>
+    <p class="comment-text">{{comment.commentDescription}}</p>
+    <button class="reply-button" (click)="onReplyClick()">Reply</button>
+  </div>
+
+  <div *ngIf="replyBoxOpenFor.has(comment.commentId)" class="comment-form reply-form">
+    <textarea [(ngModel)]="replyTextByComment[comment.commentId]" placeholder="Write a reply"></textarea>
+    <div class="form-buttons">
+      <button (click)="onSaveReply()">Save</button>
+      <button (click)="onCancelReply()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Render replies recursively -->
+  <div class="replies" *ngIf="comment.replies && comment.replies.length > 0">
+    <ng-container *ngFor="let child of comment.replies">
+      <app-comment-item
+        [comment]="child"
+        [replyBoxOpenFor]="replyBoxOpenFor"
+        [replyTextByComment]="replyTextByComment"
+        (openReply)="openReply.emit($event)"
+        (cancelReply)="cancelReply.emit($event)"
+        (saveReply)="saveReply.emit($event)"
+      ></app-comment-item>
+    </ng-container>
+  </div>
+</div>
+
