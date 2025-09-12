@@ -48,6 +48,7 @@ export class CommentsComponent implements OnInit {
     this.commentServices.getCommentsfn(this.postId).subscribe({
         next: (response) => {
           this.flatComments = this.flattenComments(response[0], response[1])
+          this.buildCommentTree(this.flatComments);
         },
         error: (error) => {
           this.dialogServices.showError("Failed", "Could not initialize comments.");
