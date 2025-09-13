@@ -11,5 +11,7 @@
         public const string UpdateVoteCommentAPI = "/api/updatevotecomment";
         public const string SaveReplyAPI = "/api/savereply";
 
+        public const string SaveUserDetailsAPI = "/api/saveusercredentials";
+
     }
 }

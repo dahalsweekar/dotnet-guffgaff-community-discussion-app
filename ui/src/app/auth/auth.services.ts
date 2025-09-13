@@ -32,10 +32,6 @@ export class AuthService {
     this.oauthService.setupAutomaticSilentRefresh();
   }
 
-  public get user(): UserModel | null {
-    return this.userProfile;
-  }
-
   public login(): void {
       this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (!this.oauthService.hasValidAccessToken()) {
@@ -57,6 +53,16 @@ export class AuthService {
       };
       check();
     });
+  }
+  
+  public get user(): UserModel | null {
+    var claim = this.identityClaims;
+    this.userProfile = {
+      email: claim.email,
+      userId: claim.name,
+      picture: claim.picture
+    };
+    return this.userProfile;
   }
 
   public get isLoggedIn(): boolean {

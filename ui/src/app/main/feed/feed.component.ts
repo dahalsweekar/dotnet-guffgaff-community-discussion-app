@@ -6,6 +6,7 @@ import { PostModel } from '../../models/postVM';
 import { UserModel } from '../../models/userVM';
 
 import { AuthService } from '../../auth/auth.services';
+import { LocalStorage } from '../../services/localStorage.services';
 
 @Component({
   selector: 'app-feed.component',
@@ -33,7 +34,7 @@ export class FeedComponent implements OnInit {
 
     feedList: PostModel[] = [];
 
-    constructor(private router: Router, private authService: AuthService){}
+    constructor(private router: Router, private authService: AuthService, private localStorage: LocalStorage){}
 
     ngOnInit(): void {
       
@@ -41,7 +42,7 @@ export class FeedComponent implements OnInit {
 
     checkUserLogin(): void{
       if (!this.authService.isLoggedIn){
-         this.authService.login();
+         this.redirectToLogin();
       }
       else
       {
@@ -50,10 +51,11 @@ export class FeedComponent implements OnInit {
     }
 
     redirectToPost(postId: number): void{
+      this.localStorage.storeSession('PostID', postId.toString());
       this.router.navigateByUrl('/discussion');
     }
 
     redirectToLogin(): void{
-      this.router.navigateByUrl('/oauth');
+      this.authService.login();
     }
 }

@@ -28,13 +28,7 @@ export class HeaderComponent implements OnInit{
   }
 
   checkUserExists(): void{
-    var claim = this.authService.identityClaims;
-    this.user = {
-      email: claim.email,
-      name: claim.name,
-      picture: claim.picture
-    };
-
+    this.user = this.authService.user;
     this.userService.saveUserCredentialsfn(this.user).subscribe({
       next:(response) => {
 
