@@ -4,17 +4,17 @@
     </div>
     <div class="feed-list">
         @for(feed of feedList; track feed){
-            <div class="feed-card" (click)="redirectToPost(feed.postId)">
+            <div class="feed-card" (click)="redirectToPost(feed.PostId)">
                 <div class="feed-title">
-                    <h3>{{feed.title}}</h3>
+                    <h3>{{feed.Title}}</h3>
                 </div>
                 <div class="feed-brief">
-                    <p>{{feed.description}}</p>
+                    <p>{{feed.Description}}</p>
                 </div>
                 <div class="feed-footer">
-                    <span>Upvotes: {{feed.upvotes}}</span>
-                    <span>Downvotes: {{feed.downvotes}}</span>
-                    <span>Comments: {{feed.comments}}</span>
+                    <span>Upvotes: {{feed.Upvotes}}</span>
+                    <span>Downvotes: {{feed.Downvotes}}</span>
+                    <span>Comments: {{feed.Comments}}</span>
                 </div>
             </div>
         }

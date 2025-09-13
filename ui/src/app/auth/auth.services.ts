@@ -58,9 +58,9 @@ export class AuthService {
   public get user(): UserModel | null {
     var claim = this.identityClaims;
     this.userProfile = {
-      email: claim.email,
-      userId: claim.name,
-      picture: claim.picture
+      Email: claim.email,
+      Name: claim.name,
+      Picture: claim.picture
     };
     return this.userProfile;
   }

@@ -1,0 +1,20 @@
+.container{
+    display: flex;
+    justify-content: end;
+    background-image: linear-gradient(to right top, #ce341f, #cd2c18, #cd2211, #cc1608, #cb0000);
+    height: 100px;
+}
+
+.user-creds{
+    margin:5px;
+}
+
+.login-btn{
+    margin:10px;
+}
+
+.logout-btn{
+    margin-right: 10px;
+    margin-top:20px;
+    margin-left: 20px;
+}

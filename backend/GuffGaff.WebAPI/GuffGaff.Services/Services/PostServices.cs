@@ -17,6 +17,7 @@ namespace GuffGaff.Services.Services
         {
             try
             {
+                post.PostedDate = DateTime.Now;
                 var result = await _dbContext.Posts.AddAsync(post);
                 _dbContext.SaveChanges();
                 return new ResponseModel(true);

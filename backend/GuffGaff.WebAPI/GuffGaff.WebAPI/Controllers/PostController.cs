@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GuffGaff.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class PostController : Controller
     {
         private readonly IPostServices _postServices;
 

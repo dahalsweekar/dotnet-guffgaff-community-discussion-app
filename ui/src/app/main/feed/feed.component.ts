@@ -17,19 +17,19 @@ import { LocalStorage } from '../../services/localStorage.services';
 export class FeedComponent implements OnInit {
   
     loggedInUser: UserModel = {
-      userId: '',
-      name: '',
-      email: ''
+      Name: '',
+      Email: '',
+      Picture: ''
     }
 
     feedModel : PostModel   =  {
-      postId: 0,
-      owner: '',
-      title: '',
-      description: '',
-      upvotes: 0,
-      downvotes: 0,
-      comments: 0
+      PostId: 0,
+      Owner: '',
+      Title: '',
+      Description: '',
+      Upvotes: 0,
+      Downvotes: 0,
+      Comments: 0
     };
 
     feedList: PostModel[] = [];
