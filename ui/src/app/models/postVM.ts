@@ -1,10 +1,10 @@
 export interface PostModel{
-    postId: number,
-    owner: string,
-    title: string,
-    description: string,
-    upvotes?: number,
-    downvotes?: number,
-    comments?: number,
-    category?: string
+    PostId: number,
+    Owner: string,
+    Title: string,
+    Description: string,
+    Upvotes?: number,
+    Downvotes?: number,
+    Comments?: number,
+    Category?: string
 }

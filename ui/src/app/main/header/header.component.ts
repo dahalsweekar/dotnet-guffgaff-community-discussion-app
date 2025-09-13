@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { UserModel } from '../../models/userVM';
 
@@ -17,7 +18,7 @@ export class HeaderComponent implements OnInit{
   isLoggedIn: boolean = false;
   user: UserModel | null = null;
 
-  constructor(private authService: AuthService, private userService:UserService, private dialogService:DialogBoxServices) {}
+  constructor(private authService: AuthService, private userService:UserService, private dialogService:DialogBoxServices, private cdr: ChangeDetectorRef) {}
 
   async ngOnInit(): Promise<void> {
     await this.authService.whenLoginProcessed;
@@ -29,6 +30,7 @@ export class HeaderComponent implements OnInit{
 
   checkUserExists(): void{
     this.user = this.authService.user;
+    this.cdr.detectChanges();
     this.userService.saveUserCredentialsfn(this.user).subscribe({
       next:(response) => {
 

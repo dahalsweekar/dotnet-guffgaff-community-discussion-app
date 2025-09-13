@@ -25,11 +25,11 @@ import { LocalStorage } from '../../../services/localStorage.services';
 export class PostComponent implements OnInit{
 
   post: PostModel = {
-    postId: 0,
-    owner: '',
-    title: '',
-    description: '',
-    category: ''
+    PostId: 0,
+    Owner: '',
+    Title: '',
+    Description: '',
+    Category: ''
   }
 
   vote: VoteModel = {
@@ -70,9 +70,9 @@ export class PostComponent implements OnInit{
   }
 
   validatePost(): boolean{
-    if(this.post.title !== ''){
-      if(this.post.description !== ''){
-        if (this.post.category !== ''){
+    if(this.post.Title !== ''){
+      if(this.post.Description !== ''){
+        if (this.post.Category !== ''){
           return true;
         }
         else{
@@ -91,6 +91,7 @@ export class PostComponent implements OnInit{
 
   putPost(): void{
     if (this.validatePost()){
+      this.post.Owner = this.currentUser?.Email ?? '';
       this.postServices.putPostfn(this.post).subscribe({
       next: (response) => {
         this.dialogServices.showInfo('Information', 'Post successful.')

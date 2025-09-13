@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GuffGaff.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentController : Controller
     {
 
         private readonly ICommentServices _commentServices;
@@ -18,7 +17,7 @@ namespace GuffGaff.WebAPI.Controllers
 
         [HttpPost]
         [Route($"{apiHelper.GetCommentAPI}")]
-        public async Task<IActionResult> GetCommentsAsync(int postId)
+        public async Task<IActionResult> GetCommentsAsync([FromBody] int postId)
         {
             try
             {

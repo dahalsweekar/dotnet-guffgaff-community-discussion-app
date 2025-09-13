@@ -21,7 +21,7 @@ export class CommentServices{
     }
 
     getCommentsfn(postId: number): Observable<any> {
-        return this.http.post(this.getCommentsApi, postId);
+        return this.http.post(this.getCommentsApi, {'postId': postId});
     }
 
     updateVoteCommentfn(vote: any): Observable<any>{

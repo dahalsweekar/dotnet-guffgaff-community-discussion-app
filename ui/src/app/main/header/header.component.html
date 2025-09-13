@@ -1,4 +1,4 @@
-@if (!isLoggedIn){
+@if (!this.isLoggedIn){
     <div>
       <button (click)="login()">Login</button>
     </div>
@@ -8,10 +8,10 @@
 }
 @else{
 <div>
-      <p>Welcome, {{ user?.userId }}</p>
-      <p>Email: {{ user?.email }}</p>
-      @if (user?.picture){
-        <img [src]="user?.picture" alt="Profile Picture" width="100" />
+      <p>Welcome, {{ user?.Name }}</p>
+      <p>Email: {{ user?.Email }}</p>
+      @if (user?.Picture){
+        <img [src]="user?.Picture" alt="Profile Picture" width="100" />
       }
       <button (click)="logout()">Logout</button> 
 </div>
