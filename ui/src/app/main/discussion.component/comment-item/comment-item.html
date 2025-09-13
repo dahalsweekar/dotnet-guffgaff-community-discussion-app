@@ -19,7 +19,8 @@
   <!-- Render replies recursively -->
    @if(comment.replies && comment.replies.length > 0){
     <div class="replies">
-        <ng-container *ngFor="let child of comment.replies">
+      @for(child of comment.replies; track child){
+        <ng-container>
           <app-comment-item
             [comment]="child"
             [replyBoxOpenFor]="replyBoxOpenFor"
@@ -29,6 +30,7 @@
             (saveReply)="saveReply.emit($event)"
           ></app-comment-item>
         </ng-container>
+      }
       </div>  
    }
 </div>

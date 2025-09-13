@@ -14,35 +14,22 @@ import { UserService } from '../services/user.services';
 export class AuthService {
 
     private userProfile: UserModel | null = null;
+    private loginProcessed = false;
 
   constructor(private oauthService: OAuthService, private userService: UserService) {
     this.configureOAuth();
   }
 
-  private configureOAuth(): void {
+  private async configureOAuth() {
     this.oauthService.configure(authConfig);
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+    await this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (this.oauthService.hasValidAccessToken()) {
-        console.log('Access Token:', this.oauthService.getAccessToken());
-        console.log('ID Token:', this.oauthService.getIdToken());
-        console.log('User Info:', this.oauthService.getIdentityClaims());
+        this.loginProcessed = true;
       } else {
-        console.log('Not logged in');
+        this.loginProcessed = false;
       }
     });
     this.oauthService.setupAutomaticSilentRefresh();
-  }
-
-  public getIdentity(): void {
-    const claims: any = this.identityClaims;
-    if (claims) {
-      this.userProfile = {
-        userId: claims.name,
-        email: claims.email,
-        picture: claims.picture,
-        ...claims
-      };
-    }
   }
 
   public get user(): UserModel | null {
@@ -53,12 +40,23 @@ export class AuthService {
       this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       if (!this.oauthService.hasValidAccessToken()) {
           this.oauthService.initCodeFlow();
+          this.loginProcessed = true;
       }
     });
   }
 
   public logout(): void {
     this.oauthService.logOut();
+  }
+
+  get whenLoginProcessed(): Promise<void> {
+    return new Promise(resolve => {
+      const check = () => {
+        if (this.loginProcessed) resolve();
+        else setTimeout(check, 50);
+      };
+      check();
+    });
   }
 
   public get isLoggedIn(): boolean {

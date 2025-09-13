@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { PostModel } from '../../models/postVM';
 import { UserModel } from '../../models/userVM';
 
+import { AuthService } from '../../auth/auth.services';
+
 @Component({
   selector: 'app-feed.component',
   imports: [MatButtonModule],
@@ -31,15 +33,15 @@ export class FeedComponent implements OnInit {
 
     feedList: PostModel[] = [];
 
-    constructor(private router: Router){}
+    constructor(private router: Router, private authService: AuthService){}
 
     ngOnInit(): void {
       
     }
 
     checkUserLogin(): void{
-      if (this.loggedInUser.email === ''){
-        this.redirectToLogin();
+      if (!this.authService.isLoggedIn){
+         this.authService.login();
       }
       else
       {
