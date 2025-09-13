@@ -8,6 +8,7 @@ import { CommentItemComponent } from '../comment-item/comment-item';
 
 import { CommentServices } from '../../../services/comment.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
+import { LocalStorage } from '../../../services/localStorage.services';
 
 
 @Component({
@@ -36,10 +37,11 @@ export class CommentsComponent implements OnInit {
   { "postId":0,"userId":"","commentId": 4, "parentId": null, "commentDescription": "Top level 2" }
 ]
 
-  constructor(private commentServices: CommentServices, private router: Router, private dialogServices: DialogBoxServices) { }
+  constructor(private commentServices: CommentServices, private router: Router, private dialogServices: DialogBoxServices, private localStorage: LocalStorage) { }
 
   ngOnInit(): void 
   {
+    this.postId = parseInt(this.localStorage.getSession('PostID'));
     //this.comments = this.buildCommentTree(this.flatComments);
     this.initializeComments();
   }
@@ -47,7 +49,7 @@ export class CommentsComponent implements OnInit {
   initializeComments(): void{
     this.commentServices.getCommentsfn(this.postId).subscribe({
         next: (response) => {
-          this.flatComments = this.flattenComments(response[0], response[1])
+          //this.flatComments = this.flattenComments(response[0], response[1])
           this.buildCommentTree(this.flatComments);
         },
         error: (error) => {

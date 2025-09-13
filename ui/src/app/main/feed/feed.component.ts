@@ -5,6 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { PostModel } from '../../models/postVM';
 import { UserModel } from '../../models/userVM';
 
+import { AuthService } from '../../auth/auth.services';
+import { LocalStorage } from '../../services/localStorage.services';
+
 @Component({
   selector: 'app-feed.component',
   imports: [MatButtonModule],
@@ -31,15 +34,15 @@ export class FeedComponent implements OnInit {
 
     feedList: PostModel[] = [];
 
-    constructor(private router: Router){}
+    constructor(private router: Router, private authService: AuthService, private localStorage: LocalStorage){}
 
     ngOnInit(): void {
       
     }
 
     checkUserLogin(): void{
-      if (this.loggedInUser.email === ''){
-        this.redirectToLogin();
+      if (!this.authService.isLoggedIn){
+         this.redirectToLogin();
       }
       else
       {
@@ -48,10 +51,11 @@ export class FeedComponent implements OnInit {
     }
 
     redirectToPost(postId: number): void{
+      this.localStorage.storeSession('PostID', postId.toString());
       this.router.navigateByUrl('/discussion');
     }
 
     redirectToLogin(): void{
-      this.router.navigateByUrl('/oauth');
+      this.authService.login();
     }
 }

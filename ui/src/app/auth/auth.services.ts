@@ -5,6 +5,8 @@ import { authConfig } from './auth.config';
 
 import { UserModel } from '../models/userVM';
 
+import { UserService } from '../services/user.services';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,44 +14,55 @@ import { UserModel } from '../models/userVM';
 export class AuthService {
 
     private userProfile: UserModel | null = null;
+    private loginProcessed = false;
 
-  constructor(private oauthService: OAuthService) {
+  constructor(private oauthService: OAuthService, private userService: UserService) {
     this.configureOAuth();
   }
 
-  private configureOAuth(): void {
+  private async configureOAuth() {
     this.oauthService.configure(authConfig);
-    this.oauthService.setupAutomaticSilentRefresh(); // Optional: Silent refresh
-  }
-
-  public getIdentity(): UserModel | null {
-    const claims: any = this.identityClaims;
-    if (claims) {
-      this.userProfile = {
-        userId: claims.name,
-        email: claims.email,
-        picture: claims.picture,
-        ...claims
-      };
-    }
-    return this.userProfile;
-  }
-
-  public get user(): UserModel | null {
-    return this.userProfile;
+    await this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      if (this.oauthService.hasValidAccessToken()) {
+        this.loginProcessed = true;
+      } else {
+        this.loginProcessed = false;
+      }
+    });
+    this.oauthService.setupAutomaticSilentRefresh();
   }
 
   public login(): void {
-    debugger;
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-        if (!this.oauthService.hasValidAccessToken()) {
-        this.oauthService.initCodeFlow(); // Initiates the redirect to the IdP
-        }
+      this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      if (!this.oauthService.hasValidAccessToken()) {
+          this.oauthService.initCodeFlow();
+          this.loginProcessed = true;
+      }
     });
   }
 
   public logout(): void {
     this.oauthService.logOut();
+  }
+
+  get whenLoginProcessed(): Promise<void> {
+    return new Promise(resolve => {
+      const check = () => {
+        if (this.loginProcessed) resolve();
+        else setTimeout(check, 50);
+      };
+      check();
+    });
+  }
+  
+  public get user(): UserModel | null {
+    var claim = this.identityClaims;
+    this.userProfile = {
+      email: claim.email,
+      userId: claim.name,
+      picture: claim.picture
+    };
+    return this.userProfile;
   }
 
   public get isLoggedIn(): boolean {

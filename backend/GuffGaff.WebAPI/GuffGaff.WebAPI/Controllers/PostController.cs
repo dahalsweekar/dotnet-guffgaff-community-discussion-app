@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GuffGaff.WebAPI.Controllers
 {
-    public class PostController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PostController : ControllerBase
     {
         private readonly IPostServices _postServices;
 
@@ -15,7 +17,7 @@ namespace GuffGaff.WebAPI.Controllers
 
         [HttpPost]
         [Route($"{apiHelper.PutPostAPI}")]
-        private async Task<IActionResult> PutPostAsync([FromBody] Post post)
+        public async Task<IActionResult> PutPostAsync([FromBody] Post post)
         {
             try
             {
@@ -29,7 +31,7 @@ namespace GuffGaff.WebAPI.Controllers
 
         [HttpPost]
         [Route($"{apiHelper.GetPostAPI}")]
-        private async Task<IActionResult> GetPostAsync([FromBody] Post post)
+        public async Task<IActionResult> GetPostAsync([FromBody] Post post)
         {
             try
             {
@@ -43,7 +45,7 @@ namespace GuffGaff.WebAPI.Controllers
 
         [HttpPost]
         [Route($"{apiHelper.UpdateVoteAPI}")]
-        private async Task<IActionResult> UpdateVoteAsync([FromBody] Vote vote)
+        public async Task<IActionResult> UpdateVoteAsync([FromBody] Vote vote)
         {
             try
             {

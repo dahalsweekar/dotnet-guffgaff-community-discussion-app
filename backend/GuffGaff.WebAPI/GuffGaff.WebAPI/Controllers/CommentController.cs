@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GuffGaff.WebAPI.Controllers
 {
-    public class CommentController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CommentController : ControllerBase
     {
 
         private readonly ICommentServices _commentServices;
@@ -24,12 +26,12 @@ namespace GuffGaff.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
 
         [HttpPost]
-        [Route($"{apiHelper.GetCommentAPI}")]
+        [Route($"{apiHelper.SaveCommentAPI}")]
         public async Task<IActionResult> SaveCommentAsync(Comment comment)
         {
             try
@@ -38,12 +40,12 @@ namespace GuffGaff.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
 
         [HttpPost]
-        [Route($"{apiHelper.GetCommentAPI}")]
+        [Route($"{apiHelper.SaveReplyAPI}")]
         public async Task<IActionResult> SaveReplyAsync(Reply reply)
         {
             try
@@ -52,7 +54,7 @@ namespace GuffGaff.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
     }
