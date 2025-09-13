@@ -15,7 +15,6 @@ export class PostServices{
     constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){}
 
     putPostfn(post: any): Observable<any>{
-        debugger;
         return this.http.post(this.putPostApi, post);
     }
 

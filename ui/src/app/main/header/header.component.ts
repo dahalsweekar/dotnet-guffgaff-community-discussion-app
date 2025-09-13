@@ -7,9 +7,11 @@ import { AuthService } from '../../auth/auth.services';
 import { UserService } from '../../services/user.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 
+import { MatButtonModule } from '@angular/material/button';
+
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [MatButtonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -24,13 +26,14 @@ export class HeaderComponent implements OnInit{
     await this.authService.whenLoginProcessed;
     this.isLoggedIn = this.authService.isLoggedIn;
     if (this.isLoggedIn){
+      this.dialogService.showInfo("Success", "You are logged in.");
+      this.user = this.authService.user;
+      this.cdr.detectChanges();
       this.checkUserExists();
     }
   }
 
   checkUserExists(): void{
-    this.user = this.authService.user;
-    this.cdr.detectChanges();
     this.userService.saveUserCredentialsfn(this.user).subscribe({
       next:(response) => {
 
@@ -45,15 +48,10 @@ export class HeaderComponent implements OnInit{
     this.authService.login();
   }
 
-  showUser(): void{
-    var claims2 = this.authService.identityClaims;
-    var token = this.authService.accessToken;
-    var isLoggedIn = this.authService.isLoggedIn;
-  }
-
   logout(): void {
     this.authService.logout();
     this.isLoggedIn = false;
     this.user = null;
+    this.dialogService.showInfo("Success", "You are logged out.");
   }
 }

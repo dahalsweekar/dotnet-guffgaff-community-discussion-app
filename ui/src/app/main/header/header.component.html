@@ -1,20 +1,21 @@
+<div class="container">
 @if (!this.isLoggedIn){
-    <div>
-      <button (click)="login()">Login</button>
-    </div>
-    <div>
-      <button (click)="showUser()">Show</button>
+    <div class="login-btn">
+      <button mat-button (click)="login()">Login</button>
     </div>
 }
 @else{
-<div>
-      <p>Welcome, {{ user?.Name }}</p>
-      <p>Email: {{ user?.Email }}</p>
+<div class="user-creds">
       @if (user?.Picture){
-        <img [src]="user?.Picture" alt="Profile Picture" width="100" />
+        <img [src]="user?.Picture" alt="Profile Picture" width="50" height="50"/>
       }
-      <button (click)="logout()">Logout</button> 
+      <p style="font-size: 12px; color: antiquewhite;">{{ user?.Name }}</p>
+</div>
+<div class="logout-btn">
+  <button mat-button (click)="logout()">Logout</button> 
 </div>
 }
+</div>
+
 
     
