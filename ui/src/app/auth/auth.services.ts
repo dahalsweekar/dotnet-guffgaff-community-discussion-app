@@ -5,6 +5,8 @@ import { authConfig } from './auth.config';
 
 import { UserModel } from '../models/userVM';
 
+import { UserService } from '../services/user.services';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,16 +15,25 @@ export class AuthService {
 
     private userProfile: UserModel | null = null;
 
-  constructor(private oauthService: OAuthService) {
+  constructor(private oauthService: OAuthService, private userService: UserService) {
     this.configureOAuth();
   }
 
   private configureOAuth(): void {
     this.oauthService.configure(authConfig);
-    this.oauthService.setupAutomaticSilentRefresh(); // Optional: Silent refresh
+    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      if (this.oauthService.hasValidAccessToken()) {
+        console.log('Access Token:', this.oauthService.getAccessToken());
+        console.log('ID Token:', this.oauthService.getIdToken());
+        console.log('User Info:', this.oauthService.getIdentityClaims());
+      } else {
+        console.log('Not logged in');
+      }
+    });
+    this.oauthService.setupAutomaticSilentRefresh();
   }
 
-  public getIdentity(): UserModel | null {
+  public getIdentity(): void {
     const claims: any = this.identityClaims;
     if (claims) {
       this.userProfile = {
@@ -32,7 +43,6 @@ export class AuthService {
         ...claims
       };
     }
-    return this.userProfile;
   }
 
   public get user(): UserModel | null {
@@ -40,11 +50,10 @@ export class AuthService {
   }
 
   public login(): void {
-    debugger;
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-        if (!this.oauthService.hasValidAccessToken()) {
-        this.oauthService.initCodeFlow(); // Initiates the redirect to the IdP
-        }
+      this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      if (!this.oauthService.hasValidAccessToken()) {
+          this.oauthService.initCodeFlow();
+      }
     });
   }
 

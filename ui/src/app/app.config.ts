@@ -11,6 +11,9 @@ import {
   DateTimeProvider
 } from 'angular-oauth2-oidc';
 
+import { CookieService } from 'ngx-cookie-service';
+import { StorageService } from './services/storage.services';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -18,17 +21,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     importProvidersFrom(
-      OAuthModule.forRoot({
-        resourceServer: {
-          allowedUrls: ['http://localhost:4200'],
-          sendAccessToken: true
-        }
-      })
+      OAuthModule.forRoot()
     ),
-    OAuthService,
-    UrlHelperService,
-    { provide: OAuthStorage, useValue: localStorage },
-    { provide: OAuthLogger, useValue: console },
-    {provide: DateTimeProvider, useValue: console}
+    CookieService,                    
+    {
+      provide: OAuthStorage,         
+      useClass: StorageService
+    }
   ]
 };
