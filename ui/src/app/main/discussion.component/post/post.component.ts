@@ -97,7 +97,7 @@ export class PostComponent implements OnInit{
         this.dialogServices.showInfo('Information', 'Post successful.')
         .afterClosed()
         .subscribe(() => {
-          this.pageServices.reloadComponent('post');
+          this.pageServices.reloadComponent('discussion');
         })
       },
       error: (error) => {

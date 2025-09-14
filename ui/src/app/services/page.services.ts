@@ -12,8 +12,8 @@ export class PageServices{
         constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){}
 
         reloadComponent(url: string) {
-       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-         this.router.navigate([url]);
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate([url]);
        });
      }
 
