@@ -13,5 +13,7 @@
 
         public const string SaveUserDetailsAPI = "api/saveusercredentials";
 
+        public const string GetSavedPostsAPI = "api/getsavedpost";
+
     }
 }

@@ -30,6 +30,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IPostServices, PostServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<ICommentServices, CommentServices>();
+builder.Services.AddScoped<IFeedServices, FeedServices>();
 
 var app = builder.Build();
 

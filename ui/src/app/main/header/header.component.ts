@@ -6,6 +6,7 @@ import { UserModel } from '../../models/userVM';
 import { AuthService } from '../../auth/auth.services';
 import { UserService } from '../../services/user.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
+import { PageServices } from '../../services/page.services';
 
 import { MatButtonModule } from '@angular/material/button';
 
@@ -20,13 +21,17 @@ export class HeaderComponent implements OnInit{
   isLoggedIn: boolean = false;
   user: UserModel | null = null;
 
-  constructor(private authService: AuthService, private userService:UserService, private dialogService:DialogBoxServices, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private authService: AuthService, 
+    private userService:UserService, 
+    private dialogService:DialogBoxServices, 
+    private cdr: ChangeDetectorRef,
+    private pageServices: PageServices) {}
 
   async ngOnInit(): Promise<void> {
     await this.authService.whenLoginProcessed;
     this.isLoggedIn = this.authService.isLoggedIn;
     if (this.isLoggedIn){
-      this.dialogService.showInfo("Success", "You are logged in.");
       this.checkUserExists();
     }
   }
@@ -36,7 +41,7 @@ export class HeaderComponent implements OnInit{
     this.cdr.detectChanges();
     this.userService.saveUserCredentialsfn(this.user).subscribe({
       next:(response) => {
-
+ 
       },
       error: (error) => {
         this.dialogService.showError("Failed", "Could not save user details. This may be resolved later.");
@@ -46,12 +51,15 @@ export class HeaderComponent implements OnInit{
 
   login(): void {
     this.authService.login();
+    this.dialogService.showInfo("Success", "You are logged in.");
   }
 
   logout(): void {
     this.authService.logout();
-    this.isLoggedIn = false;
-    this.user = null;
-    this.dialogService.showInfo("Success", "You are logged out.");
+    this.dialogService.showInfo("Success", "You are logged out.")
+    .afterClosed()
+    .subscribe(() =>{
+      this.pageServices.reloadComponent('feed');
+    })
   }
 }

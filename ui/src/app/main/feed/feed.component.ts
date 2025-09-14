@@ -7,6 +7,8 @@ import { UserModel } from '../../models/userVM';
 
 import { AuthService } from '../../auth/auth.services';
 import { LocalStorage } from '../../services/localStorage.services';
+import { FeedServices } from '../../services/feed.services';
+import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 
 @Component({
   selector: 'app-feed.component',
@@ -34,10 +36,26 @@ export class FeedComponent implements OnInit {
 
     feedList: PostModel[] = [];
 
-    constructor(private router: Router, private authService: AuthService, private localStorage: LocalStorage){}
+    constructor(
+      private router: Router, 
+      private authService: AuthService, 
+      private localStorage: LocalStorage, 
+      private feedServices:FeedServices,
+      private dialogServices: DialogBoxServices){}
 
     ngOnInit(): void {
-      
+      this.getSavedPosts();
+    }
+
+    getSavedPosts(): void{
+      this.feedServices.getSavedPostsfn().subscribe({
+        next: (response) =>{
+          this.feedList = response.Data;
+        },
+        error: (error) =>{
+          this.dialogServices.showError("Failed", "Could not fetch posts.");
+        }
+      })
     }
 
     checkUserLogin(): void{
