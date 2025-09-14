@@ -27,13 +27,13 @@ export class HeaderComponent implements OnInit{
     this.isLoggedIn = this.authService.isLoggedIn;
     if (this.isLoggedIn){
       this.dialogService.showInfo("Success", "You are logged in.");
-      this.user = this.authService.user;
-      this.cdr.detectChanges();
       this.checkUserExists();
     }
   }
 
   checkUserExists(): void{
+    this.user = this.authService.user;
+    this.cdr.detectChanges();
     this.userService.saveUserCredentialsfn(this.user).subscribe({
       next:(response) => {
 

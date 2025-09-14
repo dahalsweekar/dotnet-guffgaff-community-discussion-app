@@ -20,7 +20,9 @@
 }
 
 .user-creds{
-    margin:5px;
+    margin:10px;
+    display: grid;
+    justify-content: center;
 }
 
 .login-btn{
@@ -31,4 +33,21 @@
     margin-right: 10px;
     margin-top:20px;
     margin-left: 20px;
+}
+
+.profile-pic-container{
+    justify-content: center;
+    display: flex;
+}
+
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;          
+  object-fit: cover;     
+  transition: transform 0.3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);      
 }
