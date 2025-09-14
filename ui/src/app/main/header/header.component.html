@@ -1,20 +1,37 @@
 <div class="container">
-@if (!this.isLoggedIn){
-    <div class="login-btn">
-      <button mat-button (click)="login()">Login</button>
+  <div class="logo-container">
+     <div class="G">
+      <h1>G</h1>
+     </div>
+     <div class="ua" style="margin:13px;">
+        <p style="margin: 0px;">u</p>
+        <p style="margin: 0px;">a</p>
+     </div>
+     <div class="f">
+      <h1>f</h1>
+     </div>
+     <div class="f">
+      <h1>f</h1>
+     </div>
+  </div>
+  <div class="sub-container">
+    @if (!this.isLoggedIn){
+        <div class="login-btn">
+          <button mat-button (click)="login()">Login</button>
+        </div>
+    }
+    @else{
+    <div class="user-creds">
+          @if (user?.Picture){
+            <img [src]="user?.Picture" alt="Profile Picture" width="50" height="50"/>
+          }
+          <p style="font-size: 12px; color: antiquewhite;">{{ user?.Name }}</p>
     </div>
-}
-@else{
-<div class="user-creds">
-      @if (user?.Picture){
-        <img [src]="user?.Picture" alt="Profile Picture" width="50" height="50"/>
-      }
-      <p style="font-size: 12px; color: antiquewhite;">{{ user?.Name }}</p>
-</div>
-<div class="logout-btn">
-  <button mat-button (click)="logout()">Logout</button> 
-</div>
-}
+    <div class="logout-btn">
+      <button mat-button (click)="logout()">Logout</button> 
+    </div>
+    }
+  </div>
 </div>
 
 

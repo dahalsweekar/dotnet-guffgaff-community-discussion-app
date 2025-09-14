@@ -1,8 +1,22 @@
 .container{
     display: flex;
-    justify-content: end;
-    background-image: linear-gradient(to right top, #ce341f, #cd2c18, #cd2211, #cc1608, #cb0000);
+    background-image: linear-gradient(to right top, #ec2f16, #e12a12, #e0210f, #cc1608, #cb0000);
     height: 100px;
+    width: 100%;
+}
+
+.sub-container{
+    width: 50%;
+    display: flex;
+    justify-content: end;
+}
+
+.logo-container{
+    width: 50%;
+    margin:20px;
+    display: flex;
+    font-size: 18px;
+    color:white;
 }
 
 .user-creds{
