@@ -12,6 +12,8 @@
         public const string SaveReplyAPI = "api/savereply";
 
         public const string SaveUserDetailsAPI = "api/saveusercredentials";
+        public const string Login = "api/login";
+        public const string ValidateUser = "api/validateuser";
 
         public const string GetSavedPostsAPI = "api/getsavedpost";
 

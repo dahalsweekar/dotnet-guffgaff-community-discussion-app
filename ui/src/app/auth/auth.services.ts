@@ -21,6 +21,7 @@ export class AuthService {
     private loginProcessed = false;
 
     private loginApi: string = '/api/login'
+    private validateUserApi: string = 'api/validateuser';
 
   constructor(private oauthService: OAuthService, private userService: UserService, private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any) {
     this.configureOAuth();
@@ -85,5 +86,9 @@ export class AuthService {
 
   localLoginfn(user: any): Observable<any>{
     return this.http.post(this.loginApi, user);
+  }
+
+  validateUserfn(user: any): Observable<any>{
+    return this.http.post(this.validateUserApi, user);
   }
 }
