@@ -1,7 +1,11 @@
-// auth.service.ts
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from './auth.config';
+
+import { HttpClient } from "@angular/common/http";
+import { Inject, PLATFORM_ID } from "@angular/core";
+import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 
 import { UserModel } from '../models/userVM';
 
@@ -16,7 +20,9 @@ export class AuthService {
     private userProfile: UserModel | null = null;
     private loginProcessed = false;
 
-  constructor(private oauthService: OAuthService, private userService: UserService) {
+    private loginApi: string = '/api/login'
+
+  constructor(private oauthService: OAuthService, private userService: UserService, private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any) {
     this.configureOAuth();
   }
 
@@ -75,5 +81,9 @@ export class AuthService {
 
   public get accessToken(): string {
     return this.oauthService.getAccessToken();
+  }
+
+  localLoginfn(user: any): Observable<any>{
+    return this.http.post(this.loginApi, user);
   }
 }

@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 import { PostServices } from '../../../services/post.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 import { PageServices } from '../../../services/page.services';
@@ -17,7 +21,10 @@ import { LocalStorage } from '../../../services/localStorage.services';
 @Component({
   selector: 'app-post',
   imports: [ CommonModule,
-    FormsModule
+    FormsModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatFormFieldModule
    ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
@@ -29,7 +36,9 @@ export class PostComponent implements OnInit{
     Owner: '',
     Title: '',
     Description: '',
-    Category: ''
+    Category: '',
+    Upvotes: 0,
+    Downvotes: 0
   }
 
   vote: VoteModel = {

@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="fields">
+        <div class="nickname">
+         <mat-form-field appearance="fill" class="full-width">
+         <mat-label>Nickname</mat-label>
+        <input matInput [(ngModel)]="user.Name" placeholder="Enter your username">
+      </mat-form-field>
+        </div>
+        <div class="pass1">
+            <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Password</mat-label>
+            <input matInput [(ngModel)]="user.Password" type="password" placeholder="Enter your password">
+      </mat-form-field>
+        </div>
+        <div class="pass2">
+            <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput [(ngModel)]="ConfirmPassword" type="password" placeholder="Enter your password">
+      </mat-form-field>
+        </div>
+        <div class="profile-pic">
+
+        </div>
+    </div>
+    <div class="btn">
+        <div class="create-btn">
+            <button mat-raised-button color="primary" class="create-btn" (click)="create()">Login</button>
+        </div>
+        <div class="cancel-btn">
+            <button mat-stroked-button color="warn" class="cancel-btn" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
+</div>

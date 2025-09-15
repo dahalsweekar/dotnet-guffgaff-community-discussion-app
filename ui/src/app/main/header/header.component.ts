@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { UserModel } from '../../models/userVM';
 
@@ -9,6 +10,7 @@ import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box
 import { PageServices } from '../../services/page.services';
 
 import { MatButtonModule } from '@angular/material/button';
+import { LoginBox } from '../../auth/login-box/login-box';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +28,8 @@ export class HeaderComponent implements OnInit{
     private userService:UserService, 
     private dialogService:DialogBoxServices, 
     private cdr: ChangeDetectorRef,
-    private pageServices: PageServices) {}
+    private pageServices: PageServices,
+    private dialog: MatDialog) {}
 
   async ngOnInit(): Promise<void> {
     await this.authService.whenLoginProcessed;
@@ -50,8 +53,10 @@ export class HeaderComponent implements OnInit{
   }
 
   login(): void {
-    this.authService.login();
-    this.dialogService.showInfo("Success", "You are logged in.");
+    this.dialog.open(LoginBox, {
+      width: '250px',
+      height: '400px'
+    });
   }
 
   logout(): void {

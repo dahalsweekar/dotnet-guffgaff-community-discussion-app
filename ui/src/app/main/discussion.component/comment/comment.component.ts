@@ -4,6 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 import { CommentItemComponent } from '../comment-item/comment-item';
 
 import { CommentServices } from '../../../services/comment.services';
@@ -13,7 +17,7 @@ import { LocalStorage } from '../../../services/localStorage.services';
 
 @Component({
   selector: 'app-comments',
-  imports: [FormsModule, CommonModule, CommentItemComponent],
+  imports: [FormsModule, CommonModule, CommentItemComponent, MatFormFieldModule, MatButtonModule, MatInputModule],
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss']
 })

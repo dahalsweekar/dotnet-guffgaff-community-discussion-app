@@ -7,3 +7,35 @@
     margin: 0 auto;
     padding: 2rem;
 }
+
+.feed-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.feed-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.feed-title h3 {
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.feed-brief p {
+    margin: 0 0 12px;
+    color: #555;
+}
+
+.feed-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #777;
+}

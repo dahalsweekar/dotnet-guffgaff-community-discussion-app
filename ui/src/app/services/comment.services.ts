@@ -2,7 +2,6 @@ import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
-import { observableToBeFn } from "rxjs/internal/testing/TestScheduler";
 
 @Injectable({
     providedIn: 'root'

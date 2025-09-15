@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="heading">
+    <h1>Login</h1>
+  </div>
+
+  <div class="fields">
+
+    <div class="userinp">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="user.Email" placeholder="Enter your username">
+      </mat-form-field>
+    </div>
+
+    <div class="passinp">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="user.Password" type="password" placeholder="Enter your password">
+      </mat-form-field>
+    </div>
+
+    <div class="loginbtn">
+      <button mat-raised-button color="primary" class="login-btn" (click)="login()">Login</button>
+      <button mat-stroked-button color="warn" class="cancel-btn" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="login-mit-google">
+    <button mat-flat-button color="accent" class="signup-btn" (click)="signup()">Sign up with Google</button>
+  </div>
+</div>
