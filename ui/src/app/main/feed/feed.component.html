@@ -3,7 +3,7 @@
         <button mat-button class="ask-btn" (click)="checkUserLogin()">Let's Guff</button>
     </div>
     <div class="feed-list">
-        @for(feed of feedList; track feed){
+        @for(feed of feedList; track feed.PostId){
             <div class="feed-card" (click)="redirectToPost(feed.PostId)">
                 <div class="feed-title">
                     <h3>{{feed.Title}}</h3>
@@ -17,6 +17,6 @@
                     <span>Comments: {{feed.Comments}}</span>
                 </div>
             </div>
-        }
+        } 
     </div>
 </div>

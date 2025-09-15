@@ -3,8 +3,8 @@ export interface PostModel{
     Owner: string,
     Title: string,
     Description: string,
-    Upvotes?: number,
-    Downvotes?: number,
+    Upvotes: number,
+    Downvotes: number,
     Comments?: number,
     Category?: string
 }

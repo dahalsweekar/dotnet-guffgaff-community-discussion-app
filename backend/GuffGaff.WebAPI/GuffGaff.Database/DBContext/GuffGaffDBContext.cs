@@ -11,5 +11,6 @@ namespace GuffGaff.Database.DBContext
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Reply> Replies { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Token> Tokens { get; set; }
     }
 }
