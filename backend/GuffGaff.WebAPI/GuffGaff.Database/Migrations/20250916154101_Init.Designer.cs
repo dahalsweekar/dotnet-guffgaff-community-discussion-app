@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuffGaff.Database.Migrations
 {
     [DbContext(typeof(GuffGaffDBContext))]
-    [Migration("20250916152601_Re-AddPostGuid")]
-    partial class ReAddPostGuid
+    [Migration("20250916154101_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
