@@ -12,5 +12,12 @@ namespace GuffGaff.Database.DBContext
         public DbSet<Reply> Replies { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Token> Tokens { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Post>()
+                .Property(p => p.PostId)
+                .HasDefaultValueSql("NEWSEQUENTIALID()"); // Use SQL to generate GUIDs
+        }
     }
 }

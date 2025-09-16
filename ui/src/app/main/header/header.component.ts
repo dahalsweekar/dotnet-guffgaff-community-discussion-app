@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
+import { Router } from '@angular/router';
 import { UserModel } from '../../models/userVM';
 
+import { LocalStorage } from '../../services/localStorage.services';
 import { AuthService } from '../../auth/auth.services';
 import { UserService } from '../../services/user.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
@@ -29,41 +30,28 @@ export class HeaderComponent implements OnInit{
     private dialogService:DialogBoxServices, 
     private cdr: ChangeDetectorRef,
     private pageServices: PageServices,
-    private dialog: MatDialog) {}
+    private dialog: MatDialog,
+    private localStorage: LocalStorage,
+    private router: Router) {}
 
   async ngOnInit(): Promise<void> {
-    await this.authService.whenLoginProcessed;
-    this.isLoggedIn = this.authService.isLoggedIn;
-    if (this.isLoggedIn){
-      this.checkUserExists();
-    }
-  }
-
-  checkUserExists(): void{
-    this.user = this.authService.user;
-    this.cdr.detectChanges();
-    this.userService.saveUserCredentialsfn(this.user).subscribe({
-      next:(response) => {
- 
-      },
-      error: (error) => {
-        this.dialogService.showError("Failed", "Could not save user details. This may be resolved later.");
-      }
-    })
+    debugger;
+    const token = this.localStorage.getSession('Token');
+    this.isLoggedIn = !!token;
   }
 
   login(): void {
     this.dialog.open(LoginBox, {
-      width: '250px',
+      width: '350px',
       height: '400px'
     });
   }
 
   logout(): void {
-    this.authService.logout();
     this.dialogService.showInfo("Success", "You are logged out.")
     .afterClosed()
     .subscribe(() =>{
+      this.localStorage.deleteSession('Token');
       this.pageServices.reloadComponent('feed');
     })
   }

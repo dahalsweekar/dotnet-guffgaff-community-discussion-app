@@ -6,61 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GuffGaff.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class newMigration : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "UserId",
-                table: "Posts",
-                newName: "Title");
-
-            migrationBuilder.RenameColumn(
-                name: "ThoughtText",
-                table: "Posts",
-                newName: "Owner");
-
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "Posts",
-                newName: "PostId");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Category",
-                table: "Posts",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<int>(
-                name: "Comments",
-                table: "Posts",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Description",
-                table: "Posts",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<int>(
-                name: "DownVotes",
-                table: "Posts",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "UpVotes",
-                table: "Posts",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
@@ -78,6 +28,25 @@ namespace GuffGaff.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.CommentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
+                    Owner = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpVotes = table.Column<int>(type: "int", nullable: false),
+                    DownVotes = table.Column<int>(type: "int", nullable: false),
+                    Comments = table.Column<int>(type: "int", nullable: false),
+                    PostedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.PostId);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,6 +69,20 @@ namespace GuffGaff.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenNo = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -107,7 +90,8 @@ namespace GuffGaff.Database.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,45 +106,16 @@ namespace GuffGaff.Database.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
                 name: "Replies");
 
             migrationBuilder.DropTable(
+                name: "Tokens");
+
+            migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Category",
-                table: "Posts");
-
-            migrationBuilder.DropColumn(
-                name: "Comments",
-                table: "Posts");
-
-            migrationBuilder.DropColumn(
-                name: "Description",
-                table: "Posts");
-
-            migrationBuilder.DropColumn(
-                name: "DownVotes",
-                table: "Posts");
-
-            migrationBuilder.DropColumn(
-                name: "UpVotes",
-                table: "Posts");
-
-            migrationBuilder.RenameColumn(
-                name: "Title",
-                table: "Posts",
-                newName: "UserId");
-
-            migrationBuilder.RenameColumn(
-                name: "Owner",
-                table: "Posts",
-                newName: "ThoughtText");
-
-            migrationBuilder.RenameColumn(
-                name: "PostId",
-                table: "Posts",
-                newName: "Id");
         }
     }
 }

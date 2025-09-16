@@ -1,20 +1,30 @@
+<div class="main-container">
 <div class="container">
+    <div class="header">
+        <h1 style="margin: 10px;">Create Profile</h1>
+    </div>
     <div class="fields">
+        <div class="email">
+         <mat-form-field appearance="fill" class="full-width">
+         <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="user.Email" [disabled]="true">
+        </mat-form-field>
+         </div>
         <div class="nickname">
          <mat-form-field appearance="fill" class="full-width">
-         <mat-label>Nickname</mat-label>
+         <mat-label>Nickname*</mat-label>
         <input matInput [(ngModel)]="user.Name" placeholder="Enter your username">
       </mat-form-field>
         </div>
         <div class="pass1">
             <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Password</mat-label>
+            <mat-label>Password*</mat-label>
             <input matInput [(ngModel)]="user.Password" type="password" placeholder="Enter your password">
       </mat-form-field>
         </div>
         <div class="pass2">
             <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Confirm Password</mat-label>
+            <mat-label>Confirm Password*</mat-label>
             <input matInput [(ngModel)]="ConfirmPassword" type="password" placeholder="Enter your password">
       </mat-form-field>
         </div>
@@ -23,11 +33,13 @@
         </div>
     </div>
     <div class="btn">
-        <div class="create-btn">
+        <div class="create-btn" style="margin: 5px;">
             <button mat-raised-button color="primary" class="create-btn" (click)="create()">Login</button>
         </div>
-        <div class="cancel-btn">
+        <div class="cancel-btn" style="margin: 5px;">
             <button mat-stroked-button color="warn" class="cancel-btn" (click)="cancel()">Cancel</button>
         </div>
     </div>
 </div>
+</div>
+

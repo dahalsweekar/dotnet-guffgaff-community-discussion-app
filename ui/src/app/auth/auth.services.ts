@@ -89,6 +89,7 @@ export class AuthService {
   }
 
   validateUserfn(user: any): Observable<any>{
+    debugger;
     return this.http.post(this.validateUserApi, user);
   }
 }

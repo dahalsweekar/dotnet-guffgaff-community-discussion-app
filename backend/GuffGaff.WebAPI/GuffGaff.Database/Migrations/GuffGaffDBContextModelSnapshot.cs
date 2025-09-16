@@ -60,11 +60,10 @@ namespace GuffGaff.Database.Migrations
 
             modelBuilder.Entity("GuffGaff.Database.Models.Post", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<Guid>("PostId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -135,6 +134,27 @@ namespace GuffGaff.Database.Migrations
                     b.ToTable("Replies");
                 });
 
+            modelBuilder.Entity("GuffGaff.Database.Models.Token", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tokens");
+                });
+
             modelBuilder.Entity("GuffGaff.Database.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -148,6 +168,10 @@ namespace GuffGaff.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

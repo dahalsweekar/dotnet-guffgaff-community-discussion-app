@@ -2,3 +2,23 @@
   width: 100%;
   margin-bottom: 16px;
 }
+
+.main-container{
+  display: flex;
+  justify-content: center;
+}
+
+.container{
+    width: 300px;
+    margin-top: 60px;
+}
+
+.header{
+      margin: 40px;
+}
+
+.btn{
+      display: flex
+;
+    justify-content: center;
+}
