@@ -2,6 +2,8 @@ using GuffGaff.Database.DBContext;
 using GuffGaff.Services.Interfaces;
 using GuffGaff.Services.Services;
 using Microsoft.EntityFrameworkCore;
+using WBpro.Services.Interfaces;
+using WBpro.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,7 @@ builder.Services.AddScoped<IPostServices, PostServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<ICommentServices, CommentServices>();
 builder.Services.AddScoped<IFeedServices, FeedServices>();
+builder.Services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
 
 var app = builder.Build();
 

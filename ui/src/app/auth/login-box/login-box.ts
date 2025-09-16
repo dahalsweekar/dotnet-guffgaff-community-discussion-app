@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
+import { LocalStorage } from '../../services/localStorage.services';
 import { AuthService } from '../auth.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 
@@ -21,10 +22,13 @@ export class LoginBox implements OnInit {
 
   user: UserModel = {};
 
-  constructor(private authServices: AuthService, private dialogServices: DialogBoxServices, private dialogRef: MatDialogRef<LoginBox>) {}
+  constructor(private authServices: AuthService, 
+    private dialogServices: DialogBoxServices, 
+    private dialogRef: MatDialogRef<LoginBox>,
+    private localStorage: LocalStorage) {}
 
-  ngOnInit(): void {
-    
+  async ngOnInit(): Promise<void> {
+      await this.authServices.whenLoginProcessed;
   }
 
   validateUser(): boolean{
@@ -43,7 +47,19 @@ export class LoginBox implements OnInit {
 
   login():void{
     if (this.validateUser()){
-      this.authServices.localLoginfn(this.user)
+      this.authServices.localLoginfn(this.user).subscribe({
+        next: (response) => {
+          this.dialogServices.showInfo('Success', 'You are logged in.')
+          .afterClosed()
+          .subscribe(() => {
+            this.localStorage.storeSession('Token', response.Token);
+            this.dialogRef.close();
+          })
+        },
+        error: (error) => {
+          this.dialogServices.showInfo('Failed', 'Unable to login.');
+        }
+      })
     }
   }
 
@@ -52,6 +68,7 @@ export class LoginBox implements OnInit {
   }
 
   signup(): void{
+    this.localStorage.storeSession('SignInInitiated', 'true');
     this.authServices.login();
   }
 }
