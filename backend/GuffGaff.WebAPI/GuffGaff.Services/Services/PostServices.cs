@@ -46,7 +46,12 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                var votedPost = await _dbContext.Posts.Where(x => x.PostId == vote.PostId).FirstOrDefaultAsync();
+                var postId = Guid.Parse(Convert.ToString(vote.PostId));
+
+                var votedPost = await _dbContext.Posts
+                    .Where(x => x.PostId == postId)
+                    .FirstOrDefaultAsync();
+
                 if (votedPost != null)
                 {
                     if (vote.UpVote)

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UserModel } from '../../models/userVM';
@@ -28,7 +27,6 @@ export class HeaderComponent implements OnInit{
     private authService: AuthService, 
     private userService:UserService, 
     private dialogService:DialogBoxServices, 
-    private cdr: ChangeDetectorRef,
     private pageServices: PageServices,
     private dialog: MatDialog,
     private localStorage: LocalStorage,

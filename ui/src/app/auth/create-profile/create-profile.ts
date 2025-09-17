@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,7 +21,13 @@ import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box
 })
 export class CreateProfile implements OnInit{
 
-  user: UserModel = {}
+  user: UserModel = {
+    Name: '',
+    Password: '',
+    Email: '',
+    Picture: ''
+   }
+
   ConfirmPassword: string = '';
 
   userExists: boolean = true;
@@ -29,13 +36,28 @@ export class CreateProfile implements OnInit{
     private dialogServices: DialogBoxServices, 
     private router: Router, 
     private userService:UserService, 
-    private localStorage: LocalStorage){
+    private localStorage: LocalStorage,
+    private cdr: ChangeDetectorRef){
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     debugger;
-    this.user = this.authServices.user ?? {};
+    await this.authServices.whenLoginProcessed;
+    if (this.authServices.isLoggedIn){
+      this.getUser();
+    }
+  }
+
+  getUser(): void{
+    this.user = this.authServices.user ?? {
+    Name: '',
+    Password: '',
+    Email: '',
+    Picture: ''
+   };
+    this.user.Password = '';
+    this.cdr.detectChanges();
     this.userCheck();
   }
   
@@ -63,7 +85,8 @@ export class CreateProfile implements OnInit{
   userCheck(): void{
      this.authServices.validateUserfn(this.user).subscribe({
       next: (response) => {
-        if (response.message.ToLower() === 'nein'){
+        debugger;
+        if (response._message === 'Nein'){
           this.userExists = false;
           this.authServices.logout();
         }
@@ -90,11 +113,13 @@ export class CreateProfile implements OnInit{
           this.dialogServices.showInfo("Success", "Your profile has been created.")
           .afterClosed()
           .subscribe(() => {
+            debugger;
             this.authServices.localLoginfn(this.user).subscribe({
               next: (response) => {
                 this.dialogServices.showInfo('Success', 'You are logged in.')
                 .afterClosed()
                 .subscribe(() => {
+                  this.localStorage.storeSession('UserID', this.user.Email);
                   this.localStorage.storeSession('Token', response.Token);
                   this.router.navigateByUrl('/feed');
                 })

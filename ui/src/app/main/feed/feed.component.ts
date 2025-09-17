@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatDialog } from '@angular/material/dialog';
 import { PostModel } from '../../models/postVM';
 import { UserModel } from '../../models/userVM';
-
+import { LoginBox } from '../../auth/login-box/login-box';
 import { AuthService } from '../../auth/auth.services';
 import { LocalStorage } from '../../services/localStorage.services';
 import { FeedServices } from '../../services/feed.services';
@@ -21,7 +21,8 @@ export class FeedComponent implements OnInit {
     loggedInUser: UserModel = {
       Name: '',
       Email: '',
-      Picture: ''
+      Picture: '',
+      Password: ''
     }
 
     feedModel : PostModel   =  {
@@ -41,6 +42,7 @@ export class FeedComponent implements OnInit {
       private authService: AuthService, 
       private localStorage: LocalStorage, 
       private feedServices:FeedServices,
+      private dialog: MatDialog,
       private dialogServices: DialogBoxServices){}
 
     ngOnInit(): void {
@@ -59,12 +61,16 @@ export class FeedComponent implements OnInit {
     }
 
     checkUserLogin(): void{
-      if (!this.authService.isLoggedIn){
-         this.redirectToLogin();
+      const token = this.localStorage.getSession('Token');
+      if (!!token){
+         this.redirectToPost(0);
       }
       else
       {
-        this.redirectToPost(0);
+        this.dialog.open(LoginBox, {
+              width: '350px',
+              height: '400px'
+            });
       }
     }
 

@@ -67,7 +67,8 @@ export class AuthService {
     this.userProfile = {
       Email: claim.email,
       Name: claim.name,
-      Picture: claim.picture
+      Picture: claim.picture,
+      Password: ''
     };
     return this.userProfile;
   }
@@ -85,6 +86,7 @@ export class AuthService {
   }
 
   localLoginfn(user: any): Observable<any>{
+    debugger;
     return this.http.post(this.loginApi, user);
   }
 

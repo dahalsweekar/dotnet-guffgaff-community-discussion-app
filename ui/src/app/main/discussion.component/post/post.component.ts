@@ -24,7 +24,8 @@ import { LocalStorage } from '../../../services/localStorage.services';
     FormsModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatInputModule
    ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
@@ -49,7 +50,12 @@ export class PostComponent implements OnInit{
   }
 
   currentPostId: number = 0;
-  currentUser?: UserModel | null
+  currentUser: UserModel = {
+    Name: '',
+    Password: '',
+    Email: '',
+    Picture: ''
+  }
 
   constructor(private postServices: PostServices,
      private dialogServices: DialogBoxServices,
@@ -61,7 +67,7 @@ export class PostComponent implements OnInit{
   }
 
   ngOnInit(){
-    this.currentUser = this.authServices.user;
+    this.currentUser.Email = this.localStorage.getSession('UserID');
     this.currentPostId = parseInt(this.localStorage.getSession('PostID'));
     if (this.currentPostId !== 0)
       this.setPost();
