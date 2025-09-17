@@ -20,7 +20,12 @@ import { UserModel } from '../../models/userVM';
 })
 export class LoginBox implements OnInit {
 
-  user: UserModel = {};
+  user: UserModel = {
+    Name: '',
+    Password: '',
+    Email: '',
+    Picture: ''
+  };
 
   constructor(private authServices: AuthService, 
     private dialogServices: DialogBoxServices, 
@@ -52,6 +57,7 @@ export class LoginBox implements OnInit {
           this.dialogServices.showInfo('Success', 'You are logged in.')
           .afterClosed()
           .subscribe(() => {
+            this.localStorage.storeSession('UserID', this.user.Email)
             this.localStorage.storeSession('Token', response.Token);
             this.dialogRef.close();
           })
@@ -68,7 +74,6 @@ export class LoginBox implements OnInit {
   }
 
   signup(): void{
-    this.localStorage.storeSession('SignInInitiated', 'true');
     this.authServices.login();
   }
 }
