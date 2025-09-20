@@ -90,7 +90,7 @@ export class CommentsComponent implements OnInit {
 
               return {
                   ...reply,
-                  parentId: matchingComment ? matchingComment.ParentId : reply.ParentId,
+                  ParentId: matchingComment ? matchingComment.ParentId : reply.ParentId,
                   replies: undefined // remove nested replies if flattening
               };
           });
