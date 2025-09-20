@@ -33,7 +33,7 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                reply.ReplyDate = DateTime.Now;
+                reply.CommentDate = DateTime.Now;
                 var result = await _dbContext.Replies.AddAsync(reply);
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");

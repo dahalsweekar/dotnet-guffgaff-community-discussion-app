@@ -13,6 +13,6 @@ namespace GuffGaff.Database.Models
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public int ParentId { get; set; }
-        public DateTime ReplyDate { get; set; }
+        public DateTime CommentDate { get; set; }
     }
 }

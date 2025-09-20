@@ -19,8 +19,6 @@ import { VoteModel } from '../../../models/voteVM';
 import { UserModel } from '../../../models/userVM';
 
 import { LocalStorage } from '../../../services/localStorage.services';
-import { Search } from "../../search/search";
-import { CommentsComponent } from "../comment/comment.component";
 
 @Component({
   selector: 'app-post',
@@ -30,8 +28,7 @@ import { CommentsComponent } from "../comment/comment.component";
     MatFormFieldModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
-    Search],
+    MatIconModule],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })

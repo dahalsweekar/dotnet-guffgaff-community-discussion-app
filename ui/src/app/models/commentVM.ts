@@ -7,4 +7,5 @@ export interface CommentModel {
     ParentId: number | null;
     CommentDescription: string;
     Replies?: CommentModel[];
+    CommentDate?: string;
 }
