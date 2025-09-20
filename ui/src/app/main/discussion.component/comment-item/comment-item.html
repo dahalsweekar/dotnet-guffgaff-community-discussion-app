@@ -12,9 +12,8 @@
     </div>
     <div class="comment-box">
       <p class="post-meta">
-        Posted by u/{{ comment.UserId }} • {{ comment.CommentDate | date:'short' }}
+        Commented by u/{{ comment.UserId }} • {{ comment.CommentDate | date:'short' }}
       </p>
-      <span class="comment-id">#{{comment.CommentId}}</span>
       <p class="comment-text">{{comment.CommentDescription}}</p>
       <button class="reply-button" (click)="onReplyClick()">Reply</button>
     </div>

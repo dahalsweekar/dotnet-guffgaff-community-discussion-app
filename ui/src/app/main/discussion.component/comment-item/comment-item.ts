@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
 import { PostServices } from '../../../services/post.services';
@@ -14,7 +16,7 @@ import { VoteModel } from '../../../models/voteVM';
 
 @Component({
   selector: 'app-comment-item',
-    imports: [FormsModule, CommonModule, MatIconModule],
+    imports: [FormsModule, CommonModule, MatIconModule, MatFormFieldModule, MatInputModule],
   templateUrl: './comment-item.html',
   styleUrls: ['./comment-item.scss']
 })

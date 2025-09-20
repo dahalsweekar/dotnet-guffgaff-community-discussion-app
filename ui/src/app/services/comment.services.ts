@@ -28,7 +28,6 @@ export class CommentServices{
     }
 
     saveReplyfn(reply: any): Observable<any>{
-        debugger;
         return this.http.post(this.saveReplyApi, reply);
     }
 }

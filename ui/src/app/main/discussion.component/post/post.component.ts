@@ -115,7 +115,6 @@ export class PostComponent implements OnInit{
         this.dialogServices.showInfo('Information', 'Post successful.')
         .afterClosed()
         .subscribe(() => {
-          debugger;
           this.localStorage.storeSession('PostID', response.Data.PostId);
           this.pageServices.reloadComponent('discussion');
         })

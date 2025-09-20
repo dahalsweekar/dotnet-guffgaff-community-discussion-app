@@ -54,7 +54,6 @@ export class FeedComponent implements OnInit {
     getSavedPosts(): void{
       this.feedServices.getSavedPostsfn().subscribe({
         next: (response) =>{
-          debugger;
           this.feedList = response.Data;
         },
         error: (error) =>{
@@ -78,7 +77,6 @@ export class FeedComponent implements OnInit {
     }
 
     redirectToPost(postId: string): void{
-      debugger;
       this.localStorage.storeSession('PostID', postId.toString());
       this.router.navigateByUrl('/discussion');
     }
