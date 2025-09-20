@@ -6,11 +6,13 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { PostServices } from '../../../services/post.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 import { PageServices } from '../../../services/page.services';
 import { AuthService } from '../../../auth/auth.services';
+import { HighlightPipe } from '../../../services/highlight/highlight-pipe';
 
 import { PostModel } from '../../../models/postVM';
 import { VoteModel } from '../../../models/voteVM';
@@ -25,12 +27,18 @@ import { LocalStorage } from '../../../services/localStorage.services';
     MatButtonModule,
     MatFormFieldModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule,
+    HighlightPipe
    ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })
 export class PostComponent implements OnInit{
+
+  searchText: string = ''
+  searchPost: PostModel[] = [];
+
 
   post: PostModel = {
     PostId: 0,
@@ -39,7 +47,8 @@ export class PostComponent implements OnInit{
     Description: '',
     Category: '',
     Upvotes: 0,
-    Downvotes: 0
+    Downvotes: 0,
+    Comments: 0
   }
 
   vote: VoteModel = {
@@ -138,4 +147,16 @@ export class PostComponent implements OnInit{
       this.router.navigateByUrl('/oauth');
     }
   }
+
+  onSearchChange() {
+  const keyword = {'SearchKey': this.searchText.toLowerCase()};
+  this.postServices.searchPostfn(keyword).subscribe({
+    next: (response) => {
+      this.searchPost = response.Data
+    },
+    error: (error) => {
+      this.dialogServices.showError('Failed', 'Unable to perform search');
+    }
+  });
+}
 }

@@ -20,7 +20,8 @@ export class CommentServices{
     }
 
     getCommentsfn(postId: number): Observable<any> {
-        return this.http.post(this.getCommentsApi, {'postId': postId});
+        debugger;
+        return this.http.post(this.getCommentsApi, postId);
     }
 
     updateVoteCommentfn(vote: any): Observable<any>{

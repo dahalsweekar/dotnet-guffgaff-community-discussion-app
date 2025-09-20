@@ -6,5 +6,6 @@ export interface PostModel{
     Upvotes: number,
     Downvotes: number,
     Comments?: number,
-    Category?: string
+    Category?: string,
+    PostedDate?: string
 }

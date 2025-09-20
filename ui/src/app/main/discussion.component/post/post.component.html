@@ -1,37 +1,80 @@
-@if (currentPostId == 0) {
-  <div class="container-unposted">
-
-    <h2>Post Your Thought</h2>
-
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Title</mat-label>
-      <input matInput [(ngModel)]="post.Title" placeholder="Title..." />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Description</mat-label>
-      <textarea matInput [(ngModel)]="post.Description" rows="4" placeholder="Write your thought here..."></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Category</mat-label>
-      <input matInput [(ngModel)]="post.Category" placeholder="Tag" />
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" (click)="putPost()">Post</button>
-
-  </div>
-} @else {
-  <div class="container-posted">
-
-    <h3 id="post-title-p">{{ post.Title }}</h3>
-
-    <p id="post-description-p">{{ post.Description }}</p>
-
-    <div class="up-down-votebtns">
-      <button mat-stroked-button color="primary" (click)="updateVote(1)">Upvote</button>
-      <button mat-stroked-button color="warn" (click)="updateVote(-1)">Downvote</button>
+<div class="main-container">
+  <div class="search-container">
+    <div class="search-card">
+      <div class="search-bar">
+        <mat-form-field appearance="outline" class="search-width">
+              <mat-label>Search</mat-label>
+              <input
+                matInput
+                [(ngModel)]="searchText"
+                (keyup)="onSearchChange()"
+                placeholder="Search posts..." />
+        </mat-form-field>
+      </div>
+      <div class="search-result">
+        @for(post of searchPost; track post.PostId){
+          <div class="search-card">
+              <h3 [innerHTML]="post.Title | highlight:searchText"></h3>
+              <p [innerHTML]="post.Description | highlight:searchText"></p>
+          </div>
+        }
+      </div>
     </div>
+  </div>
+  <div class="post-container">
+      @if (currentPostId == 0)
+      {
+        <div class="reddit-post-form">
+          <h2>Create a New Post</h2>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput [(ngModel)]="post.Title" placeholder="What's on your mind?" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput [(ngModel)]="post.Description" draggable="false" placeholder="Your thoughts..." rows="5"></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Category (Subreddit)</mat-label>
+            <input matInput [(ngModel)]="post.Category" placeholder="e.g. Angular, Gaming..." />
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" (click)="putPost()">Post</button>
+        </div>
+      }
+      @else
+      {
+        <div class="reddit-post-display">
+          <div class="vote-column">
+            <button mat-icon-button (click)="updateVote(1)">
+              <mat-icon>arrow_upward</mat-icon>
+            </button>
+            <div class="vote-count">{{ post.Upvotes }}</div>
+            <button mat-icon-button (click)="updateVote(-1)">
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <div class="vote-count">{{ post.Downvotes }}</div>
+          </div>
+
+          <div class="post-content">
+            <h2 class="post-title">{{ post.Title }}</h2>
+            <p class="post-meta">
+              Posted by u/{{ post.Owner }} • {{ post.PostedDate | date:'short' }} • r/{{ post.Category }}
+            </p>
+            <p class="post-description">{{ post.Description }}</p>
+
+            <div class="post-actions">
+              <button mat-button>Share</button>
+              <button mat-button>Save</button>
+            </div>
+          </div>
+        </div>
+      }
+  </div>
+  <div class="AI-container">
 
   </div>
-}
+</div>

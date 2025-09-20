@@ -34,6 +34,8 @@ export class CommentsComponent implements OnInit {
   replyBoxOpenFor: Set<number> = new Set<number>();
   topLevelBoxOpen = false;
 
+  IsCommentVisible: boolean = false;
+
   flatComments: CommentModel[] = [
   { "postId":0,"userId":"","commentId": 1, "parentId": null, "commentDescription": "Top level 1" },
   { "postId":0,"userId":"","commentId": 2, "parentId": 1, "commentDescription": "Reply to 1" },
@@ -46,6 +48,9 @@ export class CommentsComponent implements OnInit {
   ngOnInit(): void 
   {
     this.postId = parseInt(this.localStorage.getSession('PostID'));
+    if (this.postId != 0){
+      this.IsCommentVisible = true;
+    }
     //this.comments = this.buildCommentTree(this.flatComments);
     this.initializeComments();
   }

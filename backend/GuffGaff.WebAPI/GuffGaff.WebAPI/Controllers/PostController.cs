@@ -55,5 +55,19 @@ namespace GuffGaff.WebAPI.Controllers
                 return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
+
+        [HttpPost]
+        [Route($"{apiHelper.SearchPostAPI}")]
+        public async Task<IActionResult> SearchPostAsync([FromBody] Search searchKey)
+        {
+            try
+            {
+                return Ok(await _postServices.SearchPostAsync(searchKey));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
     }
 }

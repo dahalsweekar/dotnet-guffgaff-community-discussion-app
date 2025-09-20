@@ -69,5 +69,20 @@ namespace GuffGaff.Services.Services
                 return new ResponseModel(false, "[Failed]: " + ex.Message);
             }
         }
+
+        public async Task<ResponseModelTask<List<Post>>> SearchPostAsync(Search searchKey)
+        {
+            try
+            {
+                var result = await _dbContext.Posts
+                            .Where(p => p.Title.ToLower().Contains(searchKey.SearchKey ?? "") || p.Description.ToLower().Contains(searchKey.SearchKey ?? ""))
+                            .ToListAsync();
+                return new ResponseModelTask<List<Post>>(result);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModelTask<List<Post>>(new List<Post>(), ex.Message);
+            }
+        }
     }
 }
