@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +11,7 @@ import { HighlightPipe } from '../../services/highlight/highlight-pipe';
 import { PostServices } from '../../services/post.services';
 import { PostModel } from '../../models/postVM';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
+import { LocalStorage } from '../../services/localStorage.services';
 
 @Component({
   selector: 'app-search',
@@ -19,11 +21,12 @@ import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box
 })
 export class Search {
 
-
   searchText: string = ''
   searchPost: PostModel[] = [];
 
-  constructor(private postServices: PostServices, private dialogServices:DialogBoxServices){}
+  constructor(private postServices: PostServices, private dialogServices:DialogBoxServices, private localStorage: LocalStorage,
+    private router: Router
+  ){}
 
   onSearchChange() {
   const keyword = {'SearchKey': this.searchText.toLowerCase()};
@@ -37,4 +40,9 @@ export class Search {
   });
 }
 
+  navigateToPost(postId: string): void{
+    debugger;
+    this.localStorage.storeSession('PostID', postId.toString());
+    this.router.navigateByUrl('/discussion');
+  }
 }

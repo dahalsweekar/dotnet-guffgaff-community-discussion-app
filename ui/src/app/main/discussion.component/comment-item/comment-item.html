@@ -1,8 +1,23 @@
 <div class="card comment-card">
   <div class="comment-content">
-    <span class="comment-id">#{{comment.CommentId}}</span>
-    <p class="comment-text">{{comment.CommentDescription}}</p>
-    <button class="reply-button" (click)="onReplyClick()">Reply</button>
+    <div class="vote-column">
+      <button mat-icon-button (click)="updateVote(1)">
+        <mat-icon>arrow_upward</mat-icon>
+      </button>
+      <div class="vote-count">{{ comment.UpVotes }}</div>
+      <button mat-icon-button (click)="updateVote(-1)">
+        <mat-icon>arrow_downward</mat-icon>
+      </button>
+      <div class="vote-count">{{ comment.DownVotes }}</div>
+    </div>
+    <div class="comment-box">
+      <p class="post-meta">
+        Posted by u/{{ comment.UserId }} • {{ comment.CommentDate | date:'short' }}
+      </p>
+      <span class="comment-id">#{{comment.CommentId}}</span>
+      <p class="comment-text">{{comment.CommentDescription}}</p>
+      <button class="reply-button" (click)="onReplyClick()">Reply</button>
+    </div>
   </div>
 
   @if(replyBoxOpenFor.has(comment.CommentId)){

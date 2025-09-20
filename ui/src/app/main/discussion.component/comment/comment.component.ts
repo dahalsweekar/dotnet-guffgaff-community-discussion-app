@@ -111,7 +111,6 @@ export class CommentsComponent implements OnInit {
   }
 
   saveNewComment(): void {
-    debugger;
     const text = this.newCommentText.trim();
     if (!text) { return; }
     this.setNextID();
@@ -158,7 +157,6 @@ export class CommentsComponent implements OnInit {
   }
 
   saveReply(parent: CommentModel): void {
-    debugger;
     const text = (this.replyTextByComment[parent.CommentId] || '').trim();
     if (!text) { return; }
     this.setNextID();

@@ -1,9 +1,10 @@
 .reddit-post-form {
-  max-width: 700px;
+  width: 900px;
   margin: 30px auto;
   background: #fff;
   padding: 25px;
   border-radius: 8px;
+  height: 480px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 
   .full-width {
@@ -18,8 +19,7 @@
 
 .reddit-post-display {
   display: flex;
-  max-width: 700px;
-  height: 60vh;
+  width: 900px;
   margin: 30px auto;
   background: #fff;
   padding: 20px;
@@ -64,13 +64,13 @@
   }
 }
 
-.search-container{
-  width: 28%;
-  margin-top: 30px;
-  margin-left: 10px;
-}
-
 .main-container{
   display: flex;
-  margin: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.post-container{
+  width: 60%;
 }

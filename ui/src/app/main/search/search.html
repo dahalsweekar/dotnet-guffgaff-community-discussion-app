@@ -11,7 +11,7 @@
       </div>
       <div class="search-result">
         @for(post of searchPost; track post.PostId){
-          <div class="sub-search-card">
+          <div class="sub-search-card" (click)="navigateToPost(post.PostId ?? '0')">
               <h3 [innerHTML]="post.Title | highlight:searchText"></h3>
               <p [innerHTML]="post.Description | highlight:searchText"></p>
           </div>
