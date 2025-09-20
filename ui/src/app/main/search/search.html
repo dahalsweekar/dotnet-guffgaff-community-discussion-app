@@ -1,0 +1,20 @@
+<div class="search-card">
+      <div class="search-bar">
+        <mat-form-field appearance="outline" class="search-width">
+              <mat-label>Search</mat-label>
+              <input
+                matInput
+                [(ngModel)]="searchText"
+                (keyup)="onSearchChange()"
+                placeholder="Search posts..." />
+        </mat-form-field>
+      </div>
+      <div class="search-result">
+        @for(post of searchPost; track post.PostId){
+          <div class="sub-search-card">
+              <h3 [innerHTML]="post.Title | highlight:searchText"></h3>
+              <p [innerHTML]="post.Description | highlight:searchText"></p>
+          </div>
+        }
+      </div>
+    </div>

@@ -13,25 +13,25 @@ namespace GuffGaff.Services.Services
             _dbContext = dbContext;
         }
 
-        public async Task<ResponseModel> SavePostAsync(Post post)
+        public async Task<ResponseModelTask<Post>> SavePostAsync(Post post)
         {
             try
             {
                 post.PostedDate = DateTime.Now;
                 var result = await _dbContext.Posts.AddAsync(post);
                 _dbContext.SaveChanges();
-                return new ResponseModel(true);
+                return new ResponseModelTask<Post>(post);
             }
             catch (Exception ex)
             {
-                return new ResponseModel(false, "[Failed]: " + ex.Message);
+                return new ResponseModelTask<Post>(new Post(), "[Failed]: " + ex.Message);
             }
         }
-        public async Task<ResponseModelTask<Post>> GetPostAsync(Post post)
+        public async Task<ResponseModelTask<Post>> GetPostAsync(Search post)
         {
             try
             {
-                var result = await _dbContext.Posts.Where(x => x.PostId == post.PostId).FirstOrDefaultAsync();
+                var result = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(post.PostId ?? "")).FirstOrDefaultAsync();
                 if (result == null)
                     return new ResponseModelTask<Post>(new Post());
                 return new ResponseModelTask<Post>(result);
@@ -74,6 +74,11 @@ namespace GuffGaff.Services.Services
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(searchKey.SearchKey))
+                {
+                    return new ResponseModelTask<List<Post>>(new List<Post>());
+                }
+
                 var result = await _dbContext.Posts
                             .Where(p => p.Title.ToLower().Contains(searchKey.SearchKey ?? "") || p.Description.ToLower().Contains(searchKey.SearchKey ?? ""))
                             .ToListAsync();

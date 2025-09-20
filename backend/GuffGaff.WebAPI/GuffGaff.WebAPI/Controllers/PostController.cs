@@ -30,7 +30,7 @@ namespace GuffGaff.WebAPI.Controllers
 
         [HttpPost]
         [Route($"{apiHelper.GetPostAPI}")]
-        public async Task<IActionResult> GetPostAsync([FromBody] Post post)
+        public async Task<IActionResult> GetPostAsync([FromBody] Search post)
         {
             try
             {

@@ -19,11 +19,11 @@ export class CommentItemComponent {
   @Output() saveReply = new EventEmitter<CommentModel>(); // emit parent
 
   onReplyClick(): void {
-    this.openReply.emit(this.comment.commentId);
+    this.openReply.emit(this.comment.CommentId);
   }
 
   onCancelReply(): void {
-    this.cancelReply.emit(this.comment.commentId);
+    this.cancelReply.emit(this.comment.CommentId);
   }
 
   onSaveReply(): void {

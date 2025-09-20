@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit{
     private router: Router) {}
 
   async ngOnInit(): Promise<void> {
-    debugger;
     const token = this.localStorage.getSession('Token');
     this.isLoggedIn = !!token;
     if (this.isLoggedIn){
@@ -57,8 +56,12 @@ export class HeaderComponent implements OnInit{
     this.dialogService.showInfo("Success", "You are logged out.")
     .afterClosed()
     .subscribe(() =>{
-      this.localStorage.deleteSession('Token');
+      this.localStorage.deleteAllSession(['Token', 'UserID', 'PostID']);
       this.pageServices.reloadComponent('feed');
     })
+  }
+
+  redirectToHome(): void{
+    this.router.navigateByUrl('/feed');
   }
 }

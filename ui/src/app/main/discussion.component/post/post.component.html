@@ -1,28 +1,9 @@
 <div class="main-container">
   <div class="search-container">
-    <div class="search-card">
-      <div class="search-bar">
-        <mat-form-field appearance="outline" class="search-width">
-              <mat-label>Search</mat-label>
-              <input
-                matInput
-                [(ngModel)]="searchText"
-                (keyup)="onSearchChange()"
-                placeholder="Search posts..." />
-        </mat-form-field>
-      </div>
-      <div class="search-result">
-        @for(post of searchPost; track post.PostId){
-          <div class="search-card">
-              <h3 [innerHTML]="post.Title | highlight:searchText"></h3>
-              <p [innerHTML]="post.Description | highlight:searchText"></p>
-          </div>
-        }
-      </div>
-    </div>
+    <app-search></app-search>
   </div>
   <div class="post-container">
-      @if (currentPostId == 0)
+      @if (currentPostId == '0')
       {
         <div class="reddit-post-form">
           <h2>Create a New Post</h2>
@@ -52,11 +33,11 @@
             <button mat-icon-button (click)="updateVote(1)">
               <mat-icon>arrow_upward</mat-icon>
             </button>
-            <div class="vote-count">{{ post.Upvotes }}</div>
+            <div class="vote-count">{{ post.UpVotes }}</div>
             <button mat-icon-button (click)="updateVote(-1)">
               <mat-icon>arrow_downward</mat-icon>
             </button>
-            <div class="vote-count">{{ post.Downvotes }}</div>
+            <div class="vote-count">{{ post.DownVotes }}</div>
           </div>
 
           <div class="post-content">
@@ -66,10 +47,10 @@
             </p>
             <p class="post-description">{{ post.Description }}</p>
 
-            <div class="post-actions">
+            <!-- <div class="post-actions">
               <button mat-button>Share</button>
               <button mat-button>Save</button>
-            </div>
+            </div> -->
           </div>
         </div>
       }

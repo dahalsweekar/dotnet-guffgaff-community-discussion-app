@@ -19,8 +19,7 @@ export class CommentServices{
         return this.http.post(this.saveCommentApi, comment);
     }
 
-    getCommentsfn(postId: number): Observable<any> {
-        debugger;
+    getCommentsfn(postId: any): Observable<any> {
         return this.http.post(this.getCommentsApi, postId);
     }
 
@@ -29,6 +28,7 @@ export class CommentServices{
     }
 
     saveReplyfn(reply: any): Observable<any>{
+        debugger;
         return this.http.post(this.saveReplyApi, reply);
     }
 }

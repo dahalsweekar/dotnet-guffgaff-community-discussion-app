@@ -19,6 +19,7 @@
 .reddit-post-display {
   display: flex;
   max-width: 700px;
+  height: 60vh;
   margin: 30px auto;
   background: #fff;
   padding: 20px;
@@ -71,18 +72,5 @@
 
 .main-container{
   display: flex;
-}
-
-.search-width{
-  width: 350px;
-}
-
-.search-card{
-  display: flex;
-  max-width: 350px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  height: 100vh;
+  margin: 20px;
 }
