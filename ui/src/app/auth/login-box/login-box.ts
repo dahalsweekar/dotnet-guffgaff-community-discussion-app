@@ -61,9 +61,7 @@ export class LoginBox implements OnInit {
           .subscribe(() => {
             this.localStorage.storeSession('UserDetails', JSON.stringify(this.user));
             this.localStorage.storeSession('Token', response.Token);
-            this.dialogRef.afterClosed().subscribe(() => {
-              this.pageService.reloadComponent('/feed');
-            })
+            this.dialogRef.close();
           })
         },
         error: (error) => {

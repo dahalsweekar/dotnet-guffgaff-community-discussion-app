@@ -20,6 +20,9 @@ namespace GuffGaff.Services.Services
             {
                 comment.CommentDate = DateTime.Now;
                 var result = await _dbContext.Comments.AddAsync(comment);
+                var updatedCommentNo = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(comment.PostId)).FirstOrDefaultAsync();
+                if (updatedCommentNo != null)
+                    updatedCommentNo.Comments++;
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
             }
@@ -35,6 +38,9 @@ namespace GuffGaff.Services.Services
             {
                 reply.CommentDate = DateTime.Now;
                 var result = await _dbContext.Replies.AddAsync(reply);
+                var updatedCommentNo = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(reply.PostId)).FirstOrDefaultAsync();
+                if (updatedCommentNo != null)
+                    updatedCommentNo.Comments++;
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
             }

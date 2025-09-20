@@ -46,9 +46,12 @@ export class HeaderComponent implements OnInit{
   }
 
   login(): void {
-    this.dialog.open(LoginBox, {
+    const dialog = this.dialog.open(LoginBox, {
       width: '350px',
       height: '400px'
+    });
+    dialog.afterClosed().subscribe(() => {
+        this.pageServices.reloadComponent('/feed');
     });
   }
 

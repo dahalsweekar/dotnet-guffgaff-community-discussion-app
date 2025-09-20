@@ -63,7 +63,6 @@ export class CommentsComponent implements OnInit {
     const PostId = {'PostId': this.postId}
     this.commentServices.getCommentsfn(PostId).subscribe({
         next: (response) => {
-          debugger;
           this.flatComments = this.flattenComments(response.Data.comments, response.Data.replies)
           this.comments = this.buildCommentTree(this.flatComments);
         },
