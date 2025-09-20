@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { LocalStorage } from '../../services/localStorage.services';
 import { AuthService } from '../auth.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
+import { PageServices } from '../../services/page.services';
 
 import { UserModel } from '../../models/userVM';
 
@@ -30,7 +31,8 @@ export class LoginBox implements OnInit {
   constructor(private authServices: AuthService, 
     private dialogServices: DialogBoxServices, 
     private dialogRef: MatDialogRef<LoginBox>,
-    private localStorage: LocalStorage) {}
+    private localStorage: LocalStorage,
+    private pageService: PageServices) {}
 
   async ngOnInit(): Promise<void> {
       await this.authServices.whenLoginProcessed;
@@ -57,9 +59,11 @@ export class LoginBox implements OnInit {
           this.dialogServices.showInfo('Success', 'You are logged in.')
           .afterClosed()
           .subscribe(() => {
-            this.localStorage.storeSession('UserID', this.user.Email)
+            this.localStorage.storeSession('UserDetails', JSON.stringify(this.user));
             this.localStorage.storeSession('Token', response.Token);
-            this.dialogRef.close();
+            this.dialogRef.afterClosed().subscribe(() => {
+              this.pageService.reloadComponent('/feed');
+            })
           })
         },
         error: (error) => {

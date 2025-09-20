@@ -18,6 +18,7 @@ namespace GuffGaff.Services.Services
         {
             try
             {
+                comment.CommentDate = DateTime.Now;
                 var result = await _dbContext.Comments.AddAsync(comment);
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
@@ -32,6 +33,7 @@ namespace GuffGaff.Services.Services
         {
             try
             {
+                reply.ReplyDate = DateTime.Now;
                 var result = await _dbContext.Replies.AddAsync(reply);
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
@@ -42,12 +44,12 @@ namespace GuffGaff.Services.Services
             }
         }
 
-        public async Task<ResponseModelTask<CommentReply>> GetCommentsAsync(int postId)
+        public async Task<ResponseModelTask<CommentReply>> GetCommentsAsync(Search post)
         {
             try
             {
-                var comments = await _dbContext.Comments.Where(c => c.PostId == postId).ToListAsync();
-                var replies = await _dbContext.Replies.Where(r => r.PostId == postId).ToListAsync();
+                var comments = await _dbContext.Comments.Where(c => c.PostId == post.PostId).ToListAsync();
+                var replies = await _dbContext.Replies.Where(r => r.PostId == post.PostId).ToListAsync();
                 CommentReply cr = new CommentReply();
                 cr.comments = comments;
                 cr.replies = replies;

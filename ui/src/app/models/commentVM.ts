@@ -1,10 +1,10 @@
 export interface CommentModel {
-    postId: number,
-    userId: string,
-    upvotes?: number,
-    downvotes?: number
-    commentId: number;
-    parentId: number | null;
-    commentDescription: string;
-    replies?: CommentModel[];
+    PostId: string,
+    UserId: string,
+    UpVotes?: number,
+    DownVotes?: number
+    CommentId: number;
+    ParentId: number | null;
+    CommentDescription: string;
+    Replies?: CommentModel[];
 }

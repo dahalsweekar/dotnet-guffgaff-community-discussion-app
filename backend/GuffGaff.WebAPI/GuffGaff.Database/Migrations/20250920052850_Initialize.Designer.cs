@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuffGaff.Database.Migrations
 {
     [DbContext(typeof(GuffGaffDBContext))]
-    [Migration("20250916154101_Init")]
-    partial class Init
+    [Migration("20250920052850_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,24 +27,31 @@ namespace GuffGaff.Database.Migrations
 
             modelBuilder.Entity("GuffGaff.Database.Models.Comment", b =>
                 {
-                    b.Property<int>("CommentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CommentDate")
+                    b.Property<DateTime?>("CommentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CommentDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DownVotes")
                         .HasColumnType("int");
 
-                    b.Property<int>("PostId")
+                    b.Property<int?>("ParentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UpVotes")
                         .HasColumnType("int");
@@ -53,10 +60,7 @@ namespace GuffGaff.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("parentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CommentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Comments");
                 });
@@ -86,7 +90,7 @@ namespace GuffGaff.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PostedDate")
+                    b.Property<DateTime?>("PostedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -103,21 +107,25 @@ namespace GuffGaff.Database.Migrations
 
             modelBuilder.Entity("GuffGaff.Database.Models.Reply", b =>
                 {
-                    b.Property<int>("CommentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CommentDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("DownVotes")
                         .HasColumnType("int");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReplyDate")
                         .HasColumnType("datetime2");
@@ -132,7 +140,7 @@ namespace GuffGaff.Database.Migrations
                     b.Property<int>("parentId")
                         .HasColumnType("int");
 
-                    b.HasKey("CommentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Replies");
                 });

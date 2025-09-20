@@ -30,7 +30,7 @@ namespace GuffGaff.WebAPI.Controllers
 
         [HttpPost]
         [Route($"{apiHelper.GetPostAPI}")]
-        public async Task<IActionResult> GetPostAsync([FromBody] Post post)
+        public async Task<IActionResult> GetPostAsync([FromBody] Search post)
         {
             try
             {
@@ -49,6 +49,20 @@ namespace GuffGaff.WebAPI.Controllers
             try
             {
                 return Ok(await _postServices.UpdateVoteAsync(vote));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.SearchPostAPI}")]
+        public async Task<IActionResult> SearchPostAsync([FromBody] Search searchKey)
+        {
+            try
+            {
+                return Ok(await _postServices.SearchPostAsync(searchKey));
             }
             catch (Exception ex)
             {

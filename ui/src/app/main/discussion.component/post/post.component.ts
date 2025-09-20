@@ -6,40 +6,45 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { PostServices } from '../../../services/post.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 import { PageServices } from '../../../services/page.services';
 import { AuthService } from '../../../auth/auth.services';
+import { HighlightPipe } from '../../../services/highlight/highlight-pipe';
 
 import { PostModel } from '../../../models/postVM';
 import { VoteModel } from '../../../models/voteVM';
 import { UserModel } from '../../../models/userVM';
 
 import { LocalStorage } from '../../../services/localStorage.services';
+import { Search } from "../../search/search";
+import { CommentsComponent } from "../comment/comment.component";
 
 @Component({
   selector: 'app-post',
-  imports: [ CommonModule,
+  imports: [CommonModule,
     FormsModule,
     MatButtonModule,
     MatFormFieldModule,
     MatFormFieldModule,
-    MatInputModule
-   ],
+    MatInputModule,
+    MatIconModule,
+    Search],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })
 export class PostComponent implements OnInit{
 
   post: PostModel = {
-    PostId: 0,
     Owner: '',
     Title: '',
     Description: '',
     Category: '',
-    Upvotes: 0,
-    Downvotes: 0
+    UpVotes: 0,
+    DownVotes: 0,
+    Comments: 0
   }
 
   vote: VoteModel = {
@@ -49,7 +54,7 @@ export class PostComponent implements OnInit{
     upVote: true
   }
 
-  currentPostId: number = 0;
+  currentPostId: string = '0';
   currentUser: UserModel = {
     Name: '',
     Password: '',
@@ -68,15 +73,16 @@ export class PostComponent implements OnInit{
 
   ngOnInit(){
     this.currentUser.Email = this.localStorage.getSession('UserID');
-    this.currentPostId = parseInt(this.localStorage.getSession('PostID'));
-    if (this.currentPostId !== 0)
+    this.currentPostId = this.localStorage.getSession('PostID');
+    if (this.currentPostId !== '0')
       this.setPost();
   }
 
   setPost(): void{
-    this.postServices.getPostfn(this.currentPostId).subscribe({
+    var PostId = {'PostId': this.currentPostId}
+    this.postServices.getPostfn(PostId).subscribe({
       next: (response) => {
-        this.post = response;
+        this.post = response.Data;
       },
       error: (error) => {
         this.dialogServices.showError("Failed", "Could not load post.");
@@ -112,6 +118,8 @@ export class PostComponent implements OnInit{
         this.dialogServices.showInfo('Information', 'Post successful.')
         .afterClosed()
         .subscribe(() => {
+          debugger;
+          this.localStorage.storeSession('PostID', response.Data.PostId);
           this.pageServices.reloadComponent('discussion');
         })
       },

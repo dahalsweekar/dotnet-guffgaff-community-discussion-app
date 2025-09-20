@@ -1,11 +1,19 @@
 .main-container{
     height: 100vh;
+    display: flex;
+    margin: 20px;
+}
+
+.search-container{
+  width: 28%;
+  margin-top: 30px;
+  margin-left: 10px;
 }
 
 .feed-list{
     max-width: 1200px;
-    margin: 0 auto;
     padding: 2rem;
+    width: 50%;
 }
 
 .feed-card {
@@ -35,7 +43,12 @@
 
 .feed-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     font-size: 0.875rem;
     color: #777;
+}
+
+.ask-button-container{
+    margin-left: 30px;
+    margin-top: 5px;
 }

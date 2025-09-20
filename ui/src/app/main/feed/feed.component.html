@@ -1,10 +1,15 @@
-<div class="main-container">
+<div class="guff-btn">
     <div class="ask-button-container">
         <button mat-button class="ask-btn" (click)="checkUserLogin()">Let's Guff</button>
     </div>
+</div>
+<div class="main-container">
+    <div class="search-container">
+        <app-search></app-search>
+    </div>
     <div class="feed-list">
         @for(feed of feedList; track feed.PostId){
-            <div class="feed-card" (click)="redirectToPost(feed.PostId)">
+            <div class="feed-card" (click)="redirectToPost(feed.PostId ?? '0')">
                 <div class="feed-title">
                     <h3>{{feed.Title}}</h3>
                 </div>
@@ -12,9 +17,9 @@
                     <p>{{feed.Description}}</p>
                 </div>
                 <div class="feed-footer">
-                    <span>Upvotes: {{feed.Upvotes}}</span>
-                    <span>Downvotes: {{feed.Downvotes}}</span>
-                    <span>Comments: {{feed.Comments}}</span>
+                    <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{feed.UpVotes}}</span>
+                    <span style="margin: 2px;"><mat-icon>arrow_downward</mat-icon> {{feed.DownVotes}}</span>
+                    <span style="margin: 2px;"><mat-icon>comment</mat-icon> {{feed.Comments}}</span>
                 </div>
             </div>
         } 

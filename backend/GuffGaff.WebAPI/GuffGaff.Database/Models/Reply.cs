@@ -5,8 +5,9 @@ namespace GuffGaff.Database.Models
     public class Reply
     {
         [Key]
+        public int Id { get; set; }
         public int CommentId { get; set; }
-        public int PostId { get; set; }
+        public string PostId { get; set; }
         public string UserId { get; set; }
         public string CommentDescription { get; set; }
         public int UpVotes { get; set; }

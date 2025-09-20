@@ -23,38 +23,49 @@ import { LocalStorage } from '../../../services/localStorage.services';
 })
 export class CommentsComponent implements OnInit {
 
-  postId: number = 0;
+  postId: string = '0';
   userId: string = '';
 
   comments: CommentModel[] = [];
-  nextId = 1;
+  nextId: number = 0;
 
   newCommentText = '';
   replyTextByComment: { [commentId: number]: string } = {};
   replyBoxOpenFor: Set<number> = new Set<number>();
   topLevelBoxOpen = false;
 
-  flatComments: CommentModel[] = [
-  { "postId":0,"userId":"","commentId": 1, "parentId": null, "commentDescription": "Top level 1" },
-  { "postId":0,"userId":"","commentId": 2, "parentId": 1, "commentDescription": "Reply to 1" },
-  { "postId":0,"userId":"","commentId": 3, "parentId": 2, "commentDescription": "Reply to reply" },
-  { "postId":0,"userId":"","commentId": 4, "parentId": null, "commentDescription": "Top level 2" }
-]
+  IsCommentVisible: boolean = false;
+
+  flatComments: CommentModel[] = [];
 
   constructor(private commentServices: CommentServices, private router: Router, private dialogServices: DialogBoxServices, private localStorage: LocalStorage) { }
 
   ngOnInit(): void 
   {
-    this.postId = parseInt(this.localStorage.getSession('PostID'));
-    //this.comments = this.buildCommentTree(this.flatComments);
+    this.userId = this.localStorage.getSession('UserID');
+    this.postId = this.localStorage.getSession('PostID');
+    if (this.postId !== '0'){
+      this.IsCommentVisible = true;
+    }
     this.initializeComments();
   }
 
+  setNextID(): void{
+    for(var comment of this.flatComments){
+      if (comment.CommentId > this.nextId){
+        this.nextId = comment.CommentId;
+      }
+    }
+    this.nextId++;
+  }
+
   initializeComments(): void{
-    this.commentServices.getCommentsfn(this.postId).subscribe({
+    const PostId = {'PostId': this.postId}
+    this.commentServices.getCommentsfn(PostId).subscribe({
         next: (response) => {
-          //this.flatComments = this.flattenComments(response[0], response[1])
-          this.buildCommentTree(this.flatComments);
+          debugger;
+          this.flatComments = this.flattenComments(response.Data.comments, response.Data.replies)
+          this.comments = this.buildCommentTree(this.flatComments);
         },
         error: (error) => {
           this.dialogServices.showError("Failed", "Could not initialize comments.");
@@ -70,16 +81,16 @@ export class CommentsComponent implements OnInit {
 
           // Map comments by commentId
           for (const comment of comments) {
-            commentMap.set(comment.commentId, comment);
+            commentMap.set(comment.CommentId, comment);
           }
 
           // Update replies' parentId using the matched comment
           const updatedReplies: CommentModel[] = replies.map(reply => {
-              const matchingComment = commentMap.get(reply.commentId);
+              const matchingComment = commentMap.get(reply.CommentId);
 
               return {
                   ...reply,
-                  parentId: matchingComment ? matchingComment.parentId : reply.parentId,
+                  parentId: matchingComment ? matchingComment.ParentId : reply.ParentId,
                   replies: undefined // remove nested replies if flattening
               };
           });
@@ -100,15 +111,19 @@ export class CommentsComponent implements OnInit {
   }
 
   saveNewComment(): void {
+    debugger;
     const text = this.newCommentText.trim();
     if (!text) { return; }
+    this.setNextID();
     const comment: CommentModel = {
-      postId: this.postId,
-      userId: this.userId,
-      commentId: this.nextId++,
-      parentId: null,
-      commentDescription: text,
-      replies: []
+      PostId: this.postId,
+      UserId: this.userId,
+      CommentId: this.nextId,
+      ParentId: null,
+      UpVotes: 0,
+      DownVotes: 0,
+      CommentDescription: text,
+      Replies: []
     };
     this.commentServices.saveCommentfn(comment).subscribe({
       next: (response) => {
@@ -123,7 +138,8 @@ export class CommentsComponent implements OnInit {
         this.newCommentText = '';
         this.topLevelBoxOpen = false;
       }
-    })
+    });
+    this.cancelNewComment();
   }
 
   cancelNewComment(): void {
@@ -142,18 +158,27 @@ export class CommentsComponent implements OnInit {
   }
 
   saveReply(parent: CommentModel): void {
-    const text = (this.replyTextByComment[parent.commentId] || '').trim();
+    debugger;
+    const text = (this.replyTextByComment[parent.CommentId] || '').trim();
     if (!text) { return; }
+    this.setNextID();
     const reply: CommentModel = {
-      postId: this.postId,
-      userId: this.userId,
-      commentId: this.nextId++,
-      parentId: parent.commentId,
-      commentDescription: text,
-      replies: []
+      PostId: this.postId,
+      UserId: this.userId,
+      CommentId: this.nextId,
+      ParentId: parent.CommentId,
+      CommentDescription: text,
+      Replies: []
     };
-    parent.replies?.push(reply);
-    this.cancelReply(parent.commentId);
+    this.commentServices.saveReplyfn(reply).subscribe({
+      next: (response) => {
+        parent.Replies?.push(reply);
+      },
+      error: (error) => {
+        this.dialogServices.showError('Failed', 'Unable to save reply.');
+      }
+    })
+    this.cancelReply(parent.CommentId);
   }
 
   buildCommentTree(flatComments: CommentModel[]): CommentModel[] {
@@ -162,17 +187,17 @@ export class CommentsComponent implements OnInit {
 
   // Step 1: Initialize map and empty replies array
   for (const comment of flatComments) {
-    commentMap[comment.commentId] = { ...comment, replies: [] };
+    commentMap[comment.CommentId] = { ...comment, Replies: [] };
   }
 
   // Step 2: Populate tree
   for (const comment of flatComments) {
-    if (comment.parentId === null) {
-      rootComments.push(commentMap[comment.commentId]);
+    if (comment.ParentId === null) {
+      rootComments.push(commentMap[comment.CommentId]);
     } else {
-      const parent = commentMap[comment.parentId];
+      const parent = commentMap[comment.ParentId];
       if (parent) {
-        parent.replies?.push(commentMap[comment.commentId]);
+        parent.Replies?.push(commentMap[comment.CommentId]);
       }
     }
   }

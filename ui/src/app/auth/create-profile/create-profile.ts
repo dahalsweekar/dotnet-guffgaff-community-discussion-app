@@ -42,7 +42,6 @@ export class CreateProfile implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    debugger;
     await this.authServices.whenLoginProcessed;
     if (this.authServices.isLoggedIn){
       this.getUser();
@@ -85,7 +84,6 @@ export class CreateProfile implements OnInit{
   userCheck(): void{
      this.authServices.validateUserfn(this.user).subscribe({
       next: (response) => {
-        debugger;
         if (response._message === 'Nein'){
           this.userExists = false;
           this.authServices.logout();
@@ -113,7 +111,6 @@ export class CreateProfile implements OnInit{
           this.dialogServices.showInfo("Success", "Your profile has been created.")
           .afterClosed()
           .subscribe(() => {
-            debugger;
             this.authServices.localLoginfn(this.user).subscribe({
               next: (response) => {
                 this.dialogServices.showInfo('Success', 'You are logged in.')

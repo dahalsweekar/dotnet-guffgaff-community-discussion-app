@@ -9,10 +9,12 @@ import { AuthService } from '../../auth/auth.services';
 import { LocalStorage } from '../../services/localStorage.services';
 import { FeedServices } from '../../services/feed.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
+import { Search } from "../search/search";
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-feed.component',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, Search, MatIconModule],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss'
 })
@@ -26,12 +28,12 @@ export class FeedComponent implements OnInit {
     }
 
     feedModel : PostModel   =  {
-      PostId: 0,
+      PostId: '0',
       Owner: '',
       Title: '',
       Description: '',
-      Upvotes: 0,
-      Downvotes: 0,
+      UpVotes: 0,
+      DownVotes: 0,
       Comments: 0
     };
 
@@ -52,6 +54,7 @@ export class FeedComponent implements OnInit {
     getSavedPosts(): void{
       this.feedServices.getSavedPostsfn().subscribe({
         next: (response) =>{
+          debugger;
           this.feedList = response.Data;
         },
         error: (error) =>{
@@ -63,7 +66,7 @@ export class FeedComponent implements OnInit {
     checkUserLogin(): void{
       const token = this.localStorage.getSession('Token');
       if (!!token){
-         this.redirectToPost(0);
+         this.redirectToPost('0');
       }
       else
       {
@@ -74,7 +77,8 @@ export class FeedComponent implements OnInit {
       }
     }
 
-    redirectToPost(postId: number): void{
+    redirectToPost(postId: string): void{
+      debugger;
       this.localStorage.storeSession('PostID', postId.toString());
       this.router.navigateByUrl('/discussion');
     }

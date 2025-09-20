@@ -17,11 +17,11 @@ namespace GuffGaff.WebAPI.Controllers
 
         [HttpPost]
         [Route($"{apiHelper.GetCommentAPI}")]
-        public async Task<IActionResult> GetCommentsAsync([FromBody] int postId)
+        public async Task<IActionResult> GetCommentsAsync([FromBody] Search post)
         {
             try
             {
-                return Ok(await _commentServices.GetCommentsAsync(postId));
+                return Ok(await _commentServices.GetCommentsAsync(post));
             }
             catch (Exception ex)
             {
