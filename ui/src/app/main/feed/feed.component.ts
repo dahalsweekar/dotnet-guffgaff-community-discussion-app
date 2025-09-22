@@ -12,10 +12,11 @@ import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box
 import { Search } from "../search/search";
 import { MatIconModule } from '@angular/material/icon';
 import { CategoryBubbles } from '../../presets/category-bubbles/category-bubbles';
+import { TimeAgoPipe } from '../../services/time-ago/time-ago-pipe';
 
 @Component({
   selector: 'app-feed.component',
-  imports: [MatButtonModule, Search, MatIconModule, CategoryBubbles],
+  imports: [MatButtonModule, Search, MatIconModule, CategoryBubbles, TimeAgoPipe],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss'
 })

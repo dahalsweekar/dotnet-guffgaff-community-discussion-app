@@ -12,7 +12,7 @@
     </div>
     <div class="comment-box">
       <p class="post-meta">
-        Commented by u/{{ comment.UserId }} • {{ comment.CommentDate | date:'short' }}
+        Commented by u/{{ comment.UserId }} • {{ comment.CommentDate ? (comment.CommentDate | timeAgo) : 'Not posted' }}
       </p>
       <p class="comment-text">{{comment.CommentDescription}}</p>
       <button class="reply-button" (click)="onReplyClick()">Reply</button>

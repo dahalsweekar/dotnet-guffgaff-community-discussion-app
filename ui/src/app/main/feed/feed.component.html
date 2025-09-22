@@ -15,13 +15,16 @@
             <div class="sub-trends">
                 @for(post of trendingPosts; track post.PostId){
                     <div class="sub-feed-card" (click)="redirectToPost(post.PostId ?? '0')">
-                        <div class="feed-title">
+                        <div class="time-posted">
+                            <span>t/ {{post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted'}}</span>
+                        </div>
+                        <div class="sub-feed-title">
                             <h4>{{post.Title}}</h4>
-                            <div class="feed-footer">
-                                <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{post.UpVotes}}</span>
-                                <span style="margin: 2px;"><mat-icon>arrow_downward</mat-icon> {{post.DownVotes}}</span>
-                                <span style="margin: 2px;"><mat-icon>comment</mat-icon> {{post.Comments}}</span>
-                            </div>
+                        </div>
+                        <div class="sub-feed-footer">
+                            <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{post.UpVotes}}</span>
+                            <span style="margin: 2px;"><mat-icon>arrow_downward</mat-icon> {{post.DownVotes}}</span>
+                            <span style="margin: 2px;"><mat-icon>comment</mat-icon> {{post.Comments}}</span>
                         </div>
                     </div>
                 }
@@ -33,7 +36,7 @@
                 @for(feed of feedList; track feed.PostId){
                     <div class="feed-card" (click)="redirectToPost(feed.PostId ?? '0')">
                          <div class="feed-category">
-                            <span>c/ {{feed.Category}}</span>
+                            <span>c/ {{feed.Category}} • {{ feed.PostedDate ? (feed.PostedDate | timeAgo) : 'Not posted' }}</span>
                         </div>
                         <div class="feed-title">
                             <h3>{{feed.Title}}</h3>

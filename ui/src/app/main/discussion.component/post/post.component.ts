@@ -12,7 +12,7 @@ import { PostServices } from '../../../services/post.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 import { PageServices } from '../../../services/page.services';
 import { AuthService } from '../../../auth/auth.services';
-import { HighlightPipe } from '../../../services/highlight/highlight-pipe';
+import { TimeAgoPipe } from '../../../services/time-ago/time-ago-pipe';
 
 import { PostModel } from '../../../models/postVM';
 import { VoteModel } from '../../../models/voteVM';
@@ -28,7 +28,8 @@ import { LocalStorage } from '../../../services/localStorage.services';
     MatFormFieldModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule],
+    MatIconModule,
+    TimeAgoPipe],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })
