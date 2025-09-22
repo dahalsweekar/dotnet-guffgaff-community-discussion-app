@@ -1,0 +1,21 @@
+.bubble-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+
+.category-bubble {
+  background-color: #e0f7fa;
+  color: #00796b;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+.category-bubble:hover {
+  background-color: #b2ebf2;
+}

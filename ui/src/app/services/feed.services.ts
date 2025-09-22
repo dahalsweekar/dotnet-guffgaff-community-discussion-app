@@ -8,12 +8,22 @@ import { Observable } from "rxjs";
 })
 
 export class FeedServices{
-    private getSavedPostsApi: string = '/api/getsavedpost'
+    private getSavedPostsApi: string = '/api/getsavedpost';
+    private getTrendingPostsApi: string = '/api/gettrendingposts';
+    private getCategories: string = '/api/getcategories';
 
     constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){    }
 
     getSavedPostsfn(): Observable<any>{
         return this.http.post(this.getSavedPostsApi, {});
+    }
+
+    getTrendingPostsfn(): Observable<any>{
+        return this.http.post(this.getTrendingPostsApi, {});
+    }
+
+    getCategoriesfn(): Observable<any>{
+        return this.http.post(this.getCategories, {});
     }
 
 }

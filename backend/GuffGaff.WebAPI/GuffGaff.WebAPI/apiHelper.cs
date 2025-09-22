@@ -18,5 +18,8 @@
 
         public const string GetSavedPostsAPI = "api/getsavedpost";
 
+        public const string GetCategoriesAPI = "api/getcategories";
+        public const string GetTrendingPostsAPI = "api/gettrendingposts";
+
     }
 }
