@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,14 +11,21 @@ declare var apifree: any; // Declare the global object
   templateUrl: './ai-chat.html',
   styleUrl: './ai-chat.scss'
 })
-export class AiChatComponent {
+export class AiChatComponent implements OnInit{
   userInput: string = '';
   chatHistory: { sender: string, message: string }[] = [];
+  isLoading: boolean = false;
+  Status: string = 'Send';
 
   constructor(private cdr: ChangeDetectorRef){}
 
+  ngOnInit(): void {
+    this.chatHistory.push({ sender: 'Kalu', message: 'Hello, my name is Kalu. How can I help you today?' });
+  }
+
   async sendMessage() {
-    debugger;
+    this.isLoading = true;
+    this.Status = 'Loading...';
     if (!this.userInput.trim()) return;
 
     const userMessage = this.userInput.trim();
@@ -27,10 +34,14 @@ export class AiChatComponent {
 
     try {
       const aiResponse = await apifree.chat(userMessage);
-      this.chatHistory.push({ sender: 'AI', message: aiResponse });
+      this.chatHistory.push({ sender: 'Kalu', message: aiResponse });
+      this.isLoading = false;
+      this.Status = 'Send';
       this.cdr.detectChanges();
     } catch (error) {
-      this.chatHistory.push({ sender: 'AI', message: 'Error getting response from AI.' });
+      this.chatHistory.push({ sender: 'Kalu', message: 'Error getting response from AI.' });
+      this.isLoading = false;
+      this.Status = 'Send';
       this.cdr.detectChanges();
       console.error('API error:', error);
     }

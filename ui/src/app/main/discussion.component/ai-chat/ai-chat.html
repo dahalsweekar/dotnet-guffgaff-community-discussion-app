@@ -1,17 +1,20 @@
 <div class="chat-container">
+    <h3>GG - Assistant</h3>
   <div class="chat-box">
     @for(msg of chatHistory; track msg){
-    <div class="chat-message" [ngClass]="msg.sender">
-        <strong>{{ msg.sender }}:</strong> {{ msg.message }}
+    <div class="chat-card" [ngClass]="msg.sender">
+        <div class="message-content">
+            <strong>{{ msg.sender }}:</strong> {{ msg.message }}
+        </div>
         </div>
     }
   </div>
   <div class="message-container" style="display: flex;">
         <div class="chat-input">
-            <input class="message-input-box" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
+            <input class="message-input-box" [disabled]="isLoading" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
         </div>
-        <div class="send-btn" style="margin: 5px; margin-top: 15px;">
-            <button mat-raised-button (click)="sendMessage()">Send</button>
+        <div class="send-btn" style="margin: 5px; margin-top: 25px;">
+            <button mat-raised-button [disabled]="isLoading" (click)="sendMessage()">{{Status}}</button>
         </div>
   </div>
  
