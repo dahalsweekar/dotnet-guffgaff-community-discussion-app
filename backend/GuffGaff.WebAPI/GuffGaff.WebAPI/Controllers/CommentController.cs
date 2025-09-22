@@ -56,5 +56,19 @@ namespace GuffGaff.WebAPI.Controllers
                 return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
+
+        [HttpPost]
+        [Route($"{apiHelper.UpdateVoteCommentAPI}")]
+        public async Task<IActionResult> UpVoteCommentAsync(Vote vote)
+        {
+            try
+            {
+                return Ok(await _commentServices.UpVoteCommentAsync(vote));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
     }
 }

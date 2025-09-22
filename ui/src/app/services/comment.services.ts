@@ -10,7 +10,7 @@ import { Observable } from "rxjs";
 export class CommentServices{
     private saveCommentApi: string = '/api/savecomment';
     private getCommentsApi: string = '/api/getcomments';
-    private updateVoteCommentApi: string = '/updatevotecomment'
+    private updateVoteCommentApi: string = '/api/updatevotecomment';
     private saveReplyApi: string = '/api/savereply';
 
     constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){}

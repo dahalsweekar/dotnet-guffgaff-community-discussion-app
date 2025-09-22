@@ -45,10 +45,10 @@ export class PostComponent implements OnInit{
   }
 
   vote: VoteModel = {
-    owner: '',
-    voter: '',
-    postId: 0,
-    upVote: true
+    Owner: '',
+    Voter: '',
+    PostId: '0',
+    UpVote: true
   }
 
   currentPostId: string = '0';
@@ -127,8 +127,10 @@ export class PostComponent implements OnInit{
   }
 
   updateVote(val: number): void{
-    if (this.currentUser !== null){
-      this.vote.upVote = val == 1 ? true: false;
+    if (this.currentUser?.Email !== null){
+      this.vote.UpVote = val == 1 ? true: false;
+      this.vote.Voter = this.currentUser?.Email;
+      this.vote.PostId = this.currentPostId;
       this.postServices.updateVotefn(this.vote).subscribe({
         next: (response) => {
           this.dialogServices.showInfo('Success', 'Vote successful.');
