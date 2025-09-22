@@ -7,12 +7,26 @@
 .search-container{
   margin-top: 10px;
   margin-left: 10px;
-  width: 23%;
+  height: 45%;
+}
+
+.miscellaneous{
+    width: 30%;
+    height: 100vh;
+}
+
+.trending-posts{
+    overflow: auto;
+    height: 50%;
+}
+
+.sub-trends{
+    overflow: auto;
 }
 
 .feed-container{
     overflow: auto;
-    height: 80vh;
+    height: 100vh;
     width: 50%;
 }
 
@@ -29,6 +43,20 @@
     margin-bottom: 16px;
     transition: box-shadow 0.3s ease;
     cursor: pointer;
+}
+
+.sub-feed-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.sub-trends{
+    margin:5px;
 }
 
 .feed-card:hover {
@@ -56,4 +84,14 @@
 .ask-button-container{
     margin-left: 30px;
     margin-top: 5px;
+}
+
+.popular-posts{
+    overflow: auto;
+    height: 53%;
+}
+
+.categories{
+    height: 40%;
+    overflow: auto;
 }

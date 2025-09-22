@@ -34,6 +34,7 @@ builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<ICommentServices, CommentServices>();
 builder.Services.AddScoped<IFeedServices, FeedServices>();
 builder.Services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
+builder.Services.AddScoped<IMiscellaneous, Miscellaneous>();
 
 var app = builder.Build();
 

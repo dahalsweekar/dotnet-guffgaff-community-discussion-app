@@ -4,8 +4,29 @@
     </div>
 </div>
 <div class="main-container">
-    <div class="search-container">
-        <app-search></app-search>
+    <div class="search-trending">
+        <div class="search-container">
+            <app-search></app-search>
+        </div>
+        <div class="title-trend" style="margin-left:10px;">
+            <h3>See what's hot</h3>
+        </div>
+        <div class="trending-posts">
+            <div class="sub-trends">
+                @for(post of trendingPosts; track post.PostId){
+                    <div class="sub-feed-card" (click)="redirectToPost(post.PostId ?? '0')">
+                        <div class="feed-title">
+                            <h4>{{post.Title}}</h4>
+                            <div class="feed-footer">
+                                <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{post.UpVotes}}</span>
+                                <span style="margin: 2px;"><mat-icon>arrow_downward</mat-icon> {{post.DownVotes}}</span>
+                                <span style="margin: 2px;"><mat-icon>comment</mat-icon> {{post.Comments}}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
     <div class="feed-container">
         <div class="feed-list">
@@ -25,5 +46,29 @@
                     </div>
                 } 
             </div>
+    </div>
+    <div class="miscellaneous">
+        <div class="categories">
+            <app-category-bubbles [categories]="categories"></app-category-bubbles>
+        </div>
+         <div class="title-populat" style="margin-left:10px;">
+                <h3>Popular posts</h3>
+        </div>
+        <div class="popular-posts">
+            <div class="sub-popular">
+                @for(post of popularPosts; track post.PostId){
+                    <div class="sub-feed-card" (click)="redirectToPost(post.PostId ?? '0')">
+                        <div class="feed-title">
+                            <h4>{{post.Title}}</h4>
+                            <div class="feed-footer">
+                                <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{post.UpVotes}}</span>
+                                <span style="margin: 2px;"><mat-icon>arrow_downward</mat-icon> {{post.DownVotes}}</span>
+                                <span style="margin: 2px;"><mat-icon>comment</mat-icon> {{post.Comments}}</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </div>

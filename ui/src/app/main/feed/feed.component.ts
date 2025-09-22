@@ -11,10 +11,11 @@ import { FeedServices } from '../../services/feed.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 import { Search } from "../search/search";
 import { MatIconModule } from '@angular/material/icon';
+import { CategoryBubbles } from '../../presets/category-bubbles/category-bubbles';
 
 @Component({
   selector: 'app-feed.component',
-  imports: [MatButtonModule, Search, MatIconModule],
+  imports: [MatButtonModule, Search, MatIconModule, CategoryBubbles],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss'
 })
@@ -38,6 +39,9 @@ export class FeedComponent implements OnInit {
     };
 
     feedList: PostModel[] = [];
+    trendingPosts: PostModel[] =[];
+    popularPosts: PostModel[] = [];
+    categories: string[] = [];
 
     constructor(
       private router: Router, 
@@ -49,6 +53,31 @@ export class FeedComponent implements OnInit {
 
     ngOnInit(): void {
       this.getSavedPosts();
+      this.getTrendingPosts();
+      this.getCategories();
+    }
+
+    getTrendingPosts(): void{
+      this.feedServices.getTrendingPostsfn().subscribe({
+        next: (response) => {
+          this.trendingPosts = response[0].Data;
+          this.popularPosts = response[1].Data;
+        },
+        error: (error) => {
+          this.dialogServices.showError('Failed', 'Unable to fetch trending posts.');
+        }
+      });
+    }
+
+    getCategories(): void{
+      this.feedServices.getCategoriesfn().subscribe({
+        next: (response) => {
+          this.categories = response.Data;
+        },
+        error: (error) => {
+          this.dialogServices.showError('Failed', 'Unable to fetch categories.');
+        }
+      });
     }
 
     getSavedPosts(): void{
