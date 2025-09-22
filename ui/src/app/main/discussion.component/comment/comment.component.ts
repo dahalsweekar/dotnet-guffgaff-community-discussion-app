@@ -125,7 +125,6 @@ export class CommentsComponent implements OnInit {
     };
     this.commentServices.saveCommentfn(comment).subscribe({
       next: (response) => {
-        debugger;
         if (response._isSuccess){
           this.comments.push(comment);
           this.newCommentText = '';
