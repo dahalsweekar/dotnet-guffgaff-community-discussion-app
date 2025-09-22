@@ -11,12 +11,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommentServices } from '../../../services/comment.services';
 import { LocalStorage } from '../../../services/localStorage.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
+import { TimeAgoPipe } from '../../../services/time-ago/time-ago-pipe';
 
 import { VoteModel } from '../../../models/voteVM';
 
 @Component({
   selector: 'app-comment-item',
-    imports: [FormsModule, CommonModule, MatIconModule, MatFormFieldModule, MatInputModule],
+    imports: [FormsModule, CommonModule, MatIconModule, MatFormFieldModule, MatInputModule, TimeAgoPipe],
   templateUrl: './comment-item.html',
   styleUrls: ['./comment-item.scss']
 })

@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { HighlightPipe } from '../../services/highlight/highlight-pipe';
+import { TimeAgoPipe } from '../../services/time-ago/time-ago-pipe';
 import { PostServices } from '../../services/post.services';
 import { PostModel } from '../../models/postVM';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
@@ -15,7 +16,7 @@ import { LocalStorage } from '../../services/localStorage.services';
 
 @Component({
   selector: 'app-search',
-  imports: [ MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, HighlightPipe, FormsModule],
+  imports: [ MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, HighlightPipe, FormsModule, TimeAgoPipe],
   templateUrl: './search.html',
   styleUrl: './search.scss'
 })

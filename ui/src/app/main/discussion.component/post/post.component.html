@@ -40,7 +40,7 @@
           <div class="post-content">
             <h2 class="post-title">{{ post.Title }}</h2>
             <p class="post-meta">
-              Posted by u/{{ post.Owner }} • {{ post.PostedDate | date:'short' }} • c/{{ post.Category }}
+              Posted by u/{{ post.Owner }} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }} • c/{{ post.Category }}
             </p>
             <p class="post-description">{{ post.Description }}</p>
           </div>

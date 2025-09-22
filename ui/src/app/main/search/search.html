@@ -12,6 +12,7 @@
       <div class="search-result">
         @for(post of searchPost; track post.PostId){
           <div class="sub-search-card fade-slide" (click)="navigateToPost(post.PostId ?? '0')">
+              <span style="font-size: 0.7rem; color:#888">c/ {{post.Category}} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }}</span>
               <h3 [innerHTML]="post.Title | highlight:searchText"></h3>
               <p [innerHTML]="post.Description | highlight:searchText"></p>
           </div>
