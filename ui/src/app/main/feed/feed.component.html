@@ -32,6 +32,9 @@
         <div class="feed-list">
                 @for(feed of feedList; track feed.PostId){
                     <div class="feed-card" (click)="redirectToPost(feed.PostId ?? '0')">
+                         <div class="feed-category">
+                            <span>c/ {{feed.Category}}</span>
+                        </div>
                         <div class="feed-title">
                             <h3>{{feed.Title}}</h3>
                         </div>
@@ -48,8 +51,12 @@
             </div>
     </div>
     <div class="miscellaneous">
+        <h3 style="margin-left:20px;">Categories</h3>
         <div class="categories">
-            <app-category-bubbles [categories]="categories"></app-category-bubbles>
+            <app-category-bubbles
+            [categories]="categories"
+            (categorySelected)="onCategorySelected($event)">
+            </app-category-bubbles>
         </div>
          <div class="title-populat" style="margin-left:10px;">
                 <h3>Popular posts</h3>

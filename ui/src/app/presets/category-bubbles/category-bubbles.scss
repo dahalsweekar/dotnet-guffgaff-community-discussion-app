@@ -12,10 +12,19 @@
   padding: 8px 16px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   white-space: nowrap;
+  user-select: none;
 }
 
 .category-bubble:hover {
   background-color: #b2ebf2;
+  transform: scale(1.05);
 }
+
+.category-bubble.selected {
+  background-color: #00796b;
+  color: white;
+  font-weight: bold;
+}
+
