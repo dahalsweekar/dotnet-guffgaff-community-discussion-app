@@ -31,7 +31,7 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                var result = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(post.PostId ?? "")).FirstOrDefaultAsync();
+                var result = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(post.PostId ?? "")).OrderByDescending(x => x.PostedDate).FirstOrDefaultAsync();
                 if (result == null)
                     return new ResponseModelTask<Post>(new Post());
                 return new ResponseModelTask<Post>(result);
