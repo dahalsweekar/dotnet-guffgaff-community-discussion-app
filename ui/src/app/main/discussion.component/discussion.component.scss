@@ -5,12 +5,18 @@
 .search-container{
   margin-top: 50px;
   margin-left: 10px;
-  width: 23%;
+  width: 20%;
 }
 
 .post-comment{
   width: 50%;
   margin-top:20px;
   overflow: auto;
-  height: 83vh;
+}
+
+.ai-chat{
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 47px;
 }
