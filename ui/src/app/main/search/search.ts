@@ -41,8 +41,10 @@ export class Search {
 }
 
   navigateToPost(postId: string): void{
-    debugger;
     this.localStorage.storeSession('PostID', postId.toString());
     this.router.navigateByUrl('/discussion');
   }
+
 }
+
+

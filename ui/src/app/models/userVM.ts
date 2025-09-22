@@ -1,6 +1,6 @@
 export interface UserModel{
   Name: string;
-  Password: string;
+  Password?: string;
   Email: string;
   Picture: string;
 }

@@ -33,12 +33,12 @@ export class HeaderComponent implements OnInit{
     private router: Router) {}
 
   async ngOnInit(): Promise<void> {
+    debugger;
     const token = this.localStorage.getSession('Token');
     this.isLoggedIn = !!token;
     if (this.isLoggedIn){
       this.user = {
         Name: this.localStorage.getSession('UserID'),
-        Password: 'xxxxxx',
         Email: this.localStorage.getSession('UserID'),
         Picture: ''
       }

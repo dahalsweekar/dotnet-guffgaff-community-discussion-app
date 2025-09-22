@@ -125,7 +125,7 @@ export class CommentsComponent implements OnInit {
     };
     this.commentServices.saveCommentfn(comment).subscribe({
       next: (response) => {
-        if (response.IsSuccess){
+        if (response._isSuccess){
           this.comments.push(comment);
           this.newCommentText = '';
           this.topLevelBoxOpen = false;

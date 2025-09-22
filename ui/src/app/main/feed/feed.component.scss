@@ -1,19 +1,24 @@
 .main-container{
     height: 100vh;
     display: flex;
-    margin: 20px;
+    margin: 10px;
 }
 
 .search-container{
-  width: 28%;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 10px;
+  width: 23%;
+}
+
+.feed-container{
+    overflow: auto;
+    height: 80vh;
+    width: 45%;
 }
 
 .feed-list{
     max-width: 1200px;
-    padding: 2rem;
-    width: 50%;
+    margin:10px;
 }
 
 .feed-card {

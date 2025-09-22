@@ -8,6 +8,8 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  height: 75vh;
+  overflow: auto;
 }
 
 .sub-search-card{
@@ -21,4 +23,37 @@
 .sub-search-card:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     cursor: pointer;
+}
+
+/* Animation Keyframes */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+
+/* Animate when added */
+.fade-slide {
+  animation: fadeSlideIn 0.3s ease-out both;
+}
+
+/* Optional: animate when removing (see note below) */
+.fade-slide.removing {
+  animation: fadeSlideOut 0.2s ease-in both;
 }
