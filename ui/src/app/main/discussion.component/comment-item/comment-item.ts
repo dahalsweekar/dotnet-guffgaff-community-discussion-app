@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
-import { PostServices } from '../../../services/post.services';
+import { CommentServices } from '../../../services/comment.services';
 import { LocalStorage } from '../../../services/localStorage.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 
@@ -30,13 +30,13 @@ export class CommentItemComponent {
   @Output() saveReply = new EventEmitter<CommentModel>();
 
   vote: VoteModel = {
-      owner: '',
-      voter: '',
-      postId: 0,
-      upVote: true
+      Owner: '',
+      Voter: '',
+      PostId: '0',
+      UpVote: true
     }
 
-  constructor(private postServices: PostServices, 
+  constructor(private commentServices: CommentServices, 
     private localStorage: LocalStorage, 
     private dialogServices:DialogBoxServices,
     private router: Router){}
@@ -52,10 +52,13 @@ export class CommentItemComponent {
     this.saveReply.emit(this.comment);
   }
 
-  updateVote(val: number): void{
+  updateVote(val: number, commentId: number): void{
     if (this.localStorage.getSession('UserID') !== null){
-      this.vote.upVote = val == 1 ? true: false;
-      this.postServices.updateVotefn(this.vote).subscribe({
+      this.vote.UpVote = val == 1 ? true: false;
+      this.vote.Owner = this.localStorage.getSession('UserID');
+      this.vote.PostId = this.localStorage.getSession('PostID');
+      this.vote.CommentId = commentId;
+      this.commentServices.updateVoteCommentfn(this.vote).subscribe({
         next: (response) => {
           this.dialogServices.showInfo('Success', 'Vote successful.');
         },

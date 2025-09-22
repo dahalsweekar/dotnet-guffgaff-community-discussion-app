@@ -54,11 +54,14 @@ namespace GuffGaff.Services.Services
 
                 if (votedPost != null)
                 {
+                    vote.Owner = votedPost.Owner;
+
                     if (vote.UpVote)
                         votedPost.UpVotes++;
                     else
                         votedPost.DownVotes++;
 
+                    await _dbContext.Votes.AddAsync(vote);
                     await _dbContext.SaveChangesAsync();
                     return new ResponseModel(true, "Success");
                 }

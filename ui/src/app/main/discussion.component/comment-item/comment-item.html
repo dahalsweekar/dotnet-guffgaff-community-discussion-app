@@ -1,14 +1,14 @@
 <div class="card comment-card">
   <div class="comment-content">
     <div class="vote-column">
-      <button mat-icon-button (click)="updateVote(1)">
+      <button mat-icon-button (click)="updateVote(1, comment.CommentId)">
         <mat-icon>arrow_upward</mat-icon>
       </button>
       <div class="vote-count">{{ comment.UpVotes }}</div>
-      <button mat-icon-button (click)="updateVote(-1)">
+      <button mat-icon-button (click)="updateVote(-1, comment.CommentId)">
         <mat-icon>arrow_downward</mat-icon>
       </button>
-      <div class="vote-count">{{ comment.DownVotes }}</div>
+      <div class="vote-count"> {{ comment.DownVotes !== 0 ? '-' + comment.DownVotes : comment.DownVotes }} </div>
     </div>
     <div class="comment-box">
       <p class="post-meta">

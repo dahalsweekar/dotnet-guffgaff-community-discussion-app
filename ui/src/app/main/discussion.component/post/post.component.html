@@ -34,7 +34,7 @@
             <button mat-icon-button (click)="updateVote(-1)">
               <mat-icon>arrow_downward</mat-icon>
             </button>
-            <div class="vote-count">{{ post.DownVotes }}</div>
+            <div class="vote-count">{{ post.DownVotes !== 0 ? '-' + post.DownVotes : post.DownVotes }}</div>
           </div>
 
           <div class="post-content">

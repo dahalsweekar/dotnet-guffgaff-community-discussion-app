@@ -66,5 +66,56 @@ namespace GuffGaff.Services.Services
                 return new ResponseModelTask<CommentReply>(new CommentReply(), "Failed");
             }
         }
+
+        public async Task<ResponseModel> UpVoteCommentAsync(Vote vote)
+        {
+            try
+            {
+                var postId = Guid.Parse(Convert.ToString(vote.PostId));
+
+                var votedComment = await _dbContext.Comments
+                    .Where(x => x.CommentId == vote.CommentId && x.PostId == vote.PostId)
+                    .FirstOrDefaultAsync();
+
+                if (votedComment != null)
+                {
+                    vote.Owner = votedComment.UserId;
+
+                    if (vote.UpVote)
+                        votedComment.UpVotes++;
+                    else
+                        votedComment.DownVotes++;
+
+                    await _dbContext.Votes.AddAsync(vote);
+                    await _dbContext.SaveChangesAsync();
+                    return new ResponseModel(true, "Success");
+                }
+                else
+                {
+                    var votedReply = await _dbContext.Replies
+                    .Where(x => x.CommentId == vote.CommentId && x.PostId == vote.PostId)
+                    .FirstOrDefaultAsync();
+
+                    if (votedReply != null)
+                    {
+                        vote.Owner = votedReply.UserId;
+
+                        if (vote.UpVote)
+                            votedReply.UpVotes++;
+                        else
+                            votedReply.DownVotes++;
+
+                        await _dbContext.Votes.AddAsync(vote);
+                        await _dbContext.SaveChangesAsync();
+                        return new ResponseModel(true, "Success");
+                    }
+                }
+                return new ResponseModel(true, "No post found.");
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, "[Failed]: " + ex.Message);
+            }
+        }
     }
 }
