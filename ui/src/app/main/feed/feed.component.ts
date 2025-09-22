@@ -43,6 +43,8 @@ export class FeedComponent implements OnInit {
     popularPosts: PostModel[] = [];
     categories: string[] = [];
 
+    selectedCategory: string | null = null;
+
     constructor(
       private router: Router, 
       private authService: AuthService, 
@@ -112,5 +114,16 @@ export class FeedComponent implements OnInit {
 
     redirectToLogin(): void{
       this.authService.login();
+    }
+
+    onCategorySelected(category: string) {
+      debugger;
+      this.selectedCategory = category;
+
+      // Reorder feedList: selected category first, others later
+      this.feedList = [
+        ...this.feedList.filter(post => post.Category === category),
+        ...this.feedList.filter(post => post.Category !== category)
+      ];
     }
 }
