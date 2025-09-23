@@ -56,13 +56,19 @@ export class LoginBox implements OnInit {
     if (this.validateUser()){
       this.authServices.localLoginfn(this.user).subscribe({
         next: (response) => {
-          this.dialogServices.showInfo('Success', 'You are logged in.')
-          .afterClosed()
-          .subscribe(() => {
-            this.localStorage.storeSession('UserDetails', JSON.stringify(this.user));
-            this.localStorage.storeSession('Token', response.Token);
-            this.dialogRef.close();
-          })
+          if (response.ResponseDetails.Message == 'Success'){
+            this.dialogServices.showInfo('Success', 'You are logged in.')
+            .afterClosed()
+            .subscribe(() => {
+              
+              this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
+              this.localStorage.storeSession('Token', response.Token);
+              this.dialogRef.close();
+            })
+          }
+          else{
+             this.dialogServices.showInfo('Failed', response.ResponseDetails.Message);
+          }
         },
         error: (error) => {
           this.dialogServices.showInfo('Failed', 'Unable to login.');

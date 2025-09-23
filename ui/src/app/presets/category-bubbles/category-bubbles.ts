@@ -13,7 +13,7 @@ export class CategoryBubbles {
   selectedCategory: string = ''
 
   onCategoryClick(category: string): void{
-    debugger;
+    
     this.selectedCategory = category;
     this.categorySelected.emit(category);
   }

@@ -31,23 +31,27 @@ namespace GuffGaff.Services.Services
             }
         }
 
-        public async Task<ResponseModel> LoginAsync(User user)
+        public async Task<ResponseModelTask<User>> LoginAsync(User user)
         {
             try
             {
-                bool isValidUser = await _dbContext.Users.Select(u => u.Email == user.Email).AnyAsync();
-                if (isValidUser)
+                var identity = await _dbContext.Users.Where(u => u.Email == user.Email).FirstOrDefaultAsync();
+                if (identity != null)
                 {
                     Hasher hashPassword = new Hasher();
                     var password = await _dbContext.Users.Where(x => x.Email == user.Email).Select(x => x.Password).FirstOrDefaultAsync();
-                    return new ResponseModel(hashPassword.verifyPassword(password ?? "", user.Password));
+                    bool isAuthSuccess = hashPassword.verifyPassword(password ?? "", user.Password);
+                    if (isAuthSuccess)
+                        return new ResponseModelTask<User>(new User() { Name = identity.Name, Password = password ?? "", Email = user.Email });
+                    else
+                        return new ResponseModelTask<User>(new User(), "Authentication Failed.");
                 }
-                return new ResponseModel(false, "User does not exists.");
+                return new ResponseModelTask<User>(new User(), "User does not exists.");
 
             }
             catch (Exception ex)
             {
-                return new ResponseModel(false, ex.Message);
+                return new ResponseModelTask<User>(new User(), ex.Message);
             }
         }
 
@@ -55,8 +59,8 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                bool userExists = await _dbContext.Users.Select(u => u.Email == user.Email).AnyAsync();
-                if (userExists)
+                var identity = await _dbContext.Users.Where(u => u.Email == user.Email).FirstOrDefaultAsync();
+                if (identity != null)
                 {
                     return new ResponseModel(true, "Ja");
                 }

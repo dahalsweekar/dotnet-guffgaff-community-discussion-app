@@ -84,6 +84,7 @@ export class CreateProfile implements OnInit{
   userCheck(): void{
      this.authServices.validateUserfn(this.user).subscribe({
       next: (response) => {
+        
         if (response._message === 'Nein'){
           this.userExists = false;
           this.authServices.logout();
@@ -116,7 +117,8 @@ export class CreateProfile implements OnInit{
                 this.dialogServices.showInfo('Success', 'You are logged in.')
                 .afterClosed()
                 .subscribe(() => {
-                  this.localStorage.storeSession('UserID', this.user.Email);
+                  
+                  this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
                   this.localStorage.storeSession('Token', response.Token);
                   this.router.navigateByUrl('/feed');
                 })

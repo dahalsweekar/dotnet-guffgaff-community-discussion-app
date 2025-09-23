@@ -118,7 +118,7 @@ export class FeedComponent implements OnInit {
     }
 
     onCategorySelected(category: string) {
-      debugger;
+      
       this.selectedCategory = category;
 
       // Reorder feedList: selected category first, others later

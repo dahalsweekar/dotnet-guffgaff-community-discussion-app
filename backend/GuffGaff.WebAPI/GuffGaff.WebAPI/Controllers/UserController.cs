@@ -37,10 +37,10 @@ namespace GuffGaff.WebAPI.Controllers
             try
             {
                 var isValid = await _userServices.LoginAsync(user);
-                if (isValid._isSuccess)
+                if (isValid.Message == "Success")
                 {
                     var token = _jwtTokenHandler.GenerateToken(user.Email, "any");
-                    return Ok(new { Token = token });
+                    return Ok(new { Token = token, ResponseDetails = isValid });
                 }
                 return Ok("Unauthorized Access");
             }
