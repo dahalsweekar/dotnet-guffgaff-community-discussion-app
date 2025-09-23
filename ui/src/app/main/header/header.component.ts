@@ -33,14 +33,15 @@ export class HeaderComponent implements OnInit{
     private router: Router) {}
 
   async ngOnInit(): Promise<void> {
+    
     const token = this.localStorage.getSession('Token');
     this.isLoggedIn = !!token;
     if (this.isLoggedIn){
-      this.user = {
-        Name: this.localStorage.getSession('UserID'),
-        Email: this.localStorage.getSession('UserID'),
-        Picture: ''
-      }
+      var userDetailsJson = this.localStorage.getSession('UserDetails');
+      if (userDetailsJson !== "")
+        this.user = JSON.parse(userDetailsJson);
+      else
+        this.user = null;
     }
   }
 
@@ -58,8 +59,8 @@ export class HeaderComponent implements OnInit{
     this.dialogService.showInfo("Success", "You are logged out.")
     .afterClosed()
     .subscribe(() =>{
-      this.localStorage.deleteAllSession(['Token', 'UserID', 'PostID']);
-      this.pageServices.reloadComponent('feed');
+      this.localStorage.deleteAllSession(['Token', 'UserDetails', 'PostID']);
+      this.pageServices.reloadComponent('/feed');
     })
   }
 
