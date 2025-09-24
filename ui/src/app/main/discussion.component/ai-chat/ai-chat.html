@@ -14,7 +14,16 @@
             <input class="message-input-box" [disabled]="isLoading" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
         </div>
         <div class="send-btn" style="margin: 5px; margin-top: 25px;">
-            <button mat-raised-button [disabled]="isLoading" (click)="sendMessage()">{{Status}}</button>
+            <button mat-raised-button [disabled]="isLoading" (click)="sendMessage()">
+                @if (isLoading){
+                    <ng-container>
+                        <img src="assets/loading.gif" alt="Loading..." style="height: 15px; width: 15px;" />
+                    </ng-container>
+                }
+                @else {
+                        {{ Status }}
+                }
+            </button>
         </div>
   </div>
  

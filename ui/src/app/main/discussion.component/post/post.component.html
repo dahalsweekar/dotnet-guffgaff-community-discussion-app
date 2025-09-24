@@ -10,10 +10,13 @@
             <input matInput [(ngModel)]="post.Title" placeholder="What's on your mind?" />
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Description</mat-label>
-            <textarea matInput [(ngModel)]="post.Description" draggable="false" placeholder="Your thoughts..." rows="5"></textarea>
-          </mat-form-field>
+          <!-- <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label> -->
+            <div class="text-area">
+                <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="post.Description"></angular-editor>
+            </div>
+            <!-- <textarea matInput [(ngModel)]="post.Description" draggable="false" placeholder="Your thoughts..." rows="5"></textarea> -->
+          <!-- </mat-form-field> -->
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Category (Subreddit)</mat-label>

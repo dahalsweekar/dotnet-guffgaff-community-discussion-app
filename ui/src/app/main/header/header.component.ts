@@ -38,10 +38,13 @@ export class HeaderComponent implements OnInit{
     this.isLoggedIn = !!token;
     if (this.isLoggedIn){
       var userDetailsJson = this.localStorage.getSession('UserDetails');
-      if (userDetailsJson !== "")
+      if (userDetailsJson !== ""){
         this.user = JSON.parse(userDetailsJson);
-      else
+        this.localStorage.storeSession('UserID', this.user?.Email ?? "")
+      }
+      else{
         this.user = null;
+      }
     }
   }
 
