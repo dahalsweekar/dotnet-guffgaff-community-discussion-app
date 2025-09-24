@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { UserModel } from '../../models/userVM';
+import { Subscription } from 'rxjs';
 
+import { HeaderService } from '../../services/header.services';
+import { UserModel } from '../../models/userVM';
 import { LocalStorage } from '../../services/localStorage.services';
 import { AuthService } from '../../auth/auth.services';
 import { UserService } from '../../services/user.services';
@@ -18,8 +20,9 @@ import { LoginBox } from '../../auth/login-box/login-box';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent implements OnInit, OnDestroy{
 
+  private subscriber!: Subscription
   isLoggedIn: boolean = false;
   user: UserModel | null = null;
 
@@ -30,10 +33,19 @@ export class HeaderComponent implements OnInit{
     private pageServices: PageServices,
     private dialog: MatDialog,
     private localStorage: LocalStorage,
-    private router: Router) {}
+    private router: Router,
+    private headerService:HeaderService,
+   ) {}
 
   async ngOnInit(): Promise<void> {
-    
+    this.subscriber = this.headerService.headerRefresh$.subscribe(() => {
+      this.refreshHeader();
+    });
+  }
+
+  refreshHeader() {
+    // Logic to refresh header data (e.g., user info, notifications, etc.)
+    console.log('Header is being refreshed!');
     const token = this.localStorage.getSession('Token');
     this.isLoggedIn = !!token;
     if (this.isLoggedIn){
@@ -54,6 +66,7 @@ export class HeaderComponent implements OnInit{
       height: '400px'
     });
     dialog.afterClosed().subscribe(() => {
+        this.refreshHeader();
         this.pageServices.reloadComponent('/feed');
     });
   }
@@ -63,11 +76,16 @@ export class HeaderComponent implements OnInit{
     .afterClosed()
     .subscribe(() =>{
       this.localStorage.deleteAllSession(['Token', 'UserDetails', 'PostID']);
+      this.refreshHeader();
       this.pageServices.reloadComponent('/feed');
     })
   }
 
   redirectToHome(): void{
     this.router.navigateByUrl('/feed');
+  }
+
+  ngOnDestroy(): void {
+    this.subscriber.unsubscribe();
   }
 }
