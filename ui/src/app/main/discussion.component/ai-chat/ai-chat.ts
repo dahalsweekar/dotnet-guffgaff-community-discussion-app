@@ -25,7 +25,7 @@ export class AiChatComponent implements OnInit{
 
   async sendMessage() {
     this.isLoading = true;
-    this.Status = 'Loading...';
+    this.Status = "";
     if (!this.userInput.trim()) return;
 
     const userMessage = this.userInput.trim();
