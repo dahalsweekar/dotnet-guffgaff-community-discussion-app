@@ -41,7 +41,7 @@ export class PostComponent implements OnInit{
   editorConfig: AngularEditorConfig = {
     editable: true,
       spellcheck: true,
-      height: '150',
+      height: '150px',
       minHeight: '0',
       maxHeight: 'auto',
       width: 'auto',

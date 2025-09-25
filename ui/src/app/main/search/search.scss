@@ -6,8 +6,9 @@
 .search-card{
   background: #fff;
   padding: 5px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  //border-radius: 8px;
+  //box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-bottom: 1px solid #ddd;
   height: 97%;
   overflow: auto;
   width: min-content;
@@ -16,13 +17,15 @@
 .sub-search-card{
  background: #fff;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  border-bottom: 1px solid #ddd;
+  //border-radius: 8px;
+  //box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   margin-bottom: 5px;
 }
 
 .sub-search-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+   background-color: #f6f6f6;
+    //box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     cursor: pointer;
 }
 

@@ -13,7 +13,7 @@
           <!-- <mat-form-field appearance="outline" class="full-width">
             <mat-label>Description</mat-label> -->
             <div class="text-area">
-                <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="post.Description"></angular-editor>
+                <angular-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [(ngModel)]="post.Description"></angular-editor>
             </div>
             <!-- <textarea matInput [(ngModel)]="post.Description" draggable="false" placeholder="Your thoughts..." rows="5"></textarea> -->
           <!-- </mat-form-field> -->
@@ -45,7 +45,7 @@
             <p class="post-meta">
               Posted by u/{{ post.Owner }} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }} • c/{{ post.Category }}
             </p>
-            <p class="post-description">{{ post.Description }}</p>
+            <p class="post-description" [innerHTML]="post.Description"></p>
           </div>
         </div>
       }
