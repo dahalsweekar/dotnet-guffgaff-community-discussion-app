@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { HeaderService } from '../../services/header.services';
 import { UserModel } from '../../models/userVM';
 import { LocalStorage } from '../../services/localStorage.services';
 import { AuthService } from '../../auth/auth.services';
@@ -33,18 +32,14 @@ export class HeaderComponent implements OnInit, OnDestroy{
     private pageServices: PageServices,
     private dialog: MatDialog,
     private localStorage: LocalStorage,
-    private router: Router,
-    private headerService:HeaderService,
+    private router: Router
    ) {}
 
   async ngOnInit(): Promise<void> {
-    this.subscriber = this.headerService.headerRefresh$.subscribe(() => {
-      this.refreshHeader();
-    });
+    this.refreshHeader();
   }
 
   refreshHeader() {
-    // Logic to refresh header data (e.g., user info, notifications, etc.)
     console.log('Header is being refreshed!');
     const token = this.localStorage.getSession('Token');
     this.isLoggedIn = !!token;
