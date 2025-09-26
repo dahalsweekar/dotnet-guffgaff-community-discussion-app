@@ -5,12 +5,12 @@
         <div class="reddit-post-form">
           <h3>Create a New Post</h3>
 
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field appearance="outline" class="small">
             <mat-label>Title</mat-label>
             <input matInput [(ngModel)]="post.Title" placeholder="What's on your mind?" />
           </mat-form-field>
 
-          <!-- <mat-form-field appearance="outline" class="full-width">
+          <!-- <mat-form-field appearance="outline" class="small">
             <mat-label>Description</mat-label> -->
             <div class="text-area">
                 <angular-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [(ngModel)]="post.Description"></angular-editor>
@@ -18,7 +18,7 @@
             <!-- <textarea matInput [(ngModel)]="post.Description" draggable="false" placeholder="Your thoughts..." rows="5"></textarea> -->
           <!-- </mat-form-field> -->
 
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field appearance="outline" class="small">
             <mat-label>Category (Subreddit)</mat-label>
             <input matInput [(ngModel)]="post.Category" placeholder="e.g. Angular, Gaming..." />
           </mat-form-field>

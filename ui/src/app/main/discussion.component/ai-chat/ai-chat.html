@@ -11,7 +11,10 @@
   </div>
   <div class="message-container" style="display: flex;">
         <div class="chat-input">
-            <input class="message-input-box" [disabled]="isLoading" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
+            <mat-form-field appearance="outline" class="small full-width">
+                <input matInput class="message-input-box" [disabled]="isLoading" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
+            </mat-form-field>
+            
         </div>
         <div class="send-btn" style="margin: 5px; margin-top: 25px;">
             <button mat-raised-button [disabled]="isLoading" (click)="sendMessage()">

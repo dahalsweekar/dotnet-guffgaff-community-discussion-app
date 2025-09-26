@@ -5,25 +5,25 @@
     </div>
     <div class="fields">
         <div class="email">
-         <mat-form-field appearance="fill" class="full-width">
+         <mat-form-field appearance="outline" class="small">
          <mat-label>Email</mat-label>
         <input matInput [(ngModel)]="user.Email" [disabled]="true">
         </mat-form-field>
          </div>
         <div class="nickname">
-         <mat-form-field appearance="fill" class="full-width">
+         <mat-form-field appearance="fill" class="small">
          <mat-label>Nickname*</mat-label>
         <input matInput [(ngModel)]="user.Name" placeholder="Enter your username">
       </mat-form-field>
         </div>
         <div class="pass1">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" class="small">
             <mat-label>Password*</mat-label>
             <input matInput [(ngModel)]="user.Password" type="password" placeholder="Enter your password">
       </mat-form-field>
         </div>
         <div class="pass2">
-            <mat-form-field appearance="fill" class="full-width">
+            <mat-form-field appearance="fill" class="small">
             <mat-label>Confirm Password*</mat-label>
             <input matInput [(ngModel)]="ConfirmPassword" type="password" placeholder="Enter your password">
       </mat-form-field>
