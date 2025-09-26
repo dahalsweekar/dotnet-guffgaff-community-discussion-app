@@ -17,7 +17,7 @@
   <div class="sub-container">
     @if (!this.isLoggedIn){
         <div class="login-btn">
-          <button mat-button (click)="login()">Login</button>
+          <button mat-flat-button color="primary" (click)="login()">Login</button>
         </div>
     }
     @else{
@@ -32,7 +32,7 @@
           </div>   
     </div>
     <div class="logout-btn">
-      <button mat-button (click)="logout()">Logout</button> 
+      <button mat-flat-button color="primary" (click)="logout()">Logout</button> 
     </div>
     }
   </div>

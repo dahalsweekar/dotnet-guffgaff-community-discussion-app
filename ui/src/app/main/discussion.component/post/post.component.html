@@ -5,7 +5,7 @@
         <div class="reddit-post-form">
           <h3>Create a New Post</h3>
 
-          <mat-form-field appearance="outline" class="small">
+          <mat-form-field appearance="outline" class="small full-width">
             <mat-label>Title</mat-label>
             <input matInput [(ngModel)]="post.Title" placeholder="What's on your mind?" />
           </mat-form-field>
@@ -23,7 +23,7 @@
             <input matInput [(ngModel)]="post.Category" placeholder="e.g. Angular, Gaming..." />
           </mat-form-field>
 
-          <button mat-raised-button color="primary" (click)="putPost()">Post</button>
+          <button mat-flat-button color="primary" (click)="putPost()">Post</button>
         </div>
       }
       @else

@@ -9,8 +9,9 @@
 html {
   @include mat.theme((
     color: (
-      primary: mat.$magenta-palette,
-      tertiary: mat.$violet-palette,
+      primary: mat.$orange-palette,
+      tertiary: mat.$cyan-palette,
+      theme-type: light,
     ),
     typography: Roboto,
     density: 0,
@@ -44,7 +45,7 @@ body {
 
 html, body { height: 100%; font-size: 12px; }
 
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: white;}
+body { margin: 0; font-family: Karla, "Helvetica Neue", sans-serif; background-color: white;}
 
 .highlight {
   background-color: yellow;
@@ -54,4 +55,19 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
 mat-form-field.small {
   --mat-form-field-container-height: 40px;
   --mat-form-field-container-vertical-padding: 8px;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  background: #f0f0f0; /* light gray track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* light gray thumb */
+  border-radius: 10px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
 }

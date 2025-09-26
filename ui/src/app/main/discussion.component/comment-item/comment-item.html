@@ -22,7 +22,9 @@
   @if(replyBoxOpenFor.has(comment.CommentId)){
 
   <div class="comment-form reply-form">
-    <textarea [(ngModel)]="replyTextByComment[comment.CommentId]" placeholder="Write a reply"></textarea>
+    <mat-form-field appearance="outline" class="small full-width">
+          <textarea matInput [(ngModel)]="replyTextByComment[comment.CommentId]" placeholder="Write a reply"></textarea>
+    </mat-form-field>
     <div class="form-buttons">
       <button (click)="onSaveReply()">Save</button>
       <button (click)="onCancelReply()">Cancel</button>

@@ -10,8 +10,12 @@
   height: 45%;
 }
 
+.search-trending{
+    width: 20%;
+}
+
 .miscellaneous{
-    width: 30%;
+    width: 20%;
     height: 100vh;
 }
 
@@ -106,6 +110,7 @@
 .ask-button-container{
     margin-left: 0px;
     margin-top: 5px;
+    padding-bottom: 5px;
     border-bottom: 1px solid #ddd;
 }
 
