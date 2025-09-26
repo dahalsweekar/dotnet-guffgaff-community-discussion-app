@@ -17,6 +17,13 @@ html {
   ));
 }
 
+:root {
+  @include mat.progress-bar-overrides((
+    active-indicator-color: rgb(255, 57, 8),
+    track-color: white,
+  ));
+}
+
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
@@ -44,3 +51,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-
   font-weight: bold;
 }
 
+mat-form-field.small {
+  --mat-form-field-container-height: 40px;
+  --mat-form-field-container-vertical-padding: 8px;
+}
