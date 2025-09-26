@@ -3,7 +3,7 @@
     <div class="comments-container card-container">
       <div class="card new-comment-card">
         @if(!topLevelBoxOpen){
-          <button mat-raised-button color="primary" (click)="openNewCommentBox()">
+          <button mat-stroked-button color="primary" (click)="openNewCommentBox()">
             Add Comment
           </button>
         }
@@ -16,8 +16,8 @@
             </mat-form-field>
 
             <div class="form-buttons">
-              <button mat-raised-button color="primary" (click)="saveNewComment()">Save</button>
-              <button mat-button color="warn" (click)="cancelNewComment()">Cancel</button>
+              <button mat-flat-button color="primary" style="margin:2px;" (click)="saveNewComment()">Save</button>
+              <button mat-stroked-button color="warn" style="margin:2px;" (click)="cancelNewComment()">Cancel</button>
             </div>
           </div>
         }

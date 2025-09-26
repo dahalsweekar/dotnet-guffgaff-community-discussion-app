@@ -57,8 +57,8 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   login(): void {
     const dialog = this.dialog.open(LoginBox, {
-      width: '350px',
-      height: '400px'
+      width: '300px',
+      height: '350px'
     });
     dialog.afterClosed().subscribe(() => {
         this.refreshHeader();

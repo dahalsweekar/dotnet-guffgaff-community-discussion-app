@@ -1,5 +1,6 @@
 <div class="container">
-  <div class="heading">
+  <div class="sub-container">
+    <div class="heading" style="margin-bottom: 30px;">
     <h2>Login</h2>
   </div>
 
@@ -20,12 +21,13 @@
     </div>
 
     <div class="loginbtn">
-      <button mat-raised-button color="primary" class="login-btn" (click)="login()">Login</button>
-      <button mat-stroked-button color="warn" class="cancel-btn" (click)="cancel()">Cancel</button>
+      <button mat-flat-button color="primary" style="margin: 2px;" class="login-btn" (click)="login()">Login</button>
+      <button mat-stroked-button color="warn" style="margin: 2px;" class="cancel-btn" (click)="cancel()">Cancel</button>
     </div>
   </div>
 
   <div class="login-mit-google">
-    <button mat-flat-button color="accent" class="signup-btn" (click)="signup()">Sign up with Google</button>
+    <button mat-stroked-button color="primary" style="width: 100%;" class="signup-btn" (click)="signup()">Sign up with Google</button>
+  </div>
   </div>
 </div>

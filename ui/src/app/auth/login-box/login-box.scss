@@ -3,15 +3,23 @@
   margin-bottom: 16px;
 }
 
-.loginbtn button {
-  margin-right: 12px;
+.loginbtn {
+  display: flex;
+  justify-content: center;
 }
 
 .login-mit-google {
   margin-top: 24px;
+  display: flex;
+  justify-content: center;
 }
 
 .container{
-  padding-left: 35px;
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
+
+.sub-container{
+  margin-top:25px;
+}
+
