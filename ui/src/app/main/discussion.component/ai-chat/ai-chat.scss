@@ -1,15 +1,16 @@
 .chat-container {
   width: 100%;
-  max-width: 500px;
-  margin: auto;
+  max-width: 600px;
+  margin: 10px;
+  margin-top:20px;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  height: 75vh;
+  height: 85vh;
   padding: 10px;
   box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 20px;
+  border-left: 1px solid #ddd;
+  //border-radius: 20px;
 }
 
 .chat-box {
@@ -17,7 +18,7 @@
   border: 1px solid #ccc;
   padding: 10px;
   overflow-y: auto;
-  background-color: #f5f5f5;
+  background-color: #fbfbfb;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -47,7 +48,7 @@
 }
 
 .message-content {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* Input area */
