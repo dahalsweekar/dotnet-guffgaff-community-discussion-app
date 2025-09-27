@@ -78,5 +78,49 @@ namespace GuffGaff.Services.Services
                 return new ResponseModelTask<List<string>>([], ex.Message);
             }
         }
+
+        public List<RankedPost> RankPosts(List<Post> posts)
+        {
+            var now = DateTime.UtcNow;
+
+            var rankedPosts = posts.Select(post =>
+            {
+                // Step 1: Skip or penalize removed posts
+                if (post.IsRemoved == true)
+                {
+                    return new RankedPost
+                    {
+                        Post = post,
+                        Score = -1 // Effectively excluded
+                    };
+                }
+
+                // Step 2: Compute engagement score
+                double engagement = post.UpVotes - post.DownVotes + (post.Comments * 0.5);
+
+                // Step 3: Time decay for recency boost
+                double recencyBoost = 1.0;
+                if (post.PostedDate.HasValue)
+                {
+                    var ageInHours = (now - post.PostedDate.Value).TotalHours;
+                    recencyBoost = Math.Exp(-ageInHours / 12); // Decays over 12 hours
+                }
+
+                // Step 4: Final score
+                double score = engagement * recencyBoost;
+
+                return new RankedPost
+                {
+                    Post = post,
+                    Score = score
+                };
+            });
+
+            // Step 5: Order descending by score
+            return rankedPosts
+                .Where(rp => rp.Score >= 0) // Exclude removed/invalid
+                .OrderByDescending(rp => rp.Score)
+                .ToList();
+        }
     }
 }

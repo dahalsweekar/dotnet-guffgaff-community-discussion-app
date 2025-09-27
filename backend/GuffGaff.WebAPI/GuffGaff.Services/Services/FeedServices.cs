@@ -8,17 +8,28 @@ namespace GuffGaff.Services.Services
     public class FeedServices : IFeedServices
     {
         private GuffGaffDBContext _dbContext;
-        public FeedServices(GuffGaffDBContext dBContext)
+        private IMiscellaneous _miscellaneous;
+        public FeedServices(GuffGaffDBContext dBContext, IMiscellaneous miscellaneous)
         {
             _dbContext = dBContext;
+            _miscellaneous = miscellaneous;
         }
 
         public async Task<ResponseModelTask<List<Post>>> GetSavedPostsAsync()
         {
             try
             {
+                List<Post> rankedPost = new List<Post>();
                 var posts = await _dbContext.Posts.ToListAsync();
-                return new ResponseModelTask<List<Post>>(posts);
+                if (posts.Count > 0)
+                {
+                    var rp = _miscellaneous.RankPosts(posts);
+                    foreach (var post in rp)
+                    {
+                        rankedPost.Add(post.Post);
+                    }
+                }
+                return new ResponseModelTask<List<Post>>(rankedPost);
             }
             catch (Exception ex)
             {
