@@ -22,7 +22,7 @@ export class AiChatComponent implements OnInit{
   constructor(private cdr: ChangeDetectorRef){}
 
   ngOnInit(): void {
-    this.chatHistory.push({ sender: 'AI', message: 'Hello, How can I help you today?' });
+    this.chatHistory.push({ sender: 'freeBot', message: 'Hello, How can I help you today?' });
   }
 
   async sendMessage() {
@@ -36,12 +36,12 @@ export class AiChatComponent implements OnInit{
 
     try {
       const aiResponse = await apifree.chat(userMessage);
-      this.chatHistory.push({ sender: 'Kalu', message: aiResponse });
+      this.chatHistory.push({ sender: 'freeBot', message: aiResponse });
       this.isLoading = false;
       this.Status = 'Send';
-      this.cdr.detectChanges();
+      this.cdr.detectChanges(); 
     } catch (error) {
-      this.chatHistory.push({ sender: 'Kalu', message: 'Error getting response from AI.' });
+      this.chatHistory.push({ sender: 'freeBot', message: 'Error getting response from AI.' });
       this.isLoading = false;
       this.Status = 'Send';
       this.cdr.detectChanges();
