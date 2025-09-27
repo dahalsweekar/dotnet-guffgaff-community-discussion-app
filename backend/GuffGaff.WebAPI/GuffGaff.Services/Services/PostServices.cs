@@ -108,7 +108,8 @@ namespace GuffGaff.Services.Services
                         notice.ActionDate = DateTime.Now;
                         notice.IsReadByUser = false;
 
-                        await _dbContext.Notifications.AddAsync(notice);
+                        if (vote.Voter != notice.UserId)
+                            await _dbContext.Notifications.AddAsync(notice);
                     }
 
                     await _dbContext.SaveChangesAsync();

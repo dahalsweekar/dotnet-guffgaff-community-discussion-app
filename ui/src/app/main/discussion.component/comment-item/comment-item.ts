@@ -76,7 +76,7 @@ export class CommentItemComponent implements OnInit {
   updateVote(val: number, commentId: number): void{
     if (this.currentUser !== ''){
       this.vote.UpVote = val == 1 ? true: false;
-      this.vote.Owner = this.currentUser;
+      this.vote.Voter = this.currentUser;
       this.vote.PostId = this.currentPostID;
       this.vote.CommentId = commentId;
       this.commentServices.updateVoteCommentfn(this.vote).subscribe({
