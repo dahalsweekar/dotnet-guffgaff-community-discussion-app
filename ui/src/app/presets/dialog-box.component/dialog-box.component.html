@@ -13,10 +13,10 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" (click)="onConfirm()">
+  <button mat-flat-button color="primary" (click)="onConfirm()">
     <mat-icon>check_circle</mat-icon>{{ data.confirmText || 'OK' }}
   </button>
-  <button mat-raised-button color="warn" *ngIf="data.showCancel" (click)="onCancel()">
+  <button mat-stroked-button color="warn" *ngIf="data.showCancel" (click)="onCancel()">
     <mat-icon>cancel</mat-icon>{{ data.cancelText }}
   </button>
 </mat-dialog-actions>

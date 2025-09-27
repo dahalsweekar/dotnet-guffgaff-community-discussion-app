@@ -18,6 +18,8 @@ namespace GuffGaff.Services.Services
             try
             {
                 post.PostedDate = DateTime.Now;
+                post.IsEdited = false;
+                post.IsRemoved = false;
                 var result = await _dbContext.Posts.AddAsync(post);
                 _dbContext.SaveChanges();
                 return new ResponseModelTask<Post>(post);
@@ -50,7 +52,7 @@ namespace GuffGaff.Services.Services
                 bool doContinue = false;
 
                 var votedPost = await _dbContext.Posts
-                    .Where(x => x.PostId == postId)
+                    .Where(x => x.PostId == postId && x.IsRemoved == false)
                     .FirstOrDefaultAsync();
 
                 if (votedPost != null)
@@ -118,6 +120,61 @@ namespace GuffGaff.Services.Services
             catch (Exception ex)
             {
                 return new ResponseModelTask<List<Post>>(new List<Post>(), ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> DeletePostAsync(Post post)
+        {
+            try
+            {
+                var doesPostExist = await _dbContext.Posts.Where(x => x.PostId == post.PostId).FirstOrDefaultAsync();
+                if (doesPostExist != null)
+                {
+                    if (doesPostExist.IsRemoved ?? false)
+                    {
+                        return new ResponseModel(true, "This post does not exist.");
+                    }
+                    else
+                    {
+                        doesPostExist.IsRemoved = true;
+                        _dbContext.Posts.Update(doesPostExist);
+                        await _dbContext.SaveChangesAsync();
+                        return new ResponseModel(true, "Post is removed.");
+                    }
+                }
+
+                return new ResponseModel(true, "This post does not exist.");
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> UpdatePostAsync(Post post)
+        {
+            try
+            {
+                var postToUpdate = await _dbContext.Posts.Where(x => x.PostId == post.PostId && x.IsRemoved != true).FirstOrDefaultAsync();
+                if (postToUpdate != null)
+                {
+                    postToUpdate.Title = post.Title;
+                    postToUpdate.Category = post.Category;
+                    postToUpdate.Description = post.Description;
+                    postToUpdate.PostedDate = DateTime.Now;
+                    postToUpdate.IsEdited = true;
+
+                    await _dbContext.SaveChangesAsync();
+
+                    return new ResponseModel(true, "Post updated.");
+                }
+
+                return new ResponseModel(true, "This post is already removed.");
+
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
             }
         }
     }

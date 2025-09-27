@@ -48,7 +48,7 @@ showError(title:string, message:string, confirmText: string = "Ok", cancelText: 
      return dialogRef;
   }
 
-  showInfo(title:string, message:string, confirmText: string = "Ok", cancelText: string = "Cancel", showCancel: boolean =false) {
+  showInfo(title:string, message:string, showCancel: boolean = true, confirmText: string = "Ok", cancelText: string = "Cancel") {
 
     const data: DialogData = {
       type: 'success',

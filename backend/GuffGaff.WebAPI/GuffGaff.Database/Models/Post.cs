@@ -14,5 +14,7 @@ namespace GuffGaff.Database.Models
         public int DownVotes { get; set; }
         public int Comments { get; set; }
         public DateTime? PostedDate { get; set; }
+        public bool? IsRemoved { get; set; }
+        public bool? IsEdited { get; set; }
     }
 }

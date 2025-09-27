@@ -70,7 +70,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
     this.dialogService.showInfo("Success", "You are logged out.")
     .afterClosed()
     .subscribe(() =>{
-      this.localStorage.deleteAllSession(['Token', 'UserDetails', 'PostID']);
+      this.localStorage.deleteAllSession(['Token', 'UserDetails', 'UserID', 'PostID', 'PostEditMode']);
       this.refreshHeader();
       this.pageServices.reloadComponent('/feed');
     })

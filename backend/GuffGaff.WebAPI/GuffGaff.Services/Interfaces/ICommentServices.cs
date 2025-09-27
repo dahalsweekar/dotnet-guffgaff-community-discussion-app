@@ -8,5 +8,7 @@ namespace GuffGaff.Services.Interfaces
         public Task<ResponseModel> SaveReplyAsync(Reply reply);
         public Task<ResponseModelTask<CommentReply>> GetCommentsAsync(Search postId);
         public Task<ResponseModel> UpVoteCommentAsync(Vote vote);
+        public Task<ResponseModel> DeleteCommentAsync(Comment comment);
+        public Task<ResponseModel> UpdateCommentAsync(Comment comment);
     }
 }

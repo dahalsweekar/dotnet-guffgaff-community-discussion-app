@@ -12,6 +12,10 @@ export class CommentServices{
     private getCommentsApi: string = '/api/getcomments';
     private updateVoteCommentApi: string = '/api/updatevotecomment';
     private saveReplyApi: string = '/api/savereply';
+    private updateCommentApi: string = '/api/updatecomment';
+    private deleteCommentApi: string = '/api/deletecomment';
+    private updateReplyApi: string = '/api/updatereply';
+    private deleteReplyApi: string = '/api/deletereply';
 
     constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){}
 
@@ -29,5 +33,13 @@ export class CommentServices{
 
     saveReplyfn(reply: any): Observable<any>{
         return this.http.post(this.saveReplyApi, reply);
+    }
+
+    updateCommentfn(comment: any): Observable<any>{
+        return this.http.post(this.updateCommentApi, comment);
+    }
+
+    deleteCommentfn(comment: any): Observable<any>{
+        return this.http.post(this.deleteCommentApi, comment);
     }
 }
