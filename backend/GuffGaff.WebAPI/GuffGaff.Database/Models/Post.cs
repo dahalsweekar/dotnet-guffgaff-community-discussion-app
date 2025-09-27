@@ -17,4 +17,10 @@ namespace GuffGaff.Database.Models
         public bool? IsRemoved { get; set; }
         public bool? IsEdited { get; set; }
     }
+
+    public class RankedPost
+    {
+        public Post Post { get; set; }
+        public double Score { get; set; }
+    }
 }
