@@ -109,12 +109,12 @@ export class CreateProfile implements OnInit{
     if (this.validateUserEmail() && !this.userExists){
       this.userService.saveUserCredentialsfn(this.user).subscribe({
         next: (response) => {
-          this.dialogServices.showInfo("Success", "Your profile has been created.")
+          this.dialogServices.showValidation("Success", "Your profile has been created.")
           .afterClosed()
           .subscribe(() => {
             this.authServices.localLoginfn(this.user).subscribe({
               next: (response) => {
-                this.dialogServices.showInfo('Success', 'You are logged in.')
+                this.dialogServices.showValidation('Success', 'You are logged in.')
                 .afterClosed()
                 .subscribe(() => {
                   

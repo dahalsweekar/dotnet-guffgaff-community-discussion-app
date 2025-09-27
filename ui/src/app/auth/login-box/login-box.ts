@@ -57,7 +57,7 @@ export class LoginBox implements OnInit {
       this.authServices.localLoginfn(this.user).subscribe({
         next: (response) => {
           if (response.ResponseDetails.Message == 'Success'){
-            this.dialogServices.showInfo('Success', 'You are logged in.')
+            this.dialogServices.showValidation('Success', 'You are logged in.')
             .afterClosed()
             .subscribe(() => {
               this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
@@ -66,11 +66,11 @@ export class LoginBox implements OnInit {
             })
           }
           else{
-             this.dialogServices.showInfo('Failed', response.ResponseDetails.Message);
+             this.dialogServices.showValidation('Failed', response.ResponseDetails.Message);
           }
         },
         error: (error) => {
-          this.dialogServices.showInfo('Failed', 'Unable to login.');
+          this.dialogServices.showValidation('Failed', 'Unable to login.');
         }
       })
     }

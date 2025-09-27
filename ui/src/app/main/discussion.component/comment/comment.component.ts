@@ -130,9 +130,7 @@ export class CommentsComponent implements OnInit {
       this.commentServices.saveCommentfn(comment).subscribe({
         next: (response) => {
           if (response._isSuccess){
-            this.comments.push(comment);
-            this.newCommentText = '';
-            this.topLevelBoxOpen = false;
+            this.pageServices.reloadComponent('discussion');
           }
         },
         error: (error) => {
@@ -174,7 +172,7 @@ export class CommentsComponent implements OnInit {
       };
       this.commentServices.saveReplyfn(reply).subscribe({
         next: (response) => {
-          parent.Replies?.push(reply);
+          this.pageServices.reloadComponent('discussion');
         },
         error: (error) => {
           this.dialogServices.showError('Failed', 'Unable to save reply.');
@@ -208,6 +206,7 @@ export class CommentsComponent implements OnInit {
   }
 
   deleteComment(parent: CommentModel): void{
+    debugger;
     this.dialogServices.showInfo('Confirmation', 'Do you really want to delete this comment?', true)
     .afterClosed()
     .subscribe(confirmation => {
@@ -222,7 +221,7 @@ export class CommentsComponent implements OnInit {
         };
         this.commentServices.deleteCommentfn(comment).subscribe({
           next: (response) => {
-            this.dialogServices.showInfo('Success', 'Comment removed.')
+            this.dialogServices.showValidation('Success', 'Comment removed.')
             .afterClosed()
             .subscribe(() => {
               this.pageServices.reloadComponent('discussion');

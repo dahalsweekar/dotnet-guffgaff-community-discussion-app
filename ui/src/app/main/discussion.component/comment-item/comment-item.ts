@@ -30,7 +30,7 @@ export class CommentItemComponent implements OnInit {
   @Output() openReply = new EventEmitter<CommentModel>();
   @Output() cancelReply = new EventEmitter<number>();
   @Output() saveReply = new EventEmitter<CommentModel>();
-  @Output() delete = new EventEmitter<CommentModel>();
+  @Output() openDelete = new EventEmitter<CommentModel>();
 
   vote: VoteModel = {
       Owner: '',
@@ -76,7 +76,7 @@ export class CommentItemComponent implements OnInit {
       this.vote.CommentId = commentId;
       this.commentServices.updateVoteCommentfn(this.vote).subscribe({
         next: (response) => {
-          this.dialogServices.showInfo('Success', 'Vote successful.');
+          this.dialogServices.showValidation('Success', 'Vote successful.');
         },
         error: (error) => {
           this.dialogServices.showError('Failed', 'Unable to update vote');
@@ -89,6 +89,6 @@ export class CommentItemComponent implements OnInit {
   }
 
   onDeleteClick(): void{
-    this.delete.emit(this.comment);
+    this.openDelete.emit(this.comment);
   }
 }

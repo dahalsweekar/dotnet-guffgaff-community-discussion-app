@@ -67,7 +67,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
   }
 
   logout(): void {
-    this.dialogService.showInfo("Success", "You are logged out.")
+    this.dialogService.showValidation("Success", "You are logged out.")
     .afterClosed()
     .subscribe(() =>{
       this.localStorage.deleteAllSession(['Token', 'UserDetails', 'UserID', 'PostID', 'PostEditMode']);

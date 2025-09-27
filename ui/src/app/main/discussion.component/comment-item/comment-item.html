@@ -26,7 +26,7 @@
         <button mat-flat-button color="primary" style="margin:2px;" (click)="onReplyClick('EditMode')">Edit</button>
         <button mat-stroked-button color="primary" style="margin:2px;" (click)="onDeleteClick()">Delete</button>
       }
-      @else{
+      @else if (comment.UserId != this.currentUser && comment.IsRemoved === false){
         <button mat-stroked-button color="primary" (click)="onReplyClick('')">Reply</button>
       }
 
@@ -58,6 +58,7 @@
             (openReply)="openReply.emit($event)"
             (cancelReply)="cancelReply.emit($event)"
             (saveReply)="saveReply.emit($event)"
+            (openDelete)="openDelete.emit($event)"
           ></app-comment-item>
         </ng-container>
       }
