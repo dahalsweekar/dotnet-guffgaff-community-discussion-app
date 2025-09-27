@@ -47,6 +47,7 @@ namespace GuffGaff.Services.Services
             try
             {
                 var postId = Guid.Parse(Convert.ToString(vote.PostId));
+                bool doContinue = false;
 
                 var votedPost = await _dbContext.Posts
                     .Where(x => x.PostId == postId)
@@ -54,14 +55,41 @@ namespace GuffGaff.Services.Services
 
                 if (votedPost != null)
                 {
-                    vote.Owner = votedPost.Owner;
+                    var alreadyVoted = await _dbContext.Votes.Where(x => x.PostId == vote.PostId && x.Voter == vote.Voter && x.Owner == vote.Owner).FirstOrDefaultAsync();
+                    if (alreadyVoted != null)
+                    {
+                        if (alreadyVoted.UpVote && vote.UpVote)
+                        {
+                            votedPost.UpVotes--;
+                        }
+                        else if (!alreadyVoted.UpVote && !vote.UpVote)
+                        {
+                            votedPost.DownVotes--;
+                        }
+                        else if (alreadyVoted.UpVote && !vote.UpVote)
+                        {
+                            votedPost.UpVotes--;
+                            doContinue = true;
+                        }
+                        else
+                        {
+                            votedPost.DownVotes--;
+                            doContinue = true;
+                        }
+                        _dbContext.Votes.Remove(alreadyVoted);
+                    }
+                    if (doContinue)
+                    {
+                        vote.Owner = votedPost.Owner;
 
-                    if (vote.UpVote)
-                        votedPost.UpVotes++;
-                    else
-                        votedPost.DownVotes++;
+                        if (vote.UpVote)
+                            votedPost.UpVotes++;
+                        else
+                            votedPost.DownVotes++;
 
-                    await _dbContext.Votes.AddAsync(vote);
+                        await _dbContext.Votes.AddAsync(vote);
+                    }
+
                     await _dbContext.SaveChangesAsync();
                     return new ResponseModel(true, "Success");
                 }

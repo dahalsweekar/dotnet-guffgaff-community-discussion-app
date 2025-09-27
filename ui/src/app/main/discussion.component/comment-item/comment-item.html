@@ -15,7 +15,7 @@
         Commented by u/{{ comment.UserId }} • {{ comment.CommentDate ? (comment.CommentDate | timeAgo) : 'Not posted' }}
       </p>
       <p class="comment-text">{{comment.CommentDescription}}</p>
-      <button class="reply-button" (click)="onReplyClick()">Reply</button>
+      <button mat-stroked-button color="primary" (click)="onReplyClick()">Reply</button>
     </div>
   </div>
 
@@ -26,8 +26,8 @@
           <textarea matInput [(ngModel)]="replyTextByComment[comment.CommentId]" placeholder="Write a reply"></textarea>
     </mat-form-field>
     <div class="form-buttons">
-      <button (click)="onSaveReply()">Save</button>
-      <button (click)="onCancelReply()">Cancel</button>
+      <button mat-flat-button color="primary" (click)="onSaveReply()">Save</button>
+      <button mat-stroked-button color="primary" (click)="onCancelReply()">Cancel</button>
     </div>
   </div>
   }

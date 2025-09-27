@@ -68,23 +68,23 @@
   }
   .form-buttons {
     margin-top: 0.5rem;
-    button {
-      margin-right: 0.5rem;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-      &.save {
-        background-color: #28a745;
-        color: #fff;
-      }
-      &.cancel {
-        background-color: #dc3545;
-        color: #fff;
-      }
+    // button {
+    //   margin-right: 0.5rem;
+    //   padding: 0.5rem 1rem;
+    //   border: none;
+    //   border-radius: 3px;
+    //   cursor: pointer;
+    //   &.save {
+    //     background-color: #28a745;
+    //     color: #fff;
+    //   }
+    //   &.cancel {
+    //     background-color: #dc3545;
+    //     color: #fff;
+    //   }
     }
   }
-}
+
 
 .replies {
   margin-left: 2rem; /* indent nested replies */

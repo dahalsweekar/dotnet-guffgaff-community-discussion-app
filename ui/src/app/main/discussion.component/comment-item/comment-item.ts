@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 import { CommentServices } from '../../../services/comment.services';
 import { LocalStorage } from '../../../services/localStorage.services';
@@ -17,7 +18,7 @@ import { VoteModel } from '../../../models/voteVM';
 
 @Component({
   selector: 'app-comment-item',
-    imports: [FormsModule, CommonModule, MatIconModule, MatFormFieldModule, MatInputModule, TimeAgoPipe],
+    imports: [FormsModule, CommonModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, TimeAgoPipe],
   templateUrl: './comment-item.html',
   styleUrls: ['./comment-item.scss']
 })

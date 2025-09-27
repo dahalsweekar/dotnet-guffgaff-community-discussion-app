@@ -60,7 +60,6 @@ export class LoginBox implements OnInit {
             this.dialogServices.showInfo('Success', 'You are logged in.')
             .afterClosed()
             .subscribe(() => {
-              
               this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
               this.localStorage.storeSession('Token', response.Token);
               this.dialogRef.close();

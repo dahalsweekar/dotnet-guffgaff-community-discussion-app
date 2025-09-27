@@ -1,36 +1,12 @@
 <div class="guff-btn">
     <div class="ask-button-container">
         <button mat-stroked-button color="primary" class="ask-btn" style="margin-left:20px;" (click)="checkUserLogin()">Let's Guff</button>
-    </div>
-</div>
-<div class="main-container">
-    <div class="search-trending">
         <div class="search-container">
             <app-search></app-search>
         </div>
-        <div class="title-trend" style="margin-left:10px;">
-            <h3>See what's hot</h3>
-        </div>
-        <div class="trending-posts">
-            <div class="sub-trends">
-                @for(post of trendingPosts; track post.PostId){
-                    <div class="sub-feed-card" (click)="redirectToPost(post.PostId ?? '0')">
-                        <div class="time-posted">
-                            <span>t/ {{post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted'}}</span>
-                        </div>
-                        <div class="sub-feed-title">
-                            <h4>{{post.Title}}</h4>
-                        </div>
-                        <div class="sub-feed-footer">
-                            <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{post.UpVotes}}</span>
-                            <span style="margin: 2px;"><mat-icon>arrow_downward</mat-icon> {{post.DownVotes}}</span>
-                            <span style="margin: 2px;"><mat-icon>comment</mat-icon> {{post.Comments}}</span>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
     </div>
+</div>
+<div class="main-container">
     <div class="feed-container">
         <div class="feed-list">
                 @for(feed of feedList; track feed.PostId){
@@ -42,7 +18,7 @@
                             <h3>{{feed.Title}}</h3>
                         </div>
                         <div class="feed-brief">
-                            <p>{{feed.Description}}</p>
+                            <p [innerHTML]="feed.Description"></p>
                         </div>
                         <div class="feed-footer">
                             <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{feed.UpVotes}}</span>
@@ -52,33 +28,5 @@
                     </div>
                 } 
             </div>
-    </div>
-    <div class="miscellaneous">
-        <h3 style="margin-left:20px;">Categories</h3>
-        <div class="categories">
-            <app-category-bubbles
-            [categories]="categories"
-            (categorySelected)="onCategorySelected($event)">
-            </app-category-bubbles>
-        </div>
-         <div class="title-populat" style="margin-left:10px;">
-                <h3>Popular posts</h3>
-        </div>
-        <div class="popular-posts">
-            <div class="sub-popular">
-                @for(post of popularPosts; track post.PostId){
-                    <div class="sub-feed-card" (click)="redirectToPost(post.PostId ?? '0')">
-                        <div class="feed-title">
-                            <h4>{{post.Title}}</h4>
-                            <div class="feed-footer">
-                                <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{post.UpVotes}}</span>
-                                <span style="margin: 2px;"><mat-icon>arrow_downward</mat-icon> {{post.DownVotes}}</span>
-                                <span style="margin: 2px;"><mat-icon>comment</mat-icon> {{post.Comments}}</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
     </div>
 </div>
