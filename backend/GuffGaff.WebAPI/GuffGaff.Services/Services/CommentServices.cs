@@ -29,12 +29,13 @@ namespace GuffGaff.Services.Services
                 Notification notice = new Notification();
                 notice.InitiatorId = comment.UserId;
                 notice.ActionPostId = comment.PostId;
-                notice.UserId = await _dbContext.Comments.Where(p => p.PostId == comment.PostId && p.CommentId == comment.CommentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
+                notice.UserId = await _dbContext.Comments.Where(p => p.PostId == comment.PostId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
                 notice.ActionTaken = comment.UserId + " commented on your post.";
                 notice.ActionDate = DateTime.Now;
                 notice.IsReadByUser = false;
 
-                await _dbContext.Notifications.AddAsync(notice);
+                if (comment.UserId != notice.UserId)
+                    await _dbContext.Notifications.AddAsync(notice);
 
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
@@ -60,12 +61,15 @@ namespace GuffGaff.Services.Services
                 Notification notice = new Notification();
                 notice.InitiatorId = reply.UserId;
                 notice.ActionPostId = reply.PostId;
-                notice.UserId = await _dbContext.Replies.Where(p => p.PostId == reply.PostId && p.CommentId == reply.CommentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
+                notice.UserId = await _dbContext.Replies.Where(p => p.PostId == reply.PostId && p.CommentId == reply.ParentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
+                if (string.IsNullOrEmpty(notice.UserId))
+                    notice.UserId = await _dbContext.Comments.Where(p => p.PostId == reply.PostId && p.CommentId == reply.ParentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
                 notice.ActionTaken = reply.UserId + " replied to your comment.";
                 notice.ActionDate = DateTime.Now;
                 notice.IsReadByUser = false;
 
-                await _dbContext.Notifications.AddAsync(notice);
+                if (reply.UserId != notice.UserId)
+                    await _dbContext.Notifications.AddAsync(notice);
 
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
@@ -158,7 +162,8 @@ namespace GuffGaff.Services.Services
                         notice.ActionDate = DateTime.Now;
                         notice.IsReadByUser = false;
 
-                        await _dbContext.Notifications.AddAsync(notice);
+                        if (vote.Owner != notice.UserId)
+                            await _dbContext.Notifications.AddAsync(notice);
                     }
 
                     await _dbContext.SaveChangesAsync();
@@ -223,7 +228,8 @@ namespace GuffGaff.Services.Services
                             notice.ActionDate = DateTime.Now;
                             notice.IsReadByUser = false;
 
-                            await _dbContext.Notifications.AddAsync(notice);
+                            if (vote.Owner != notice.UserId)
+                                await _dbContext.Notifications.AddAsync(notice);
                         }
 
                         await _dbContext.SaveChangesAsync();
