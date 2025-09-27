@@ -29,7 +29,7 @@ namespace GuffGaff.Services.Services
                 Notification notice = new Notification();
                 notice.InitiatorId = comment.UserId;
                 notice.ActionPostId = comment.PostId;
-                notice.UserId = await _dbContext.Posts.Where(p => p.PostId == Guid.Parse(comment.PostId)).Select(x => x.Owner).FirstOrDefaultAsync() ?? "";
+                notice.UserId = await _dbContext.Comments.Where(p => p.PostId == comment.PostId && p.CommentId == comment.CommentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
                 notice.ActionTaken = comment.UserId + " commented on your post.";
                 notice.ActionDate = DateTime.Now;
                 notice.IsReadByUser = false;
@@ -60,7 +60,7 @@ namespace GuffGaff.Services.Services
                 Notification notice = new Notification();
                 notice.InitiatorId = reply.UserId;
                 notice.ActionPostId = reply.PostId;
-                notice.UserId = await _dbContext.Posts.Where(p => p.PostId == Guid.Parse(reply.PostId)).Select(x => x.Owner).FirstOrDefaultAsync() ?? "";
+                notice.UserId = await _dbContext.Replies.Where(p => p.PostId == reply.PostId && p.CommentId == reply.CommentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
                 notice.ActionTaken = reply.UserId + " replied to your comment.";
                 notice.ActionDate = DateTime.Now;
                 notice.IsReadByUser = false;
@@ -132,7 +132,7 @@ namespace GuffGaff.Services.Services
 
                     if (doContinue)
                     {
-                        vote.Owner = votedComment.UserId;
+                        //vote.Owner = votedComment.UserId;
 
                         if (vote.UpVote)
                             votedComment.UpVotes++;
@@ -145,7 +145,7 @@ namespace GuffGaff.Services.Services
                         Notification notice = new Notification();
                         notice.InitiatorId = vote.Voter;
                         notice.ActionPostId = vote.PostId;
-                        notice.UserId = vote.Owner;
+                        notice.UserId = votedComment.UserId;
                         switch (vote.UpVote)
                         {
                             case true:
@@ -198,7 +198,7 @@ namespace GuffGaff.Services.Services
                         }
                         if (doContinue)
                         {
-                            vote.Owner = votedReply.UserId;
+                            //vote.Owner = votedReply.UserId;
 
                             if (vote.UpVote)
                                 votedReply.UpVotes++;
@@ -206,6 +206,24 @@ namespace GuffGaff.Services.Services
                                 votedReply.DownVotes++;
 
                             await _dbContext.Votes.AddAsync(vote);
+
+                            Notification notice = new Notification();
+                            notice.InitiatorId = vote.Owner;
+                            notice.ActionPostId = vote.PostId;
+                            notice.UserId = votedReply.UserId;
+                            switch (vote.UpVote)
+                            {
+                                case true:
+                                    notice.ActionTaken = vote.Voter + " upvoted your comment.";
+                                    break;
+                                case false:
+                                    notice.ActionTaken = vote.Voter + " downvoted your comment.";
+                                    break;
+                            }
+                            notice.ActionDate = DateTime.Now;
+                            notice.IsReadByUser = false;
+
+                            await _dbContext.Notifications.AddAsync(notice);
                         }
 
                         await _dbContext.SaveChangesAsync();
