@@ -23,6 +23,12 @@ html {
     active-indicator-color: rgb(255, 57, 8),
     track-color: white,
   ));
+
+  @include mat.menu-overrides((
+    container-shape: 12px,
+    divider-color: rgb(255, 0, 0),
+    container-color: white
+  ));
 }
 
 body {

@@ -81,46 +81,101 @@ namespace GuffGaff.Services.Services
 
         public List<RankedPost> RankPosts(List<Post> posts)
         {
-            var now = DateTime.UtcNow;
-
-            var rankedPosts = posts.Select(post =>
+            try
             {
-                // Step 1: Skip or penalize removed posts
-                if (post.IsRemoved == true)
+                var now = DateTime.UtcNow;
+
+                var rankedPosts = posts.Select(post =>
                 {
+                    // Step 1: Skip or penalize removed posts
+                    if (post.IsRemoved == true)
+                    {
+                        return new RankedPost
+                        {
+                            Post = post,
+                            Score = -1 // Effectively excluded
+                        };
+                    }
+
+                    // Step 2: Compute engagement score
+                    double engagement = post.UpVotes - post.DownVotes + (post.Comments * 0.5);
+
+                    // Step 3: Time decay for recency boost
+                    double recencyBoost = 1.0;
+                    if (post.PostedDate.HasValue)
+                    {
+                        var ageInHours = (now - post.PostedDate.Value).TotalHours;
+                        recencyBoost = Math.Exp(-ageInHours / 12); // Decays over 12 hours
+                    }
+
+                    // Step 4: Final score
+                    double score = engagement * recencyBoost;
+
                     return new RankedPost
                     {
                         Post = post,
-                        Score = -1 // Effectively excluded
+                        Score = score
                     };
+                });
+
+                // Step 5: Order descending by score
+                return rankedPosts
+                    .Where(rp => rp.Score >= 0) // Exclude removed/invalid
+                    .OrderByDescending(rp => rp.Score)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ResponseModelTask<List<Notification>>> CheckNotifications(User user)
+        {
+            try
+            {
+                var notification = await _dbContext.Notifications.Where(x => x.UserId == user.Email && x.IsReadByUser == false).ToListAsync();
+                if (notification != null)
+                {
+                    return new ResponseModelTask<List<Notification>>(notification);
+                }
+                else
+                {
+                    return new ResponseModelTask<List<Notification>>(new List<Notification>());
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModelTask<List<Notification>>(new List<Notification>(), ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> UpdateNotificationStatus(Notification notice)
+        {
+            try
+            {
+                var notification = await _dbContext.Notifications.Where(
+                    x => x.ActionPostId == notice.ActionPostId
+                    && x.ActionCommentId == notice.ActionCommentId
+                    && x.ActionTaken == notice.ActionTaken
+                    && x.UserId == notice.UserId
+                    && x.InitiatorId == notice.InitiatorId
+                    ).FirstOrDefaultAsync();
+                if (notification != null)
+                {
+                    notification.IsReadByUser = true;
+
+                    _dbContext.Notifications.Update(notification);
+                    await _dbContext.SaveChangesAsync();
+
                 }
 
-                // Step 2: Compute engagement score
-                double engagement = post.UpVotes - post.DownVotes + (post.Comments * 0.5);
-
-                // Step 3: Time decay for recency boost
-                double recencyBoost = 1.0;
-                if (post.PostedDate.HasValue)
-                {
-                    var ageInHours = (now - post.PostedDate.Value).TotalHours;
-                    recencyBoost = Math.Exp(-ageInHours / 12); // Decays over 12 hours
-                }
-
-                // Step 4: Final score
-                double score = engagement * recencyBoost;
-
-                return new RankedPost
-                {
-                    Post = post,
-                    Score = score
-                };
-            });
-
-            // Step 5: Order descending by score
-            return rankedPosts
-                .Where(rp => rp.Score >= 0) // Exclude removed/invalid
-                .OrderByDescending(rp => rp.Score)
-                .ToList();
+                return new ResponseModel(true);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
         }
     }
 }

@@ -25,5 +25,8 @@
         public const string GetCategoriesAPI = "api/getcategories";
         public const string GetTrendingPostsAPI = "api/gettrendingposts";
 
+        public const string CheckNotifications = "api/checknotifications";
+        public const string UpdateNotificationStatus = "api/updatenotificationstatus";
+
     }
 }

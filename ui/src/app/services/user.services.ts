@@ -11,6 +11,8 @@ export class UserService{
 
     private saveUserCredentialsApi: string = '/api/saveusercredentials'
     private getUserCredentialsApi: string = '/api/getusercredentials'
+    private checkNotificationsApi: string = '/api/checknotifications';
+    private updateNotificationStatusApi: string = '/api/updatenotificationstatus';
 
     constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){
 
@@ -22,5 +24,13 @@ export class UserService{
 
     getUserCredentialsfn(user: any): Observable<any>{
         return this.http.post(this.getUserCredentialsApi, user);
+    }
+
+    checkNotificationsfn(user: any): Observable<any>{
+        return this.http.post(this.checkNotificationsApi, user);
+    }
+
+    updateNotificationStatusfn(notice: any): Observable<any>{
+        return this.http.post(this.updateNotificationStatusApi, notice);
     }
 }

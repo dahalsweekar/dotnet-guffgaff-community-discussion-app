@@ -21,6 +21,21 @@
         </div>
     }
     @else{
+      <div class="notification-container">
+        <div class="notification-button" style="margin-top:10px;">
+           <button matButton [matMenuTriggerFor]="menu">Notification - {{notificationCount}}</button>
+              <mat-menu #menu="matMenu" panelClass="custom-menu-panel">
+                @if (notificationCount > 0){
+                  @for(notice of notificationList; track notice.ActionPostId){
+                    <button mat-menu-item (click)="goToNotification(notice)">{{notice.ActionTaken}}</button>
+                  }
+                }
+                @else {
+                  <button mat-menu-item>No new notifications</button>
+                }
+              </mat-menu>
+        </div>
+      </div>
     <div class="user-creds">
           @if (user?.Picture){
             <div class="profile-pic-container">

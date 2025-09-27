@@ -25,6 +25,17 @@ namespace GuffGaff.Services.Services
                 var updatedCommentNo = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(comment.PostId)).FirstOrDefaultAsync();
                 if (updatedCommentNo != null)
                     updatedCommentNo.Comments++;
+
+                Notification notice = new Notification();
+                notice.InitiatorId = comment.UserId;
+                notice.ActionPostId = comment.PostId;
+                notice.UserId = await _dbContext.Posts.Where(p => p.PostId == Guid.Parse(comment.PostId)).Select(x => x.Owner).FirstOrDefaultAsync() ?? "";
+                notice.ActionTaken = comment.UserId + " commented on your post.";
+                notice.ActionDate = DateTime.Now;
+                notice.IsReadByUser = false;
+
+                await _dbContext.Notifications.AddAsync(notice);
+
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
             }
@@ -45,6 +56,17 @@ namespace GuffGaff.Services.Services
                 var updatedCommentNo = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(reply.PostId)).FirstOrDefaultAsync();
                 if (updatedCommentNo != null)
                     updatedCommentNo.Comments++;
+
+                Notification notice = new Notification();
+                notice.InitiatorId = reply.UserId;
+                notice.ActionPostId = reply.PostId;
+                notice.UserId = await _dbContext.Posts.Where(p => p.PostId == Guid.Parse(reply.PostId)).Select(x => x.Owner).FirstOrDefaultAsync() ?? "";
+                notice.ActionTaken = reply.UserId + " replied to your comment.";
+                notice.ActionDate = DateTime.Now;
+                notice.IsReadByUser = false;
+
+                await _dbContext.Notifications.AddAsync(notice);
+
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
             }
@@ -118,6 +140,25 @@ namespace GuffGaff.Services.Services
                             votedComment.DownVotes++;
 
                         await _dbContext.Votes.AddAsync(vote);
+
+
+                        Notification notice = new Notification();
+                        notice.InitiatorId = vote.Voter;
+                        notice.ActionPostId = vote.PostId;
+                        notice.UserId = vote.Owner;
+                        switch (vote.UpVote)
+                        {
+                            case true:
+                                notice.ActionTaken = vote.Voter + " upvoted your comment.";
+                                break;
+                            case false:
+                                notice.ActionTaken = vote.Voter + " downvoted your comment.";
+                                break;
+                        }
+                        notice.ActionDate = DateTime.Now;
+                        notice.IsReadByUser = false;
+
+                        await _dbContext.Notifications.AddAsync(notice);
                     }
 
                     await _dbContext.SaveChangesAsync();

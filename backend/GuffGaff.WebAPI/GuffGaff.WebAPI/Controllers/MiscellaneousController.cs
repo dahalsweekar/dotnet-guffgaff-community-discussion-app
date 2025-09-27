@@ -1,4 +1,5 @@
-﻿using GuffGaff.Services.Interfaces;
+﻿using GuffGaff.Database.Models;
+using GuffGaff.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GuffGaff.WebAPI.Controllers
@@ -39,5 +40,32 @@ namespace GuffGaff.WebAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route($"{apiHelper.CheckNotifications}")]
+        public async Task<IActionResult> CheckNotifications([FromBody] User user)
+        {
+            try
+            {
+                return Ok(await _miscellaneous.CheckNotifications(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.UpdateNotificationStatus}")]
+        public async Task<IActionResult> UpdateNotificationStatus([FromBody] Notification notice)
+        {
+            try
+            {
+                return Ok(await _miscellaneous.UpdateNotificationStatus(notice));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
     }
 }

@@ -90,6 +90,25 @@ namespace GuffGaff.Services.Services
                             votedPost.DownVotes++;
 
                         await _dbContext.Votes.AddAsync(vote);
+
+
+                        Notification notice = new Notification();
+                        notice.InitiatorId = vote.Voter;
+                        notice.ActionPostId = vote.PostId;
+                        notice.UserId = vote.Owner;
+                        switch (vote.UpVote)
+                        {
+                            case true:
+                                notice.ActionTaken = vote.Voter + " upvoted your post.";
+                                break;
+                            case false:
+                                notice.ActionTaken = vote.Voter + " downvoted your post.";
+                                break;
+                        }
+                        notice.ActionDate = DateTime.Now;
+                        notice.IsReadByUser = false;
+
+                        await _dbContext.Notifications.AddAsync(notice);
                     }
 
                     await _dbContext.SaveChangesAsync();
