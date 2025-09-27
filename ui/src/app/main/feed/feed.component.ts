@@ -11,12 +11,11 @@ import { FeedServices } from '../../services/feed.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 import { Search } from "../search/search";
 import { MatIconModule } from '@angular/material/icon';
-import { CategoryBubbles } from '../../presets/category-bubbles/category-bubbles';
 import { TimeAgoPipe } from '../../services/time-ago/time-ago-pipe';
 
 @Component({
   selector: 'app-feed.component',
-  imports: [MatButtonModule, Search, MatIconModule, CategoryBubbles, TimeAgoPipe],
+  imports: [MatButtonModule, Search, MatIconModule, TimeAgoPipe],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss'
 })
@@ -56,8 +55,8 @@ export class FeedComponent implements OnInit {
 
     ngOnInit(): void {
       this.getSavedPosts();
-      this.getTrendingPosts();
-      this.getCategories();
+      //this.getTrendingPosts();
+      //this.getCategories();
     }
 
     getTrendingPosts(): void{
@@ -117,14 +116,14 @@ export class FeedComponent implements OnInit {
       this.authService.login();
     }
 
-    onCategorySelected(category: string) {
+    // onCategorySelected(category: string) {
       
-      this.selectedCategory = category;
+    //   this.selectedCategory = category;
 
-      // Reorder feedList: selected category first, others later
-      this.feedList = [
-        ...this.feedList.filter(post => post.Category === category),
-        ...this.feedList.filter(post => post.Category !== category)
-      ];
-    }
+    //   // Reorder feedList: selected category first, others later
+    //   this.feedList = [
+    //     ...this.feedList.filter(post => post.Category === category),
+    //     ...this.feedList.filter(post => post.Category !== category)
+    //   ];
+    // }
 }

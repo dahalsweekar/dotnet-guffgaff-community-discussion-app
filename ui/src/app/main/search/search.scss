@@ -5,13 +5,9 @@
 
 .search-card{
   background: #fff;
-  padding: 5px;
-  //border-radius: 8px;
-  //box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  border-bottom: 1px solid #ddd;
-  height: 97%;
-  overflow: auto;
-  width: 90%;
+  width: 520px;
+  display: flex;
+  justify-content: center;
 }
 
 .sub-search-card{
@@ -60,4 +56,8 @@
 /* Optional: animate when removing (see note below) */
 .fade-slide.removing {
   animation: fadeSlideOut 0.2s ease-in both;
+}
+
+.full-width{
+  width: 100%;
 }
