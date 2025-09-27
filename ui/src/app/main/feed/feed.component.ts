@@ -12,6 +12,7 @@ import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box
 import { Search } from "../search/search";
 import { MatIconModule } from '@angular/material/icon';
 import { TimeAgoPipe } from '../../services/time-ago/time-ago-pipe';
+import { RefreshService } from '../../services/refresh.services';
 
 @Component({
   selector: 'app-feed.component',
@@ -51,9 +52,11 @@ export class FeedComponent implements OnInit {
       private localStorage: LocalStorage, 
       private feedServices:FeedServices,
       private dialog: MatDialog,
-      private dialogServices: DialogBoxServices){}
+      private dialogServices: DialogBoxServices,
+      private refreshService: RefreshService){}
 
     ngOnInit(): void {
+      this.refreshService.triggerRefreshB();
       this.getSavedPosts();
       //this.getTrendingPosts();
       //this.getCategories();
