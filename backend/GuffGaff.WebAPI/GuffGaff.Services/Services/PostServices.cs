@@ -18,6 +18,8 @@ namespace GuffGaff.Services.Services
             try
             {
                 post.PostedDate = DateTime.Now;
+                post.IsEdited = false;
+                post.IsRemoved = false;
                 var result = await _dbContext.Posts.AddAsync(post);
                 _dbContext.SaveChanges();
                 return new ResponseModelTask<Post>(post);
@@ -50,7 +52,7 @@ namespace GuffGaff.Services.Services
                 bool doContinue = false;
 
                 var votedPost = await _dbContext.Posts
-                    .Where(x => x.PostId == postId && !x.IsRemoved)
+                    .Where(x => x.PostId == postId && x.IsRemoved == false)
                     .FirstOrDefaultAsync();
 
                 if (votedPost != null)
@@ -153,9 +155,11 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                var postToUpdate = await _dbContext.Posts.Where(x => x.PostId == post.PostId && x.IsRemoved != false).FirstOrDefaultAsync();
+                var postToUpdate = await _dbContext.Posts.Where(x => x.PostId == post.PostId && x.IsRemoved != true).FirstOrDefaultAsync();
                 if (postToUpdate != null)
                 {
+                    postToUpdate.Title = post.Title;
+                    postToUpdate.Category = post.Category;
                     postToUpdate.Description = post.Description;
                     postToUpdate.PostedDate = DateTime.Now;
                     postToUpdate.IsEdited = true;

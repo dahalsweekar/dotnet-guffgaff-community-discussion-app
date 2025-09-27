@@ -19,6 +19,8 @@ namespace GuffGaff.Services.Services
             try
             {
                 comment.CommentDate = DateTime.Now;
+                comment.IsEdited = false;
+                comment.IsRemoved = false;
                 var result = await _dbContext.Comments.AddAsync(comment);
                 var updatedCommentNo = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(comment.PostId)).FirstOrDefaultAsync();
                 if (updatedCommentNo != null)
@@ -37,6 +39,8 @@ namespace GuffGaff.Services.Services
             try
             {
                 reply.CommentDate = DateTime.Now;
+                reply.IsRemoved = false;
+                reply.IsEdited = false;
                 var result = await _dbContext.Replies.AddAsync(reply);
                 var updatedCommentNo = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(reply.PostId)).FirstOrDefaultAsync();
                 if (updatedCommentNo != null)
@@ -194,36 +198,26 @@ namespace GuffGaff.Services.Services
                         return new ResponseModel(true, "Post is removed.");
                     }
                 }
-
-                return new ResponseModel(true, "This post does not exist.");
-            }
-            catch (Exception ex)
-            {
-                return new ResponseModel(false, ex.Message);
-            }
-        }
-
-        public async Task<ResponseModel> DeleteReplyAsync(Reply reply)
-        {
-            try
-            {
-                var doesReplyExist = await _dbContext.Replies.Where(x => x.PostId == reply.PostId && x.CommentId == reply.CommentId).FirstOrDefaultAsync();
-                if (doesReplyExist != null)
+                else
                 {
-                    if (doesReplyExist.IsRemoved ?? false)
+                    var doesReplyExist = await _dbContext.Replies.Where(x => x.PostId == comment.PostId && x.CommentId == comment.CommentId).FirstOrDefaultAsync();
+                    if (doesReplyExist != null)
                     {
-                        return new ResponseModel(true, "This response does not exist.");
+                        if (doesReplyExist.IsRemoved ?? false)
+                        {
+                            return new ResponseModel(true, "This response does not exist.");
+                        }
+                        else
+                        {
+                            doesReplyExist.IsRemoved = true;
+                            _dbContext.Replies.Update(doesReplyExist);
+                            await _dbContext.SaveChangesAsync();
+                            return new ResponseModel(true, "Reponse is removed.");
+                        }
                     }
-                    else
-                    {
-                        doesReplyExist.IsRemoved = true;
-                        _dbContext.Replies.Update(doesReplyExist);
-                        await _dbContext.SaveChangesAsync();
-                        return new ResponseModel(true, "Reponse is removed.");
-                    }
-                }
 
-                return new ResponseModel(true, "This repsonse does not exist.");
+                    return new ResponseModel(true, "This repsonse does not exist.");
+                }
             }
             catch (Exception ex)
             {
@@ -235,41 +229,32 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                var commentToUpdate = await _dbContext.Comments.Where(x => x.PostId == comment.PostId && x.CommentId == comment.CommentId && x.IsRemoved != false).FirstOrDefaultAsync();
+                var commentToUpdate = await _dbContext.Comments.Where(x => x.PostId == comment.PostId && x.CommentId == comment.CommentId && x.IsRemoved != true).FirstOrDefaultAsync();
                 if (commentToUpdate != null)
                 {
                     commentToUpdate.CommentDescription = comment.CommentDescription;
                     commentToUpdate.CommentDate = DateTime.Now;
                     commentToUpdate.IsEdited = true;
+                    commentToUpdate.IsRemoved = false;
 
                     await _dbContext.SaveChangesAsync();
 
                     return new ResponseModel(true, "Comment updated.");
                 }
-
-                return new ResponseModel(true, "This comment is already removed.");
-
-            }
-            catch (Exception ex)
-            {
-                return new ResponseModel(false, ex.Message);
-            }
-        }
-
-        public async Task<ResponseModel> UpdateReplyAsync(Reply reply)
-        {
-            try
-            {
-                var replyToUpdate = await _dbContext.Replies.Where(x => x.PostId == reply.PostId && x.CommentId == reply.CommentId && x.IsRemoved != false).FirstOrDefaultAsync();
-                if (replyToUpdate != null)
+                else
                 {
-                    replyToUpdate.CommentDescription = reply.CommentDescription;
-                    replyToUpdate.CommentDate = DateTime.Now;
-                    replyToUpdate.IsEdited = true;
+                    var replyToUpdate = await _dbContext.Replies.Where(x => x.PostId == comment.PostId && x.CommentId == comment.CommentId && x.IsRemoved != true).FirstOrDefaultAsync();
+                    if (replyToUpdate != null)
+                    {
+                        replyToUpdate.CommentDescription = comment.CommentDescription;
+                        replyToUpdate.CommentDate = DateTime.Now;
+                        replyToUpdate.IsEdited = true;
+                        replyToUpdate.IsRemoved = false;
 
-                    await _dbContext.SaveChangesAsync();
+                        await _dbContext.SaveChangesAsync();
 
-                    return new ResponseModel(true, "Comment updated.");
+                        return new ResponseModel(true, "Comment updated.");
+                    }
                 }
 
                 return new ResponseModel(true, "This comment is already removed.");

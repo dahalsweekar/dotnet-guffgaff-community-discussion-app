@@ -1,9 +1,14 @@
 <div class="main-container">
   <div class="post-container">
-      @if (currentPostId == '0')
+      @if (currentPostId === '0' || isEditMode === 'True')
       {
         <div class="reddit-post-form">
-          <h3>Create a New Post</h3>
+          @if (isEditMode === 'True'){
+            <h3>Edit Post</h3>
+          }
+          @else {
+            <h3>Create a New Post</h3>
+          }
 
           <mat-form-field appearance="outline" class="small full-width">
             <mat-label>Title</mat-label>
@@ -29,23 +34,42 @@
       @else
       {
         <div class="reddit-post-display">
-          <div class="vote-column">
-            <button mat-icon-button (click)="updateVote(1)">
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <div class="vote-count">{{ post.UpVotes }}</div>
-            <button mat-icon-button (click)="updateVote(-1)">
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
-            <div class="vote-count">{{ post.DownVotes !== 0 ? '-' + post.DownVotes : post.DownVotes }}</div>
+          <div class="row-1" style="margin-left:60px; margin-bottom: 10px;">
+            <span style="font-style: italic; color: #888; font-size: 0.9rem">{{post.IsRemoved == true ? '[Deleted]': ''}}</span>
+            <span style="font-style: italic; color: #888; font-size: 0.9rem">{{post.IsRemoved == false && post.IsEdited == true ? '[Edited]': ''}}</span>
           </div>
+          <div class="row-2">
+              <div class="vote-column">
+              <button mat-icon-button (click)="updateVote(1)">
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+              <div class="vote-count">{{ post.UpVotes }}</div>
+              <button mat-icon-button (click)="updateVote(-1)">
+                <mat-icon>arrow_downward</mat-icon>
+              </button>
+              <div class="vote-count">{{ post.DownVotes !== 0 ? '-' + post.DownVotes : post.DownVotes }}</div>
+            </div>
 
-          <div class="post-content">
-            <h2 class="post-title">{{ post.Title }}</h2>
-            <p class="post-meta">
-              Posted by u/{{ post.Owner }} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }} • c/{{ post.Category }}
-            </p>
-            <p class="post-description" [innerHTML]="post.Description"></p>
+            <div class="post-content">
+              <h2 class="post-title">{{ post.Title }}</h2>
+              <p class="post-meta">
+                Posted by u/{{ post.Owner }} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }} • c/{{ post.Category }}
+              </p>
+              @if(post.IsRemoved){
+                <p class="post-description" style="font-style: italic;color:#888"> This post has already been removed by its owner. </p>
+              }
+              @else {
+                <p class="post-description" [innerHTML]="post.Description"></p>
+              }
+            </div>
+          </div>
+          <div class="row-3">
+          @if (post.Owner == currentUser.Email && post.IsRemoved == false){
+            <div class="button-container">
+              <button mat-flat-button color="primary" style="margin:2px;" (click)="onEditClick(post)">Edit</button>
+              <button mat-stroked-button color="primary" style="margin:2px;" (click)="onDeleteClick(post)">Delete</button>
+            </div>
+          }
           </div>
         </div>
       }

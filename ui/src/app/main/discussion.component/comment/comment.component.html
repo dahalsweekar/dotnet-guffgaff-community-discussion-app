@@ -3,7 +3,7 @@
     <div class="comments-container card-container">
       <div class="card new-comment-card">
         @if(!topLevelBoxOpen){
-          <button mat-stroked-button color="primary" (click)="openNewCommentBox()">
+          <button mat-stroked-button color="primary" (click)="openNewCommentBox('', 0)">
             Add Comment
           </button>
         }
@@ -32,6 +32,7 @@
             (openReply)="openReplyBox($event)"
             (cancelReply)="cancelReply($event)"
             (saveReply)="saveReply($event)"
+            (delete)="deleteComment($event)"
           ></app-comment-item>
         </ng-container>
       }

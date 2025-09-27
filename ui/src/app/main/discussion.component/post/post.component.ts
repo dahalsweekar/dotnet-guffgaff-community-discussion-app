@@ -109,6 +109,8 @@ export class PostComponent implements OnInit{
     Picture: ''
   }
 
+  isEditMode: string = '';
+
   constructor(private postServices: PostServices,
      private dialogServices: DialogBoxServices,
       private pageServices: PageServices,
@@ -119,8 +121,10 @@ export class PostComponent implements OnInit{
   }
 
   ngOnInit(){
+    
     this.currentUser.Email = this.localStorage.getSession('UserID');
     this.currentPostId = this.localStorage.getSession('PostID');
+    this.isEditMode = this.localStorage.getSession('PostEditMode');
     if (this.currentPostId !== '0')
       this.setPost();
   }
@@ -160,19 +164,35 @@ export class PostComponent implements OnInit{
   putPost(): void{
     if (this.validatePost()){
       this.post.Owner = this.currentUser?.Email ?? '';
-      this.postServices.putPostfn(this.post).subscribe({
-      next: (response) => {
-        this.dialogServices.showInfo('Information', 'Post successful.')
-        .afterClosed()
-        .subscribe(() => {
-          this.localStorage.storeSession('PostID', response.Data.PostId);
-          this.pageServices.reloadComponent('discussion');
-        })
-      },
-      error: (error) => {
-        this.dialogServices.showError('Failed', 'Failed to save post.');
+      if (!this.isEditMode){
+        this.postServices.putPostfn(this.post).subscribe({
+              next: (response) => {
+                this.dialogServices.showInfo('Information', 'Post successful.')
+                .afterClosed()
+                .subscribe(() => {
+                  this.localStorage.storeSession('PostID', response.Data.PostId);
+                  this.pageServices.reloadComponent('discussion');
+                })
+              },
+              error: (error) => {
+                this.dialogServices.showError('Failed', 'Failed to save post.');
+              }
+            });
+      }else{
+        this.postServices.updatePostfn(this.post).subscribe({
+          next:(response) => {
+            this.dialogServices.showInfo('Information', 'Post updated')
+            .afterClosed()
+            .subscribe(() => {
+              this.localStorage.deleteSession('PostEditMode');
+              this.pageServices.reloadComponent('discussion');
+            })
+          },
+          error: (error) => {
+            this.dialogServices.showError('Failed', 'Failed to update post.');
+          }
+        });
       }
-    });
     }
   }
 
@@ -193,5 +213,30 @@ export class PostComponent implements OnInit{
     else{
       this.router.navigateByUrl('/oauth');
     }
+  }
+
+  onEditClick(post: PostModel): void{
+    this.localStorage.storeSession('PostEditMode', 'True');
+    this.pageServices.reloadComponent('/discussion');
+  }
+
+  onDeleteClick(post: PostModel): void{
+    this.dialogServices.showInfo('Confirmation', 'Do you really want to delete this post?', true)
+    .afterClosed()
+    .subscribe(confirmation => {
+      if (confirmation === true){
+        this.postServices.deletePostfn(post).subscribe({
+          next:(response) => {
+            this.dialogServices.showValidation('Success', 'Post deleted successfully.');
+            this.pageServices.reloadComponent('discussion');
+          },
+          error: (error) => {
+            this.dialogServices.showError('Failed', 'Unable to delete this post.');
+          }
+        });
+      }else{
+
+      }
+    });
   }
 }

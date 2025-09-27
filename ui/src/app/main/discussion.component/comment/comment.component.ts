@@ -13,6 +13,7 @@ import { CommentItemComponent } from '../comment-item/comment-item';
 import { CommentServices } from '../../../services/comment.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 import { LocalStorage } from '../../../services/localStorage.services';
+import { PageServices } from '../../../services/page.services';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class CommentsComponent implements OnInit {
   nextId: number = 0;
 
   newCommentText = '';
+  editCommentId: number = 0;
   replyTextByComment: { [commentId: number]: string } = {};
   replyBoxOpenFor: Set<number> = new Set<number>();
   topLevelBoxOpen = false;
@@ -37,8 +39,9 @@ export class CommentsComponent implements OnInit {
   IsCommentVisible: boolean = false;
 
   flatComments: CommentModel[] = [];
+  isEditMode: boolean = false;
 
-  constructor(private commentServices: CommentServices, private router: Router, private dialogServices: DialogBoxServices, private localStorage: LocalStorage) { }
+  constructor(private commentServices: CommentServices, private router: Router, private dialogServices: DialogBoxServices, private localStorage: LocalStorage, private pageServices: PageServices) { }
 
   ngOnInit(): void 
   {
@@ -104,39 +107,40 @@ export class CommentsComponent implements OnInit {
       }
 
 
-  openNewCommentBox(): void {
+  openNewCommentBox(commentText: string, commentId: number): void {
     this.topLevelBoxOpen = true;
-    this.newCommentText = '';
+    this.newCommentText = commentText;
+    this.editCommentId = commentId;
   }
 
   saveNewComment(): void {
     const text = this.newCommentText.trim();
     if (!text) { return; }
-    this.setNextID();
-    const comment: CommentModel = {
-      PostId: this.postId,
-      UserId: this.userId,
-      CommentId: this.nextId,
-      ParentId: null,
-      UpVotes: 0,
-      DownVotes: 0,
-      CommentDescription: text,
-      Replies: []
-    };
-    this.commentServices.saveCommentfn(comment).subscribe({
-      next: (response) => {
-        if (response._isSuccess){
-          this.comments.push(comment);
+      this.setNextID();
+      const comment: CommentModel = {
+        PostId: this.postId,
+        UserId: this.userId,
+        CommentId: this.nextId,
+        ParentId: null,
+        UpVotes: 0,
+        DownVotes: 0,
+        CommentDescription: text,
+        Replies: []
+      };
+      this.commentServices.saveCommentfn(comment).subscribe({
+        next: (response) => {
+          if (response._isSuccess){
+            this.comments.push(comment);
+            this.newCommentText = '';
+            this.topLevelBoxOpen = false;
+          }
+        },
+        error: (error) => {
+          this.dialogServices.showError("Failed", "Could not add comment.");
           this.newCommentText = '';
           this.topLevelBoxOpen = false;
         }
-      },
-      error: (error) => {
-        this.dialogServices.showError("Failed", "Could not add comment.");
-        this.newCommentText = '';
-        this.topLevelBoxOpen = false;
-      }
-    });
+      });
     this.cancelNewComment();
   }
 
@@ -145,9 +149,9 @@ export class CommentsComponent implements OnInit {
     this.newCommentText = '';
   }
 
-  openReplyBox(commentId: number): void {
-    this.replyBoxOpenFor.add(commentId);
-    this.replyTextByComment[commentId] = '';
+  openReplyBox(comment: CommentModel): void {
+    this.replyBoxOpenFor.add(comment.CommentId);
+    this.replyTextByComment[comment.CommentId] = '';
   }
 
   cancelReply(commentId: number): void {
@@ -158,24 +162,81 @@ export class CommentsComponent implements OnInit {
   saveReply(parent: CommentModel): void {
     const text = (this.replyTextByComment[parent.CommentId] || '').trim();
     if (!text) { return; }
-    this.setNextID();
-    const reply: CommentModel = {
-      PostId: this.postId,
-      UserId: this.userId,
-      CommentId: this.nextId,
-      ParentId: parent.CommentId,
-      CommentDescription: text,
-      Replies: []
-    };
-    this.commentServices.saveReplyfn(reply).subscribe({
-      next: (response) => {
-        parent.Replies?.push(reply);
-      },
-      error: (error) => {
-        this.dialogServices.showError('Failed', 'Unable to save reply.');
-      }
-    })
+    if (!parent.localIsEditing){
+      this.setNextID();
+      const reply: CommentModel = {
+        PostId: this.postId,
+        UserId: this.userId,
+        CommentId: this.nextId,
+        ParentId: parent.CommentId,
+        CommentDescription: text,
+        Replies: []
+      };
+      this.commentServices.saveReplyfn(reply).subscribe({
+        next: (response) => {
+          parent.Replies?.push(reply);
+        },
+        error: (error) => {
+          this.dialogServices.showError('Failed', 'Unable to save reply.');
+        }
+      });
+    }
+    else{
+      const reply: CommentModel = {
+        PostId: this.postId,
+        UserId: this.userId,
+        CommentId: parent.CommentId,
+        ParentId: parent.CommentId,
+        CommentDescription: text,
+        Replies: []
+      };
+      this.commentServices.updateCommentfn(reply).subscribe({
+        next: (response) => {
+          this.pageServices.reloadComponent('discussion');
+        },
+        error: (error) => {
+          this.dialogServices.showError('Failed', 'Unable to update comment');
+        }
+      });
+    }
     this.cancelReply(parent.CommentId);
+  }
+
+  editComment(parent: CommentModel): void{
+    this.isEditMode = true;
+    this.openNewCommentBox(parent.CommentDescription, parent.CommentId);
+  }
+
+  deleteComment(parent: CommentModel): void{
+    this.dialogServices.showInfo('Confirmation', 'Do you really want to delete this comment?', true)
+    .afterClosed()
+    .subscribe(confirmation => {
+      if (confirmation === true){
+          const comment: CommentModel = {
+          PostId: this.postId,
+          UserId: this.userId,
+          CommentId: parent.CommentId,
+          ParentId: parent.CommentId,
+          CommentDescription: parent.CommentDescription,
+          Replies: []
+        };
+        this.commentServices.deleteCommentfn(comment).subscribe({
+          next: (response) => {
+            this.dialogServices.showInfo('Success', 'Comment removed.')
+            .afterClosed()
+            .subscribe(() => {
+              this.pageServices.reloadComponent('discussion');
+            });
+          },
+          error: (error) => {
+            this.dialogServices.showError('Failed', 'Could not remove this comment');
+          }
+        });
+      }
+      else{
+
+      }
+    });
   }
 
   buildCommentTree(flatComments: CommentModel[]): CommentModel[] {

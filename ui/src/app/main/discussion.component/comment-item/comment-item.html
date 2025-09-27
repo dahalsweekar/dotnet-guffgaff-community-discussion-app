@@ -11,11 +11,25 @@
       <div class="vote-count"> {{ comment.DownVotes !== 0 ? '-' + comment.DownVotes : comment.DownVotes }} </div>
     </div>
     <div class="comment-box">
+      <span style="font-style: italic; color: #888; font-size: 0.9rem">{{comment.IsRemoved == true ? '[Deleted]': ''}}</span>
+      <span style="font-style: italic; color: #888; font-size: 0.9rem">{{comment.IsRemoved == false && comment.IsEdited == true ? '[Edited]': ''}}</span>
       <p class="post-meta">
         Commented by u/{{ comment.UserId }} • {{ comment.CommentDate ? (comment.CommentDate | timeAgo) : 'Not posted' }}
       </p>
-      <p class="comment-text">{{comment.CommentDescription}}</p>
-      <button mat-stroked-button color="primary" (click)="onReplyClick()">Reply</button>
+      @if(comment.IsRemoved){
+        <p class="comment-text" style="font-style: italic; color: #888;">This comment has been removed by its owner.</p>
+      }
+      @else {
+        <p class="comment-text">{{comment.CommentDescription}}</p>
+      }
+      @if(comment.UserId == this.currentUser && comment.IsRemoved === false){
+        <button mat-flat-button color="primary" style="margin:2px;" (click)="onReplyClick('EditMode')">Edit</button>
+        <button mat-stroked-button color="primary" style="margin:2px;" (click)="onDeleteClick()">Delete</button>
+      }
+      @else{
+        <button mat-stroked-button color="primary" (click)="onReplyClick('')">Reply</button>
+      }
+
     </div>
   </div>
 

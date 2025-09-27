@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, model } from '@angular/core';
 import { CommentModel } from '../../../models/commentVM';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -22,14 +22,15 @@ import { VoteModel } from '../../../models/voteVM';
   templateUrl: './comment-item.html',
   styleUrls: ['./comment-item.scss']
 })
-export class CommentItemComponent {
+export class CommentItemComponent implements OnInit {
   @Input() comment!: CommentModel;
   @Input() replyBoxOpenFor!: Set<number>;
   @Input() replyTextByComment!: { [id: number]: string };
 
-  @Output() openReply = new EventEmitter<number>();
+  @Output() openReply = new EventEmitter<CommentModel>();
   @Output() cancelReply = new EventEmitter<number>();
   @Output() saveReply = new EventEmitter<CommentModel>();
+  @Output() delete = new EventEmitter<CommentModel>();
 
   vote: VoteModel = {
       Owner: '',
@@ -37,13 +38,26 @@ export class CommentItemComponent {
       PostId: '0',
       UpVote: true
     }
-
+  
+  currentUser: string = ''
+  currentPostID: string = ''
+  
   constructor(private commentServices: CommentServices, 
     private localStorage: LocalStorage, 
     private dialogServices:DialogBoxServices,
     private router: Router){}
-  onReplyClick(): void {
-    this.openReply.emit(this.comment.CommentId);
+
+  ngOnInit(): void {
+    this.currentUser = this.localStorage.getSession('UserID');
+    this.currentPostID = this.localStorage.getSession('PostID');
+  }
+
+  onReplyClick(Mode: string): void {
+    if(Mode == 'EditMode')
+      this.comment.localIsEditing = true;
+    else
+      this.comment.localIsEditing = false;
+    this.openReply.emit(this.comment);
   }
 
   onCancelReply(): void {
@@ -55,10 +69,10 @@ export class CommentItemComponent {
   }
 
   updateVote(val: number, commentId: number): void{
-    if (this.localStorage.getSession('UserID') !== null){
+    if (this.currentUser !== ''){
       this.vote.UpVote = val == 1 ? true: false;
-      this.vote.Owner = this.localStorage.getSession('UserID');
-      this.vote.PostId = this.localStorage.getSession('PostID');
+      this.vote.Owner = this.currentUser;
+      this.vote.PostId = this.currentPostID;
       this.vote.CommentId = commentId;
       this.commentServices.updateVoteCommentfn(this.vote).subscribe({
         next: (response) => {
@@ -72,5 +86,9 @@ export class CommentItemComponent {
     else{
       this.router.navigateByUrl('/oauth');
     }
+  }
+
+  onDeleteClick(): void{
+    this.delete.emit(this.comment);
   }
 }

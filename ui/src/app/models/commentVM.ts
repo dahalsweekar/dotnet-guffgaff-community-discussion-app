@@ -8,4 +8,7 @@ export interface CommentModel {
     CommentDescription: string;
     Replies?: CommentModel[];
     CommentDate?: string;
+    IsRemoved?: boolean,
+    IsEdited?: boolean
+    localIsEditing?: boolean
 }

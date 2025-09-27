@@ -18,7 +18,12 @@
                             <h3>{{feed.Title}}</h3>
                         </div>
                         <div class="feed-brief">
-                            <p [innerHTML]="feed.Description"></p>
+                            @if(feed.IsRemoved){
+                                <p style="font-style: italic;color:#888"> This post has already been removed by its owner. </p>
+                            }
+                            @else {
+                                <p [innerHTML]="feed.Description"></p>
+                            }
                         </div>
                         <div class="feed-footer">
                             <span style="margin: 2px;"><mat-icon>arrow_upward</mat-icon> {{feed.UpVotes}}</span>

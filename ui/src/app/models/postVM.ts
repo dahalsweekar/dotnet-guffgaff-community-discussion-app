@@ -7,5 +7,7 @@ export interface PostModel{
     DownVotes: number,
     Comments?: number,
     Category?: string,
-    PostedDate?: string
+    PostedDate?: string,
+    IsRemoved?: boolean,
+    IsEdited?: boolean
 }
