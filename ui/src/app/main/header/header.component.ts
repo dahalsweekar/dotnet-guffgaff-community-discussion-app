@@ -9,6 +9,7 @@ import { AuthService } from '../../auth/auth.services';
 import { UserService } from '../../services/user.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 import { PageServices } from '../../services/page.services';
+import { RefreshService } from '../../services/refresh.services';
 
 import { MatButtonModule } from '@angular/material/button';
 import { LoginBox } from '../../auth/login-box/login-box';
@@ -32,14 +33,17 @@ export class HeaderComponent implements OnInit, OnDestroy{
     private pageServices: PageServices,
     private dialog: MatDialog,
     private localStorage: LocalStorage,
-    private router: Router
+    private router: Router,
+    private refreshService: RefreshService
    ) {}
 
   async ngOnInit(): Promise<void> {
-    this.refreshHeader();
+    this.subscriber = this.refreshService.refreshB$.subscribe(() => {
+      this.refresh();
+    });
   }
 
-  refreshHeader() {
+  refresh() {
     console.log('Header is being refreshed!');
     const token = this.localStorage.getSession('Token');
     this.isLoggedIn = !!token;
@@ -61,7 +65,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
       height: '350px'
     });
     dialog.afterClosed().subscribe(() => {
-        this.refreshHeader();
+        this.refresh();
         this.pageServices.reloadComponent('/feed');
     });
   }
@@ -71,7 +75,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
     .afterClosed()
     .subscribe(() =>{
       this.localStorage.deleteAllSession(['Token', 'UserDetails', 'UserID', 'PostID', 'PostEditMode']);
-      this.refreshHeader();
+      this.refresh();
       this.pageServices.reloadComponent('/feed');
     })
   }
