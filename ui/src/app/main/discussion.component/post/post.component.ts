@@ -167,7 +167,7 @@ export class PostComponent implements OnInit{
       if (!this.isEditMode){
         this.postServices.putPostfn(this.post).subscribe({
               next: (response) => {
-                this.dialogServices.showInfo('Information', 'Post successful.')
+                this.dialogServices.showValidation('Information', 'Post successful.')
                 .afterClosed()
                 .subscribe(() => {
                   this.localStorage.storeSession('PostID', response.Data.PostId);
@@ -181,7 +181,7 @@ export class PostComponent implements OnInit{
       }else{
         this.postServices.updatePostfn(this.post).subscribe({
           next:(response) => {
-            this.dialogServices.showInfo('Information', 'Post updated')
+            this.dialogServices.showValidation('Information', 'Post updated')
             .afterClosed()
             .subscribe(() => {
               this.localStorage.deleteSession('PostEditMode');
@@ -203,7 +203,11 @@ export class PostComponent implements OnInit{
       this.vote.PostId = this.currentPostId;
       this.postServices.updateVotefn(this.vote).subscribe({
         next: (response) => {
-          this.dialogServices.showInfo('Success', 'Vote successful.');
+          this.dialogServices.showValidation('Success', 'Vote successful.')
+          .afterClosed()
+          .subscribe(()=>{
+            this.pageServices.reloadComponent('discussion');
+          });
         },
         error: (error) => {
           this.dialogServices.showError('Failed', 'Unable to update vote');

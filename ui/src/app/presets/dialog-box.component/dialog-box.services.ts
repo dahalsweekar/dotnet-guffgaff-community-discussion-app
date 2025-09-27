@@ -31,7 +31,7 @@ showError(title:string, message:string, confirmText: string = "Ok", cancelText: 
    showValidation(title:string, message:string, confirmText: string = "Ok", cancelText: string = "Cancel", showCancel: boolean = false) {
 
     const data: DialogData = {
-      type: 'validation',
+      type: 'success',
       title: title,
       message: message,
       confirmText: confirmText,
@@ -51,7 +51,7 @@ showError(title:string, message:string, confirmText: string = "Ok", cancelText: 
   showInfo(title:string, message:string, showCancel: boolean = true, confirmText: string = "Ok", cancelText: string = "Cancel") {
 
     const data: DialogData = {
-      type: 'success',
+      type: 'validation',
       title: title,
       message: message,
       confirmText: confirmText,
