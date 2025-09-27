@@ -65,7 +65,7 @@
           </div>
           <div class="row-3">
           @if (post.Owner == currentUser.Email && post.IsRemoved == false){
-            <div class="button-container">
+            <div class="button-container" style="margin-left: 50px;">
               <button mat-flat-button color="primary" style="margin:2px;" (click)="onEditClick(post)">Edit</button>
               <button mat-stroked-button color="primary" style="margin:2px;" (click)="onDeleteClick(post)">Delete</button>
             </div>

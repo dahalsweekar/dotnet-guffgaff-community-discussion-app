@@ -49,7 +49,7 @@ namespace GuffGaff.Services.Services
             try
             {
                 var postId = Guid.Parse(Convert.ToString(vote.PostId));
-                bool doContinue = false;
+                bool doContinue = true;
 
                 var votedPost = await _dbContext.Posts
                     .Where(x => x.PostId == postId && x.IsRemoved == false)
@@ -57,26 +57,26 @@ namespace GuffGaff.Services.Services
 
                 if (votedPost != null)
                 {
-                    var alreadyVoted = await _dbContext.Votes.Where(x => x.PostId == vote.PostId && x.Voter == vote.Voter && x.Owner == vote.Owner).FirstOrDefaultAsync();
+                    var alreadyVoted = await _dbContext.Votes.Where(x => x.PostId == vote.PostId && x.Voter == vote.Voter).FirstOrDefaultAsync();
                     if (alreadyVoted != null)
                     {
                         if (alreadyVoted.UpVote && vote.UpVote)
                         {
                             votedPost.UpVotes--;
+                            doContinue = false;
                         }
                         else if (!alreadyVoted.UpVote && !vote.UpVote)
                         {
                             votedPost.DownVotes--;
+                            doContinue = false;
                         }
                         else if (alreadyVoted.UpVote && !vote.UpVote)
                         {
                             votedPost.UpVotes--;
-                            doContinue = true;
                         }
                         else
                         {
                             votedPost.DownVotes--;
-                            doContinue = true;
                         }
                         _dbContext.Votes.Remove(alreadyVoted);
                     }

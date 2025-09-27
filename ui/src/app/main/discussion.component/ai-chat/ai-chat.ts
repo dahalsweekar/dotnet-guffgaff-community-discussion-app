@@ -22,7 +22,7 @@ export class AiChatComponent implements OnInit{
   constructor(private cdr: ChangeDetectorRef){}
 
   ngOnInit(): void {
-    this.chatHistory.push({ sender: 'Kalu', message: 'Hello, my name is Kalu. How can I help you today?' });
+    this.chatHistory.push({ sender: 'AI', message: 'Hello, How can I help you today?' });
   }
 
   async sendMessage() {
