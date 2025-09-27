@@ -7,5 +7,7 @@ namespace GuffGaff.Services.Interfaces
         public Task<List<ResponseModelTask<List<Post>>>> GetTrendingPosts();
         public Task<ResponseModelTask<List<string>>> GetCategories();
         public List<RankedPost> RankPosts(List<Post> posts);
+        public Task<ResponseModelTask<List<Notification>>> CheckNotifications(User user);
+        public Task<ResponseModel> UpdateNotificationStatus(Notification notice);
     }
 }

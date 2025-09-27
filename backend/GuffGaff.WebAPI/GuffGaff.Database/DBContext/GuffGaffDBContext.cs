@@ -13,6 +13,7 @@ namespace GuffGaff.Database.DBContext
         public DbSet<User> Users { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Token> Tokens { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

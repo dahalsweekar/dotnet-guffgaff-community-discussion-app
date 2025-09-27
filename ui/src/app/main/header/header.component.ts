@@ -12,11 +12,13 @@ import { PageServices } from '../../services/page.services';
 import { RefreshService } from '../../services/refresh.services';
 
 import { MatButtonModule } from '@angular/material/button';
+import {MatMenuModule} from '@angular/material/menu';
 import { LoginBox } from '../../auth/login-box/login-box';
+import { NotificationModel } from '../../models/notificationVM';
 
 @Component({
   selector: 'app-header',
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, MatMenuModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -25,6 +27,8 @@ export class HeaderComponent implements OnInit, OnDestroy{
   private subscriber!: Subscription
   isLoggedIn: boolean = false;
   user: UserModel | null = null;
+  notificationCount: number = 0;
+  notificationList: NotificationModel[] = [];
 
   constructor(
     private authService: AuthService, 
@@ -34,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
     private dialog: MatDialog,
     private localStorage: LocalStorage,
     private router: Router,
-    private refreshService: RefreshService
+    private refreshService: RefreshService,
    ) {}
 
   async ngOnInit(): Promise<void> {
@@ -52,11 +56,36 @@ export class HeaderComponent implements OnInit, OnDestroy{
       if (userDetailsJson !== ""){
         this.user = JSON.parse(userDetailsJson);
         this.localStorage.storeSession('UserID', this.user?.Email ?? "")
+        this.checkNotification();
       }
       else{
         this.user = null;
       }
     }
+  }
+
+  checkNotification(){
+      this.userService.checkNotificationsfn(this.user).subscribe({
+        next:(response) => {
+          this.notificationList = response.Data;
+          this.notificationCount = this.notificationList.length;
+        },
+        error:(error) => {
+          this.dialogService.showError('Error', error._message);
+        }
+      })
+  }
+
+  goToNotification(notice: NotificationModel): void{
+    this.userService.updateNotificationStatusfn(notice).subscribe({
+      next: (response) => {
+        this.localStorage.storeSession('PostID', notice.ActionPostId);
+        this.router.navigateByUrl('/discussion');  
+      },
+      error: (error) => {
+        this.dialogService.showError('Failed', 'Unable to navigate to the post.');
+      }
+    })
   }
 
   login(): void {
