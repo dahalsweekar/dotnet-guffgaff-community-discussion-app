@@ -203,7 +203,7 @@ export class PostComponent implements OnInit{
       this.vote.PostId = this.currentPostId;
       this.postServices.updateVotefn(this.vote).subscribe({
         next: (response) => {
-          this.dialogServices.showValidation('Success', 'Vote successful.')
+          this.dialogServices.showValidation('Success', response._message)
           .afterClosed()
           .subscribe(()=>{
             this.pageServices.reloadComponent('discussion');
