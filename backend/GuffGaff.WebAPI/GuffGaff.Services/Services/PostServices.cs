@@ -93,9 +93,9 @@ namespace GuffGaff.Services.Services
                     }
 
                     await _dbContext.SaveChangesAsync();
-                    return new ResponseModel(true, "Success");
+                    return new ResponseModel(true, "Vote Successful.");
                 }
-                return new ResponseModel(true, "No post found.");
+                return new ResponseModel(true, "This post has already been removed.");
             }
             catch (Exception ex)
             {

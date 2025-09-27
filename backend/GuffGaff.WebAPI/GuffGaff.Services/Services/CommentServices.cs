@@ -79,7 +79,7 @@ namespace GuffGaff.Services.Services
                 bool doContinue = true;
 
                 var votedComment = await _dbContext.Comments
-                    .Where(x => x.CommentId == vote.CommentId && x.PostId == vote.PostId)
+                    .Where(x => x.CommentId == vote.CommentId && x.PostId == vote.PostId && x.IsRemoved == false)
                     .FirstOrDefaultAsync();
 
                 if (votedComment != null)
@@ -121,12 +121,12 @@ namespace GuffGaff.Services.Services
                     }
 
                     await _dbContext.SaveChangesAsync();
-                    return new ResponseModel(true, "Success");
+                    return new ResponseModel(true, "Vote Successful.");
                 }
                 else
                 {
                     var votedReply = await _dbContext.Replies
-                    .Where(x => x.CommentId == vote.CommentId && x.PostId == vote.PostId)
+                    .Where(x => x.CommentId == vote.CommentId && x.PostId == vote.PostId && x.IsRemoved == false)
                     .FirstOrDefaultAsync();
 
                     if (votedReply != null)
@@ -168,10 +168,10 @@ namespace GuffGaff.Services.Services
                         }
 
                         await _dbContext.SaveChangesAsync();
-                        return new ResponseModel(true, "Success");
+                        return new ResponseModel(true, "Vote Successful.");
                     }
                 }
-                return new ResponseModel(true, "No post found.");
+                return new ResponseModel(true, "This comment has already been removed.");
             }
             catch (Exception ex)
             {

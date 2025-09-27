@@ -2,16 +2,19 @@ import { Component, Input, Output, EventEmitter, OnInit, model } from '@angular/
 import { CommentModel } from '../../../models/commentVM';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
+import { LoginBox } from '../../../auth/login-box/login-box';
 import { CommentServices } from '../../../services/comment.services';
 import { LocalStorage } from '../../../services/localStorage.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
+import { PageServices } from '../../../services/page.services';
+import { RefreshService } from '../../../services/refresh.services';
 import { TimeAgoPipe } from '../../../services/time-ago/time-ago-pipe';
 
 import { VoteModel } from '../../../models/voteVM';
@@ -45,7 +48,9 @@ export class CommentItemComponent implements OnInit {
   constructor(private commentServices: CommentServices, 
     private localStorage: LocalStorage, 
     private dialogServices:DialogBoxServices,
-    private router: Router){}
+    private pageServices: PageServices,
+    private refreshServices: RefreshService,
+    private dialog: MatDialog,){}
 
   ngOnInit(): void {
     this.currentUser = this.localStorage.getSession('UserID');
@@ -76,7 +81,11 @@ export class CommentItemComponent implements OnInit {
       this.vote.CommentId = commentId;
       this.commentServices.updateVoteCommentfn(this.vote).subscribe({
         next: (response) => {
-          this.dialogServices.showValidation('Success', 'Vote successful.');
+          this.dialogServices.showValidation('Success', response._message)
+          .afterClosed()
+          .subscribe(() => {
+            this.pageServices.reloadComponent('discussion');
+          });
         },
         error: (error) => {
           this.dialogServices.showError('Failed', 'Unable to update vote');
@@ -84,7 +93,14 @@ export class CommentItemComponent implements OnInit {
       });
     }
     else{
-      this.router.navigateByUrl('/oauth');
+      const dialog = this.dialog.open(LoginBox, {
+            width: '300px',
+            height: '350px'
+          });
+          dialog.afterClosed().subscribe(() => {
+              this.refreshServices.triggerRefreshB();
+              this.pageServices.reloadComponent('discussion');
+          });
     }
   }
 
