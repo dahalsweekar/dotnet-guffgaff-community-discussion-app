@@ -12,6 +12,7 @@ import { UserModel } from '../../models/userVM';
 import { AuthService } from '../auth.services';
 import { UserService } from '../../services/user.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
+import { RefreshService } from '../../services/refresh.services';
 
 @Component({
   selector: 'app-create-profile',
@@ -37,7 +38,8 @@ export class CreateProfile implements OnInit{
     private router: Router, 
     private userService:UserService, 
     private localStorage: LocalStorage,
-    private cdr: ChangeDetectorRef){
+    private cdr: ChangeDetectorRef,
+    private refreshService: RefreshService){
 
   }
 
@@ -117,9 +119,9 @@ export class CreateProfile implements OnInit{
                 this.dialogServices.showValidation('Success', 'You are logged in.')
                 .afterClosed()
                 .subscribe(() => {
-                  
                   this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
                   this.localStorage.storeSession('Token', response.Token);
+                  this.refreshService.triggerRefreshB();
                   this.router.navigateByUrl('/feed');
                 })
               },
