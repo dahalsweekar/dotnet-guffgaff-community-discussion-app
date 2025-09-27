@@ -174,5 +174,111 @@ namespace GuffGaff.Services.Services
                 return new ResponseModel(false, "[Failed]: " + ex.Message);
             }
         }
+
+        public async Task<ResponseModel> DeleteCommentAsync(Comment comment)
+        {
+            try
+            {
+                var doesCommentExist = await _dbContext.Comments.Where(x => x.PostId == comment.PostId && x.CommentId == comment.CommentId).FirstOrDefaultAsync();
+                if (doesCommentExist != null)
+                {
+                    if (doesCommentExist.IsRemoved ?? false)
+                    {
+                        return new ResponseModel(true, "This post does not exist.");
+                    }
+                    else
+                    {
+                        doesCommentExist.IsRemoved = true;
+                        _dbContext.Comments.Update(doesCommentExist);
+                        await _dbContext.SaveChangesAsync();
+                        return new ResponseModel(true, "Post is removed.");
+                    }
+                }
+
+                return new ResponseModel(true, "This post does not exist.");
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> DeleteReplyAsync(Reply reply)
+        {
+            try
+            {
+                var doesReplyExist = await _dbContext.Replies.Where(x => x.PostId == reply.PostId && x.CommentId == reply.CommentId).FirstOrDefaultAsync();
+                if (doesReplyExist != null)
+                {
+                    if (doesReplyExist.IsRemoved ?? false)
+                    {
+                        return new ResponseModel(true, "This response does not exist.");
+                    }
+                    else
+                    {
+                        doesReplyExist.IsRemoved = true;
+                        _dbContext.Replies.Update(doesReplyExist);
+                        await _dbContext.SaveChangesAsync();
+                        return new ResponseModel(true, "Reponse is removed.");
+                    }
+                }
+
+                return new ResponseModel(true, "This repsonse does not exist.");
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> UpdateCommentAsync(Comment comment)
+        {
+            try
+            {
+                var commentToUpdate = await _dbContext.Comments.Where(x => x.PostId == comment.PostId && x.CommentId == comment.CommentId && x.IsRemoved != false).FirstOrDefaultAsync();
+                if (commentToUpdate != null)
+                {
+                    commentToUpdate.CommentDescription = comment.CommentDescription;
+                    commentToUpdate.CommentDate = DateTime.Now;
+                    commentToUpdate.IsEdited = true;
+
+                    await _dbContext.SaveChangesAsync();
+
+                    return new ResponseModel(true, "Comment updated.");
+                }
+
+                return new ResponseModel(true, "This comment is already removed.");
+
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> UpdateReplyAsync(Reply reply)
+        {
+            try
+            {
+                var replyToUpdate = await _dbContext.Replies.Where(x => x.PostId == reply.PostId && x.CommentId == reply.CommentId && x.IsRemoved != false).FirstOrDefaultAsync();
+                if (replyToUpdate != null)
+                {
+                    replyToUpdate.CommentDescription = reply.CommentDescription;
+                    replyToUpdate.CommentDate = DateTime.Now;
+                    replyToUpdate.IsEdited = true;
+
+                    await _dbContext.SaveChangesAsync();
+
+                    return new ResponseModel(true, "Comment updated.");
+                }
+
+                return new ResponseModel(true, "This comment is already removed.");
+
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
     }
 }

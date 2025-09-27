@@ -70,5 +70,61 @@ namespace GuffGaff.WebAPI.Controllers
                 return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
+
+        [HttpPost]
+        [Route($"{apiHelper.UpdateCommentAPI}")]
+        public async Task<IActionResult> UpdateCommentAsync([FromBody] Comment comment)
+        {
+            try
+            {
+                return Ok(await _commentServices.UpdateCommentAsync(comment));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.DeleteCommentAPI}")]
+        public async Task<IActionResult> DeleteCommentAsync([FromBody] Comment comment)
+        {
+            try
+            {
+                return Ok(await _commentServices.DeleteCommentAsync(comment));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.UpdateReplyAPI}")]
+        public async Task<IActionResult> UpdateReplyAsync([FromBody] Reply reply)
+        {
+            try
+            {
+                return Ok(await _commentServices.UpdateReplyAsync(reply));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.DeleteReplyAPI}")]
+        public async Task<IActionResult> DeleteReplyAsync([FromBody] Reply reply)
+        {
+            try
+            {
+                return Ok(await _commentServices.DeleteReplyAsync(reply));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
     }
 }

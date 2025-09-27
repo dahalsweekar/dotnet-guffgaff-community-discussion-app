@@ -69,5 +69,33 @@ namespace GuffGaff.WebAPI.Controllers
                 return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
+
+        [HttpPost]
+        [Route($"{apiHelper.UpdatePostAPI}")]
+        public async Task<IActionResult> UpdatePostAsync([FromBody] Post post)
+        {
+            try
+            {
+                return Ok(await _postServices.UpdatePostAsync(post));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.DeletePostAPI}")]
+        public async Task<IActionResult> DeletePostAsync([FromBody] Post post)
+        {
+            try
+            {
+                return Ok(await _postServices.DeletePostAsync(post));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
     }
 }
