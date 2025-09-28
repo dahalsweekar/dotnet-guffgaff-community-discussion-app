@@ -1,4 +1,4 @@
-using GuffGaff.Database.DBContext;
+﻿using GuffGaff.Database.DBContext;
 using GuffGaff.Services.Interfaces;
 using GuffGaff.Services.Services;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,9 @@ using WBpro.Services.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<GuffGaffDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostGreSQlConnection"))
+    .EnableSensitiveDataLogging()
+    .LogTo(Console.WriteLine));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

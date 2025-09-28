@@ -13,9 +13,9 @@ namespace GuffGaff.Database.DBContext
                 .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<GuffGaffDBContext>();
-            var connectionString = config.GetConnectionString("DefaultConnection");
+            var connectionString = config.GetConnectionString("PostGreSQlConnection");
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseNpgsql(connectionString);
 
             return new GuffGaffDBContext(optionsBuilder.Options);
         }
