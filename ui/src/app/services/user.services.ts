@@ -14,6 +14,9 @@ export class UserService{
     private checkNotificationsApi: string = '/api/checknotifications';
     private updateNotificationStatusApi: string = '/api/updatenotificationstatus';
     private validateUserNameApi: string = '/api/validateusername';
+    private sendEmailApi = '/api/sendemail'
+    private verifyotpApi = '/api/verifyotp'
+    private SaveNewPasswordApi = '/api/savenewpassword'
 
     constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){
 
@@ -37,5 +40,15 @@ export class UserService{
 
     validateUserNamefn(user: any): Observable<any>{
         return this.http.post(this.validateUserNameApi, user);
+    }
+
+      sendEmailfn(emailPackage: any): Observable<any>{
+        return this.http.post(this.sendEmailApi, emailPackage);
+    }
+    verifyOTPfn(otp: any): Observable<any>{
+        return this.http.post(this.verifyotpApi, otp);
+    }
+    saveNewPasswordfn(userDetail: any): Observable<any>{
+        return this.http.post(this.SaveNewPasswordApi, userDetail);
     }
 }

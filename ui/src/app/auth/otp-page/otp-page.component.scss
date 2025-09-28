@@ -1,0 +1,54 @@
+.card-container {
+  width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  height:235px;
+}
+
+.header{
+  height:40px;
+}
+
+.otp-continer{
+  margin-top:10px;
+  display: flex;
+  justify-content: center;
+}
+
+.otp-inputs {
+  display: flex;
+  gap: 6px;
+  margin-top:10px;
+  justify-content: center;
+}
+
+.otp-field {
+  width: 32px;
+}
+
+::ng-deep mat-form-field{
+  width: 45px;
+}
+
+.otp-box {
+  text-align: center;
+  font-size: 18px;
+  padding: 6px 0;
+  width: 32px;
+  height: 32px;
+}
+
+.timer {
+  text-align: center;
+  margin-top:10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.button-container{
+  margin-left:20px;
+}
+
+.note{
+  margin-left: 20px;
+}

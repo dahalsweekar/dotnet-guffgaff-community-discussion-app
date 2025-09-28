@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +13,7 @@ import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box
 import { PageServices } from '../../services/page.services';
 
 import { UserModel } from '../../models/userVM';
+import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-login-box',
@@ -32,6 +34,7 @@ export class LoginBox implements OnInit {
     private dialogServices: DialogBoxServices, 
     private dialogRef: MatDialogRef<LoginBox>,
     private localStorage: LocalStorage,
+    private dialog:MatDialog,
     private pageService: PageServices) {}
 
   async ngOnInit(): Promise<void> {
@@ -57,7 +60,7 @@ export class LoginBox implements OnInit {
       this.authServices.localLoginfn(this.user).subscribe({
         next: (response) => {
           if (response.ResponseDetails.Message == 'Success'){
-            this.dialogServices.showValidation('Success', 'You are logged in.')
+            this.dialogServices.showValidation('Success', 'Authentication successful.')
             .afterClosed()
             .subscribe(() => {
               this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
@@ -66,11 +69,11 @@ export class LoginBox implements OnInit {
             })
           }
           else{
-             this.dialogServices.showValidation('Failed', response.ResponseDetails.Message);
+             this.dialogServices.showError('Failed', response.ResponseDetails.Message);
           }
         },
         error: (error) => {
-          this.dialogServices.showValidation('Failed', 'Unable to login.');
+          this.dialogServices.showError('Failed', 'Unable to Login.');
         }
       })
     }
@@ -82,5 +85,12 @@ export class LoginBox implements OnInit {
 
   signup(): void{
     this.authServices.login();
+  }
+
+  openForgotPassword(): void{
+    this.dialog.open(ForgotPasswordComponent,{
+      width: '300px',
+      height: '200px'
+    });
   }
 }

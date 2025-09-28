@@ -2,15 +2,20 @@
 using GuffGaff.Database.Models;
 using GuffGaff.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 
 namespace GuffGaff.Services.Services
 {
     public class Miscellaneous : IMiscellaneous
     {
         private GuffGaffDBContext _dbContext;
-        public Miscellaneous(GuffGaffDBContext dBContext)
+        private readonly IConfiguration _configuration;
+        public Miscellaneous(GuffGaffDBContext dBContext, IConfiguration configuration)
         {
             _dbContext = dBContext;
+            _configuration = configuration;
         }
 
         public async Task<List<ResponseModelTask<List<Post>>>> GetTrendingPosts()
@@ -171,6 +176,143 @@ namespace GuffGaff.Services.Services
                 }
 
                 return new ResponseModel(true);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> SendEmailAsync(Email request)
+        {
+            try
+            {
+                var UserDetails = await _dbContext.Users.Where(x => x.Email == request.ToEmail).FirstOrDefaultAsync();
+
+                if (UserDetails != null)
+                {
+                    var res = await SendEmailforOTP(request, UserDetails);
+                    if (res._isSuccess)
+                    {
+                        await _dbContext.Emails.AddAsync(request);
+                        var dbResponse = await _dbContext.SaveChangesAsync();
+
+                        res._message = "Email Sent.";
+                    }
+                    return res as ResponseModel;
+                }
+                else
+                {
+                    return new ResponseModel(true, "User does not exist.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(true, "Faliure: " + ex.Message);
+            }
+
+        }
+        public async Task<ResponseModel> VerifyOTPAsync(Email otp)
+        {
+            try
+            {
+                bool otpExists = await _dbContext.Emails.AnyAsync(x => x.otp == otp.otp);
+                bool emailExists = await _dbContext.Emails.AnyAsync(x => x.ToEmail == otp.ToEmail);
+                return new ResponseModel(otpExists && emailExists);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false);
+            }
+
+        }
+
+        public async Task<ResponseModel> SendEmailforOTP(Email request, User UserDetails)
+        {
+            try
+            {
+                var emailSettings = _configuration.GetSection("EmailSettings");
+                var fromEmail = emailSettings["SenderEmail"];
+                var smtpClient = new SmtpClient(emailSettings["SmtpServer"])
+                {
+                    Port = int.Parse(emailSettings["SmtpPort"] ?? ""),
+                    Credentials = new NetworkCredential(emailSettings["Username"], emailSettings["Password"]),
+                    EnableSsl = true,
+                };
+                string mailComponent = createEmailBody(UserDetails, request);
+                request.Subject = mailComponent.Split("&&")[0];
+                request.Body = mailComponent.Split("&&")[1];
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(emailSettings["SenderEmail"]?.ToString() ?? "", emailSettings["SenderName"]),
+                    Subject = request.Subject,
+                    Body = request.Body,
+                    IsBodyHtml = true
+                };
+                mailMessage.To.Add(request.ToEmail);
+
+                var bodyBytes = Encoding.UTF8.GetBytes(request.Body);
+                var bodyStream = new MemoryStream(bodyBytes);
+
+                await smtpClient.SendMailAsync(mailMessage);
+                return new ResponseModel(true);
+            }
+
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public string createEmailBody(User cred, Email otp)
+        {
+            string Subject = "Reset Password";
+
+            string Body = $@"
+                <html>
+                <body style='font-family: Arial, sans-serif; font-size: 14px; color: #333;'>
+                    <p>Dear <strong>{cred.Name}</strong>,</p>
+
+                    <p>
+                        We have generated a <strong>One-Time Password (OTP)</strong> for you to verify your account:
+                    </p>
+
+                    <p style='font-size: 18px; font-weight: bold; color: #2c3e50;'>
+                        {otp.otp}
+                    </p>
+
+                    <p>
+                        If you did not request this, please ignore this email.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Best regards,<br>
+                        <strong>author99</strong>
+                    </p>
+                </body>
+                </html>
+            ";
+
+            return Subject + "&&" + Body;
+        }
+
+        public async Task<ResponseModel> SetNewPassword(User user)
+        {
+            try
+            {
+                var userDetails = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == user.Email);
+                if (userDetails != null)
+                {
+                    Hasher hashPassword = new Hasher();
+                    user.Password = hashPassword.hashPassword(user.Password);
+                    userDetails.Password = user.Password;
+                    await _dbContext.SaveChangesAsync();
+                }
+
+                return new ResponseModel(true, "Password changed");
             }
             catch (Exception ex)
             {

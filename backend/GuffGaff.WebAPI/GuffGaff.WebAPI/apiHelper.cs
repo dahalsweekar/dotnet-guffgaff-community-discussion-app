@@ -28,6 +28,9 @@
 
         public const string CheckNotifications = "api/checknotifications";
         public const string UpdateNotificationStatus = "api/updatenotificationstatus";
+        public const string SendEmail = "api/sendemail";
+        public const string VerifyOTP = "api/verifyotp";
+        public const string SaveNewPassword = "api/savenewpassword";
 
     }
 }
