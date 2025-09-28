@@ -16,15 +16,15 @@
             </mat-form-field>
             
         </div>
-        <div class="send-btn" style="margin: 5px; margin-top: 25px;">
-            <button mat-flat-button [disabled]="isLoading" (click)="sendMessage()">
+        <div class="send-btn" style="margin: 5px; margin-top: 15px;">
+            <button mat-flat-button [disabled]="isLoading" (click)="sendMessage()"><mat-icon>send</mat-icon>
                 @if (isLoading){
                     <ng-container>
                         <img src="assets/loading.gif" alt="Loading..." style="height: 25px; width: 25px;" />
                     </ng-container>
                 }
                 @else {
-                        {{ Status }}
+                    <ng-container><span>{{ Status }}</span></ng-container>
                 }
             </button>
         </div>

@@ -4,7 +4,7 @@
       <div class="card new-comment-card">
         @if(!topLevelBoxOpen){
           <button mat-stroked-button color="primary" (click)="openNewCommentBox('', 0)">
-            Add Comment
+            <mat-icon>add_comment</mat-icon> Add Comment
           </button>
         }
 
@@ -16,8 +16,8 @@
             </mat-form-field>
 
             <div class="form-buttons">
-              <button mat-flat-button color="primary" style="margin:2px;" (click)="saveNewComment()">Save</button>
-              <button mat-stroked-button color="warn" style="margin:2px;" (click)="cancelNewComment()">Cancel</button>
+              <button mat-flat-button color="primary" style="margin:2px;" (click)="saveNewComment()"><mat-icon>save_alt</mat-icon>Save</button>
+              <button mat-stroked-button color="warn" style="margin:2px;" (click)="cancelNewComment()"><mat-icon>cancel</mat-icon>Cancel</button>
             </div>
           </div>
         }

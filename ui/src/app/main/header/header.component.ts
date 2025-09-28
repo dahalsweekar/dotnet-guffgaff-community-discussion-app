@@ -12,13 +12,14 @@ import { PageServices } from '../../services/page.services';
 import { RefreshService } from '../../services/refresh.services';
 
 import { MatButtonModule } from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { LoginBox } from '../../auth/login-box/login-box';
 import { NotificationModel } from '../../models/notificationVM';
 
 @Component({
   selector: 'app-header',
-  imports: [MatButtonModule, MatMenuModule],
+  imports: [MatButtonModule, MatMenuModule, MatIconModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

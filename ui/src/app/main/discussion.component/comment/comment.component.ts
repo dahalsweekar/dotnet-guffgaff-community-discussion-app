@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { CommentItemComponent } from '../comment-item/comment-item';
 
@@ -18,7 +19,7 @@ import { PageServices } from '../../../services/page.services';
 
 @Component({
   selector: 'app-comments',
-  imports: [FormsModule, CommonModule, CommentItemComponent, MatFormFieldModule, MatButtonModule, MatInputModule],
+  imports: [FormsModule, CommonModule, CommentItemComponent, MatFormFieldModule, MatButtonModule, MatInputModule, MatIconModule],
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss']
 })
@@ -206,7 +207,6 @@ export class CommentsComponent implements OnInit {
   }
 
   deleteComment(parent: CommentModel): void{
-    debugger;
     this.dialogServices.showInfo('Confirmation', 'Do you really want to delete this comment?', true)
     .afterClosed()
     .subscribe(confirmation => {
