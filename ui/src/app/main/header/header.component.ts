@@ -16,6 +16,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { LoginBox } from '../../auth/login-box/login-box';
 import { NotificationModel } from '../../models/notificationVM';
+import { ForgotPasswordComponent } from '../../auth/forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-header',
@@ -129,4 +130,11 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   return 'email';
 }
+
+openForgotPassword(): void{
+    this.dialog.open(ForgotPasswordComponent,{
+      width: '300px',
+      height: '200px'
+    });
+  }
 }

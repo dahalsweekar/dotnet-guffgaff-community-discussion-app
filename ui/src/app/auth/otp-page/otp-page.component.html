@@ -1,0 +1,27 @@
+<div class="card-container" style="background-color: white;">
+  <div class="otp-continer">
+  <form [formGroup]="otpForm" (ngSubmit)="onSubmitOTP()">
+    <div class="note" style="margin-top:15px;margin-bottom:20px;margin-right: 20px;"><span>A one-time password (OTP) has been sent to your registered email address. Please check your inbox and enter the OTP below to proceed.</span></div>
+    <div class="otp-inputs">
+        <input *ngFor="let ctrl of otpControls; let i = index"
+          matInput
+          type="text"
+          maxlength="1"
+          class="otp-box"
+          [formControlName]="i"
+          (input)="onInput($event, i)"
+          style="width:40px; height: 40px;border:1px solid #888;border-radius: 10px;"
+        />
+    </div>
+    <div class="timer" style="font-size: 10px;">Time Remaining: {{totalTimeinMinutes }}</div>
+    <div class="button-container">
+      <button mat-flat-button color="primary" style="margin: 2px;" type="submit" [disabled]="otpForm.invalid">
+        Submit
+      </button>
+      <button mat-stroked-button color="primary" style="margin: 2px;" [disabled]="otpForm.invalid" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+  </div>
+</div>

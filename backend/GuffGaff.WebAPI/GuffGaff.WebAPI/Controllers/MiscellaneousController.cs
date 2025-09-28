@@ -67,5 +67,47 @@ namespace GuffGaff.WebAPI.Controllers
                 return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
+
+        [HttpPost]
+        [Route($"{apiHelper.SendEmail}")]
+        public async Task<IActionResult> SendEmail([FromBody] Email request)
+        {
+            try
+            {
+                return Ok(await _miscellaneous.SendEmailAsync(request));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.VerifyOTP}")]
+        public async Task<IActionResult> VerifyOTP([FromBody] Email otp)
+        {
+            try
+            {
+                return Ok(await _miscellaneous.VerifyOTPAsync(otp));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.SaveNewPassword}")]
+        public async Task<IActionResult> SaveNewPassword([FromBody] User user)
+        {
+            try
+            {
+                return Ok(await _miscellaneous.SetNewPassword(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
     }
 }

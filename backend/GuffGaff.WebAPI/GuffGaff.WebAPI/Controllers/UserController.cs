@@ -42,7 +42,7 @@ namespace GuffGaff.WebAPI.Controllers
                     var token = _jwtTokenHandler.GenerateToken(user.Email, "any");
                     return Ok(new { Token = token, ResponseDetails = isValid });
                 }
-                return Ok("Unauthorized Access");
+                return Ok(new { ResponseDetails = isValid });
             }
             catch (Exception ex)
             {

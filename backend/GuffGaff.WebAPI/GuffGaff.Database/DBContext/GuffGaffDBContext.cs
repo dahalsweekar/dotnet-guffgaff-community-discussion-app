@@ -14,6 +14,7 @@ namespace GuffGaff.Database.DBContext
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Token> Tokens { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Email> Emails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
