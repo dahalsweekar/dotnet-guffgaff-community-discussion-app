@@ -18,7 +18,7 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                comment.CommentDate = DateTime.Now;
+                comment.CommentDate = DateTime.UtcNow;
                 comment.IsEdited = false;
                 comment.IsRemoved = false;
                 var result = await _dbContext.Comments.AddAsync(comment);
@@ -31,7 +31,7 @@ namespace GuffGaff.Services.Services
                 notice.ActionPostId = comment.PostId;
                 notice.UserId = await _dbContext.Comments.Where(p => p.PostId == comment.PostId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
                 notice.ActionTaken = comment.UserId + " commented on your post.";
-                notice.ActionDate = DateTime.Now;
+                notice.ActionDate = DateTime.UtcNow;
                 notice.IsReadByUser = false;
 
                 if (comment.UserId != notice.UserId)
@@ -50,7 +50,7 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                reply.CommentDate = DateTime.Now;
+                reply.CommentDate = DateTime.UtcNow;
                 reply.IsRemoved = false;
                 reply.IsEdited = false;
                 var result = await _dbContext.Replies.AddAsync(reply);
@@ -65,7 +65,7 @@ namespace GuffGaff.Services.Services
                 if (string.IsNullOrEmpty(notice.UserId))
                     notice.UserId = await _dbContext.Comments.Where(p => p.PostId == reply.PostId && p.CommentId == reply.ParentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
                 notice.ActionTaken = reply.UserId + " replied to your comment.";
-                notice.ActionDate = DateTime.Now;
+                notice.ActionDate = DateTime.UtcNow;
                 notice.IsReadByUser = false;
 
                 if (reply.UserId != notice.UserId)
@@ -159,7 +159,7 @@ namespace GuffGaff.Services.Services
                                 notice.ActionTaken = vote.Voter + " downvoted your comment.";
                                 break;
                         }
-                        notice.ActionDate = DateTime.Now;
+                        notice.ActionDate = DateTime.UtcNow;
                         notice.IsReadByUser = false;
 
                         if (vote.Owner != notice.UserId)
@@ -225,7 +225,7 @@ namespace GuffGaff.Services.Services
                                     notice.ActionTaken = vote.Voter + " downvoted your comment.";
                                     break;
                             }
-                            notice.ActionDate = DateTime.Now;
+                            notice.ActionDate = DateTime.UtcNow;
                             notice.IsReadByUser = false;
 
                             if (vote.Owner != notice.UserId)
@@ -298,7 +298,7 @@ namespace GuffGaff.Services.Services
                 if (commentToUpdate != null)
                 {
                     commentToUpdate.CommentDescription = comment.CommentDescription;
-                    commentToUpdate.CommentDate = DateTime.Now;
+                    commentToUpdate.CommentDate = DateTime.UtcNow;
                     commentToUpdate.IsEdited = true;
                     commentToUpdate.IsRemoved = false;
 
@@ -312,7 +312,7 @@ namespace GuffGaff.Services.Services
                     if (replyToUpdate != null)
                     {
                         replyToUpdate.CommentDescription = comment.CommentDescription;
-                        replyToUpdate.CommentDate = DateTime.Now;
+                        replyToUpdate.CommentDate = DateTime.UtcNow;
                         replyToUpdate.IsEdited = true;
                         replyToUpdate.IsRemoved = false;
 

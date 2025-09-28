@@ -17,7 +17,7 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                post.PostedDate = DateTime.Now;
+                post.PostedDate = DateTime.UtcNow;
                 post.IsEdited = false;
                 post.IsRemoved = false;
                 var result = await _dbContext.Posts.AddAsync(post);
@@ -105,7 +105,7 @@ namespace GuffGaff.Services.Services
                                 notice.ActionTaken = vote.Voter + " downvoted your post.";
                                 break;
                         }
-                        notice.ActionDate = DateTime.Now;
+                        notice.ActionDate = DateTime.UtcNow;
                         notice.IsReadByUser = false;
 
                         if (vote.Voter != notice.UserId)
@@ -181,7 +181,7 @@ namespace GuffGaff.Services.Services
                     postToUpdate.Title = post.Title;
                     postToUpdate.Category = post.Category;
                     postToUpdate.Description = post.Description;
-                    postToUpdate.PostedDate = DateTime.Now;
+                    postToUpdate.PostedDate = DateTime.UtcNow;
                     postToUpdate.IsEdited = true;
 
                     await _dbContext.SaveChangesAsync();
