@@ -109,5 +109,47 @@ namespace GuffGaff.WebAPI.Controllers
                 return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
+
+        [HttpPost]
+        [Route($"{apiHelper.GenerateTokenAPI}")]
+        public async Task<IActionResult> GenerateTokenAsync([FromBody] User user)
+        {
+            try
+            {
+                return Ok(await _miscellaneous.GenerateTokenAsync(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.DeleteTokens}")]
+        public async Task<IActionResult> DeleteTokensAsync([FromBody] User user)
+        {
+            try
+            {
+                return Ok(await _miscellaneous.DeleteTokenAsync(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.GetUserIDfromToken}")]
+        public async Task<IActionResult> GetUserIDfromTokenAsync([FromBody] Token token)
+        {
+            try
+            {
+                return Ok(await _miscellaneous.GetUserIDfromTokenAsync(token));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
     }
 }

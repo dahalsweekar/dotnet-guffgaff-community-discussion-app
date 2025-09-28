@@ -14,9 +14,12 @@ export class UserService{
     private checkNotificationsApi: string = '/api/checknotifications';
     private updateNotificationStatusApi: string = '/api/updatenotificationstatus';
     private validateUserNameApi: string = '/api/validateusername';
-    private sendEmailApi = '/api/sendemail'
-    private verifyotpApi = '/api/verifyotp'
-    private SaveNewPasswordApi = '/api/savenewpassword'
+    private sendEmailApi: string = '/api/sendemail'
+    private verifyotpApi: string = '/api/verifyotp'
+    private SaveNewPasswordApi:string = '/api/savenewpassword'
+    private generateTokenforPasswordResetApi: string = '/api/generatetokenforpasswordreset';
+    private deleteTokens: string = '/api/deletetokens';
+    private getUserIDfromToken: string = '/api/getuseridfromtoken';
 
     constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: any){
 
@@ -50,5 +53,14 @@ export class UserService{
     }
     saveNewPasswordfn(userDetail: any): Observable<any>{
         return this.http.post(this.SaveNewPasswordApi, userDetail);
+    }
+    generateTokenforPasswordResetfn(userDetail: any): Observable<any>{
+        return this.http.post(this.generateTokenforPasswordResetApi, userDetail);
+    }
+    getUserIDfromTokenfn(token: string){
+        return this.http.post(this.getUserIDfromToken, {'TokenNo': token});
+    }
+    deleteTokensfn(token: any){
+        return this.http.post(this.deleteTokens, token);
     }
 }

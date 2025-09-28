@@ -4,7 +4,6 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -16,8 +15,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-
-import { Router } from '@angular/router';
 
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 
@@ -50,7 +47,6 @@ export class OtpPageComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private userServices:UserService,
-    private router: Router,
     private dialogServices: DialogBoxServices,
     private dialogRef: MatDialogRef<any>,
     private dialog:MatDialog
@@ -115,9 +111,8 @@ export class OtpPageComponent {
             .showInfo('Success', 'Verification Sucessful')
             .afterClosed()
             .subscribe(() => {
-              this.dialog.closeAll();
               clearInterval(this.timerInterval);
-              this.router.navigateByUrl('/newpassword');
+              this.dialogRef.close(this.otpPackage.ToEmail);
             });
         },
         error: (error) => {
@@ -136,7 +131,7 @@ export class OtpPageComponent {
   startTimer() {
     if (this.timerInterval) clearInterval(this.timerInterval);
 
-    this.timeRemaining = 820;
+    this.timeRemaining = 180;
     let temp = this.timeRemaining / 60;
     let seconds = 60;
 

@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.services';
@@ -38,17 +38,31 @@ export class NewPasswordComponent implements OnInit {
     Password: '',
   };
 
+  globalToken: string = ''
+
   constructor(
     private router: Router,
     private userServices: UserService,
     private dialogServices: DialogBoxServices,
-    private dialog: MatDialog
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    // this.passwordDetails.UserId = this.authenticationServices.getSession(
-    //   'UserIdforNewPassword'
-    // );
+    const token = this.route.snapshot.paramMap.get('token');
+    this.globalToken = token?.toString() ?? '';
+    this.getUserIDfromToken();
+  }
+
+  getUserIDfromToken(): void{
+    this.userServices.getUserIDfromTokenfn(this.globalToken).subscribe({
+      next: (response) => {
+        debugger;
+        this.passwordDetails.Email = response;
+      },
+      error: (error) => {
+        this.dialogServices.showError('Failed', 'There was an error while trying to get credentials.');
+      }
+    })
   }
 
   saveNewPassword() {
@@ -61,8 +75,18 @@ export class NewPasswordComponent implements OnInit {
             .showInfo('Success', resp._message)
             .afterClosed()
             .subscribe(() => {
-              //localStorage.removeItem('UserIdforNewPassword');
-              this.router.navigateByUrl('/feed');
+              this.userServices.deleteTokensfn({Email: this.passwordDetails.Email, TokenNo: this.globalToken}).subscribe({
+                next: (response) => {
+                  this.dialogServices.showValidation('Success', 'Password changed.')
+                  .afterClosed()
+                  .subscribe(() => {
+                     this.router.navigateByUrl('/feed');
+                  });
+                },
+                error: (error) => {
+                  this.dialogServices.showError('Error', 'Unable to clear session token.');
+                } 
+              });
             });
         },
         error: (error) => {

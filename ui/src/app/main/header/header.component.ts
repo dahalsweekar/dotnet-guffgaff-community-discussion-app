@@ -95,9 +95,24 @@ export class HeaderComponent implements OnInit, OnDestroy{
       width: '300px',
       height: '350px'
     });
-    dialog.afterClosed().subscribe(() => {
+    dialog.afterClosed().subscribe((response) => {
+      if (response == '0f115f4c-aedf-40bd-864c-0a28fe362fa7'){
         this.refresh();
         this.pageServices.reloadComponent('/feed');
+      }
+      else
+      {
+        //generatetoken and receive it. 
+        this.userService.generateTokenforPasswordResetfn(response).subscribe({
+          next: (response) => {
+            var token = response.Data.TokenNo;
+            this.router.navigate(['/newpassword', token]);
+          },
+          error: (error) => {
+            this.dialogService.showError('Failed', 'Something went wrong when trying to generate a token.');
+          }
+        });
+      }
     });
   }
 

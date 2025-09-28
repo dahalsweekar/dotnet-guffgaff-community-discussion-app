@@ -12,5 +12,8 @@ namespace GuffGaff.Services.Interfaces
         public Task<ResponseModel> SendEmailAsync(Email email);
         public Task<ResponseModel> VerifyOTPAsync(Email otp);
         public Task<ResponseModel> SetNewPassword(User user);
+        public Task<ResponseModel> DeleteTokenAsync(User user);
+        public Task<ResponseModelTask<Token>> GenerateTokenAsync(User user);
+        public Task<ResponseModelTask<string>> GetUserIDfromTokenAsync(Token token);
     }
 }
