@@ -14,7 +14,7 @@ export class PageServices{
         reloadComponent(url: string) {
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate([url]);
-       });
-     }
+          });
+        }
 
 }

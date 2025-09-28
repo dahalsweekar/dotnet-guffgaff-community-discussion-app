@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using WBpro.Services.Interfaces;
 
 namespace GuffGaff.Services.Services
 {
@@ -12,10 +13,12 @@ namespace GuffGaff.Services.Services
     {
         private GuffGaffDBContext _dbContext;
         private readonly IConfiguration _configuration;
-        public Miscellaneous(GuffGaffDBContext dBContext, IConfiguration configuration)
+        private readonly IJwtTokenHandler _jwtTokenHandler;
+        public Miscellaneous(GuffGaffDBContext dBContext, IConfiguration configuration, IJwtTokenHandler jwtTokenHandler)
         {
             _dbContext = dBContext;
             _configuration = configuration;
+            _jwtTokenHandler = jwtTokenHandler;
         }
 
         public async Task<List<ResponseModelTask<List<Post>>>> GetTrendingPosts()
@@ -317,6 +320,59 @@ namespace GuffGaff.Services.Services
             catch (Exception ex)
             {
                 return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public async Task<ResponseModelTask<Token>> GenerateTokenAsync(User user)
+        {
+            try
+            {
+                var token = _jwtTokenHandler.GenerateToken(user.Email, "any");
+                Token newToken = new Token();
+                newToken.Email = user.Email;
+                newToken.TokenNo = token;
+                await _dbContext.Tokens.AddAsync(newToken);
+                await _dbContext.SaveChangesAsync();
+                return new ResponseModelTask<Token>(newToken);
+
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModelTask<Token>(new Token(), ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> DeleteTokenAsync(User user)
+        {
+            try
+            {
+                var tokens = await _dbContext.Tokens
+                            .Where(t => t.Email == user.Email)
+                            .ToListAsync();
+                if (tokens.Any())
+                {
+                    _dbContext.Tokens.RemoveRange(tokens);
+                    await _dbContext.SaveChangesAsync();
+                }
+
+                return new ResponseModel(true);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public async Task<ResponseModelTask<string>> GetUserIDfromTokenAsync(Token token)
+        {
+            try
+            {
+                var userid = await _dbContext.Tokens.Where(x => x.TokenNo == token.TokenNo).Select(e => e.Email).FirstOrDefaultAsync();
+                return new ResponseModelTask<string>(userid ?? "");
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModelTask<string>(string.Empty, ex.Message);
             }
         }
     }

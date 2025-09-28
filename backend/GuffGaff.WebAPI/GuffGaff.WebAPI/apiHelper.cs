@@ -32,5 +32,8 @@
         public const string VerifyOTP = "api/verifyotp";
         public const string SaveNewPassword = "api/savenewpassword";
 
+        public const string GenerateTokenAPI = "api/generatetokenforpasswordreset";
+        public const string DeleteTokens = "api/deletetokens";
+        public const string GetUserIDfromToken = "api/getuseridfromtoken";
     }
 }

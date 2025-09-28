@@ -12,7 +12,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UserModel } from '../../models/userVM';
-import { LocalStorage } from '../../services/localStorage.services';
 
 @Component({
   selector: 'app-forgot-password',
@@ -50,7 +49,7 @@ export class ForgotPasswordComponent {
       private dialog: MatDialog,
        private dialogBoxServices: DialogBoxServices,
        private authService: AuthService,
-       private localStorage:LocalStorage
+       private dialogRef: MatDialogRef<ForgotPasswordComponent>
       ) {  }
 
   validateCredentials(){
@@ -81,9 +80,10 @@ export class ForgotPasswordComponent {
               }
             );
             //this.localStorage.storeSession('UserIdforNewPassword', this.userDetails.UserID);
-            dialogRef.afterClosed().subscribe(() => {
+            dialogRef.afterClosed().subscribe((response) => {
               this.emailPackage.otp = '';
               this.emailPackage.ToEmail = '';
+              this.dialogRef.close(response);
             });
           }else
           {

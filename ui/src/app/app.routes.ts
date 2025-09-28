@@ -8,6 +8,6 @@ export const routes: Routes = [
     {path: 'feed', component: FeedComponent},
     {path: 'discussion', component: DiscussionComponent},
     {path: 'create-profile', component:CreateProfile},
-    {path: 'newpassword', component:NewPasswordComponent},
+    {path: 'newpassword/:token', component:NewPasswordComponent},
     {path: '**', redirectTo: 'feed', pathMatch: 'full' },
 ];

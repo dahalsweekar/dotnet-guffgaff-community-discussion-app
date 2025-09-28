@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 
+import { Router } from '@angular/router';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,6 +37,7 @@ export class LoginBox implements OnInit {
     private dialogRef: MatDialogRef<LoginBox>,
     private localStorage: LocalStorage,
     private dialog:MatDialog,
+    private router: Router,
     private pageService: PageServices) {}
 
   async ngOnInit(): Promise<void> {
@@ -65,7 +68,7 @@ export class LoginBox implements OnInit {
             .subscribe(() => {
               this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
               this.localStorage.storeSession('Token', response.Token);
-              this.dialogRef.close();
+              this.dialogRef.close('0f115f4c-aedf-40bd-864c-0a28fe362fa7');
             })
           }
           else{
@@ -80,7 +83,7 @@ export class LoginBox implements OnInit {
   }
 
   cancel(): void{
-    this.dialogRef.close();
+    this.dialogRef.close('0f115f4c-aedf-40bd-864c-0a28fe362fa7');
   }
 
   signup(): void{
@@ -88,9 +91,13 @@ export class LoginBox implements OnInit {
   }
 
   openForgotPassword(): void{
-    this.dialog.open(ForgotPasswordComponent,{
+    const dialogRef = this.dialog.open(ForgotPasswordComponent,{
       width: '300px',
       height: '200px'
+    });
+
+    dialogRef.afterClosed().subscribe((response) => {
+      this.dialogRef.close(response);
     });
   }
 }
