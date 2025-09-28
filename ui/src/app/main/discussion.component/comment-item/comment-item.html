@@ -23,11 +23,11 @@
         <p class="comment-text">{{comment.CommentDescription}}</p>
       }
       @if(comment.UserId == this.currentUser && comment.IsRemoved === false){
-        <button mat-flat-button color="primary" style="margin:2px;" (click)="onReplyClick('EditMode')">Edit</button>
-        <button mat-stroked-button color="primary" style="margin:2px;" (click)="onDeleteClick()">Delete</button>
+        <button mat-flat-button color="primary" style="margin:2px;" (click)="onReplyClick('EditMode')"><mat-icon>edit</mat-icon>Edit</button>
+        <button mat-stroked-button color="primary" style="margin:2px;" (click)="onDeleteClick()"><mat-icon>delete</mat-icon>Delete</button>
       }
       @else if (comment.UserId != this.currentUser && comment.IsRemoved === false){
-        <button mat-stroked-button color="primary" (click)="onReplyClick('')">Reply</button>
+        <button mat-stroked-button color="primary" (click)="onReplyClick('')"><mat-icon>reply</mat-icon>Reply</button>
       }
 
     </div>

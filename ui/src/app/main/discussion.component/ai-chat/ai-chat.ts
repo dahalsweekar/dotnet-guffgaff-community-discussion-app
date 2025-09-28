@@ -4,12 +4,13 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 declare var apifree: any; // Declare the global object
 
 @Component({
   selector: 'app-ai-chat',
-  imports: [FormsModule, CommonModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [FormsModule, CommonModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
   templateUrl: './ai-chat.html',
   styleUrl: './ai-chat.scss'
 })

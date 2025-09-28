@@ -28,7 +28,7 @@
             <input matInput [(ngModel)]="post.Category" placeholder="e.g. Angular, Gaming..." />
           </mat-form-field>
 
-          <button mat-flat-button color="primary" (click)="putPost()">Post</button>
+          <button mat-flat-button color="primary" (click)="putPost()"><mat-icon>add_box</mat-icon>Post</button>
         </div>
       }
       @else
@@ -66,8 +66,8 @@
           <div class="row-3">
           @if (post.Owner == currentUser.Email && post.IsRemoved == false){
             <div class="button-container" style="margin-left: 50px;">
-              <button mat-flat-button color="primary" style="margin:2px;" (click)="onEditClick(post)">Edit</button>
-              <button mat-stroked-button color="primary" style="margin:2px;" (click)="onDeleteClick(post)">Delete</button>
+              <button mat-flat-button color="primary" style="margin:2px;" (click)="onEditClick(post)"><mat-icon>edit</mat-icon>Edit</button>
+              <button mat-stroked-button color="primary" style="margin:2px;" (click)="onDeleteClick(post)"><mat-icon>delete</mat-icon>Delete</button>
             </div>
           }
           </div>
