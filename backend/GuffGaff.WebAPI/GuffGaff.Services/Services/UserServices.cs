@@ -60,11 +60,36 @@ namespace GuffGaff.Services.Services
             try
             {
                 var identity = await _dbContext.Users.Where(u => u.Email == user.Email).FirstOrDefaultAsync();
+                var initNameCheck = await _dbContext.Users.Where(u => u.Name == user.Name).FirstOrDefaultAsync();
                 if (identity != null)
                 {
                     return new ResponseModel(true, "Ja");
                 }
+                else
+                {
+                    if (initNameCheck != null)
+                    {
+                        return new ResponseModel(true, "Nein Ja");
+                    }
+                }
                 return new ResponseModel(true, "Nein");
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModel(false, ex.Message);
+            }
+        }
+
+        public async Task<ResponseModel> ValidateUserNameAsync(User user)
+        {
+            try
+            {
+                var exists = await _dbContext.Users.Where(x => x.Name == user.Name).ToListAsync();
+                if (exists.Count > 0)
+                {
+                    return new ResponseModel(true, "Exists");
+                }
+                return new ResponseModel(true, "Does not Exist");
             }
             catch (Exception ex)
             {

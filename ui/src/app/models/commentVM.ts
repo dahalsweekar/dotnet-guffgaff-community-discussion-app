@@ -1,6 +1,7 @@
 export interface CommentModel {
     PostId: string,
     UserId: string,
+    UserName?: string,
     UpVotes?: number,
     DownVotes?: number
     CommentId: number;

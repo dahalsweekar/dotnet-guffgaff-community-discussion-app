@@ -6,6 +6,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import { LocalStorage } from '../../services/localStorage.services';
 import { UserModel } from '../../models/userVM';
@@ -16,7 +17,7 @@ import { RefreshService } from '../../services/refresh.services';
 
 @Component({
   selector: 'app-create-profile',
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule],
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule],
   templateUrl: './create-profile.html',
   styleUrl: './create-profile.scss'
 })
@@ -28,6 +29,8 @@ export class CreateProfile implements OnInit{
     Email: '',
     Picture: ''
    }
+
+   isNameValid: boolean = false;
 
   ConfirmPassword: string = '';
 
@@ -88,6 +91,11 @@ export class CreateProfile implements OnInit{
       next: (response) => {
         
         if (response._message === 'Nein'){
+          this.isNameValid = true;
+          this.userExists = false;
+          this.authServices.logout();
+        }else if (response._message === 'Nein Ja'){
+          this.isNameValid = false;
           this.userExists = false;
           this.authServices.logout();
         }
@@ -109,7 +117,8 @@ export class CreateProfile implements OnInit{
 
   create(): void{
     if (this.validateUserEmail() && !this.userExists){
-      this.userService.saveUserCredentialsfn(this.user).subscribe({
+      if (this.isNameValid){
+        this.userService.saveUserCredentialsfn(this.user).subscribe({
         next: (response) => {
           this.dialogServices.showValidation("Success", "Your profile has been created.")
           .afterClosed()
@@ -134,12 +143,35 @@ export class CreateProfile implements OnInit{
         error: (error) => {
           this.dialogServices.showError("Failed", 'Cannot create new user.');
         }
-      })
+      });
+      }
+      else{
+        this.dialogServices.showValidation('Validation', 'Please think of another NickName');
+      }
     }
   }
 
   cancel(): void{
     this.authServices.logout();
     this.router.navigateByUrl('/feed');
+  }
+
+  onNameChange(): void{
+    if(this.user.Name == ''){
+      this.isNameValid = false;
+    }
+    this.userService.validateUserNamefn(this.user).subscribe({
+      next:(response) => {
+        if (response._message === 'Does not Exist'){
+          this.isNameValid = true;
+        }
+        else {
+          this.isNameValid = false;
+        }
+      },
+      error: (error) => {
+        this.dialogServices.showError('Failed', 'Could not verify username');
+      }
+    })
   }
 }

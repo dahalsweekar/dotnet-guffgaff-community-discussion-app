@@ -53,7 +53,7 @@
             <div class="post-content">
               <h2 class="post-title">{{ post.Title }}</h2>
               <p class="post-meta">
-                Posted by u/{{ post.Owner }} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }} • c/{{ post.Category }}
+                Posted by u/{{ post.OwnerName }} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }} • c/{{ post.Category }}
               </p>
               @if(post.IsRemoved){
                 <p class="post-description" style="font-style: italic;color:#888"> This post has already been removed by its owner. </p>

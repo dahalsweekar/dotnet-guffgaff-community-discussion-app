@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GuffGaff.Database.Models
 {
@@ -7,6 +8,9 @@ namespace GuffGaff.Database.Models
         [Key]
         public Guid PostId { get; set; }
         public string Owner { get; set; }
+
+        [NotMapped]
+        public string? OwnerName { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }

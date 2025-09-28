@@ -31,7 +31,7 @@ namespace GuffGaff.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route($"{apiHelper.Login}")]
+        [Route($"{apiHelper.LoginAPI}")]
         public async Task<IActionResult> Login([FromBody] User user)
         {
             try
@@ -51,12 +51,26 @@ namespace GuffGaff.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route($"{apiHelper.ValidateUser}")]
+        [Route($"{apiHelper.ValidateUserAPI}")]
         public async Task<IActionResult> ValidateUser([FromBody] User user)
         {
             try
             {
                 return Ok(await _userServices.ValidateUserAsync(user));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
+        }
+
+        [HttpPost]
+        [Route($"{apiHelper.ValidateUserNameAPI}")]
+        public async Task<IActionResult> ValidateUserNameAsync(User user)
+        {
+            try
+            {
+                return Ok(await _userServices.ValidateUserNameAsync(user));
             }
             catch (Exception ex)
             {

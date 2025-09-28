@@ -1,6 +1,7 @@
 export interface PostModel{
     PostId?: string,
     Owner: string,
+    OwnerName?: string,
     Title: string,
     Description: string,
     UpVotes: number,

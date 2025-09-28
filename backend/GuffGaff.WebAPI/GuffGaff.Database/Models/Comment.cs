@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GuffGaff.Database.Models
 {
@@ -9,6 +10,8 @@ namespace GuffGaff.Database.Models
         public int CommentId { get; set; }
         public string PostId { get; set; }
         public string UserId { get; set; }
+        [NotMapped]
+        public string? UserName { get; set; }
         public string CommentDescription { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
