@@ -17,9 +17,21 @@ namespace GuffGaff.Database.DBContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Post>()
-                .Property(p => p.PostId)
-                .HasDefaultValueSql("NEWSEQUENTIALID()"); // Use SQL to generate GUIDs
+            modelBuilder.Entity<Post>(entity =>
+            {
+                entity.Property(p => p.PostId);
+
+                if (Database.IsSqlServer())
+                {
+                    entity.Property(p => p.PostId)
+                        .HasDefaultValueSql("NEWSEQUENTIALID()"); //GUID
+                }
+                else if (Database.IsNpgsql())
+                {
+                    entity.Property(p => p.PostId)
+                        .HasDefaultValueSql("gen_random_uuid()"); //UUID
+                }
+            });
         }
     }
 }
