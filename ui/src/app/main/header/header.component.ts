@@ -103,7 +103,13 @@ export class HeaderComponent implements OnInit, OnDestroy{
       else
       {
         //generatetoken and receive it. 
-        this.userService.generateTokenforPasswordResetfn(response).subscribe({
+        var user: UserModel = {
+          Name: '',
+          Password: '',
+          Picture: '',
+          Email: response
+        }
+        this.userService.generateTokenforPasswordResetfn(user).subscribe({
           next: (response) => {
             var token = response.Data.TokenNo;
             this.router.navigate(['/newpassword', token]);
