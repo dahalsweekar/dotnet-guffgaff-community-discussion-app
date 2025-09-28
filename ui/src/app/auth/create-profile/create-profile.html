@@ -14,10 +14,26 @@
         <div class="nickname">
          <mat-form-field appearance="outline" class="small">
          <mat-label>Nickname*</mat-label>
-        <input matInput [(ngModel)]="user.Name" placeholder="Enter your username">
-      </mat-form-field>
+        <input matInput [(ngModel)]="user.Name" placeholder="Enter your username" (keyup)="onNameChange()">
+        @if (isNameValid){
+            <mat-hint>
+                <mat-icon style="color: green;">check_circle</mat-icon>
+                <span style="font-style: italic;"> Username available</span>
+            </mat-hint>
+         }
+         @else {
+            <mat-hint>
+                <mat-icon style="color: red;">cancel</mat-icon>
+                <span style="font-style: italic;"> Username not available</span>
+            </mat-hint>
+         }
+        </mat-form-field>
+        <div class="valid-label">
+            
         </div>
-        <div class="pass1">
+        </div>
+
+        <div class="pass1" style="margin-top: 8px;">
             <mat-form-field appearance="outline" class="small">
             <mat-label>Password*</mat-label>
             <input matInput [(ngModel)]="user.Password" type="password" placeholder="Enter your password">

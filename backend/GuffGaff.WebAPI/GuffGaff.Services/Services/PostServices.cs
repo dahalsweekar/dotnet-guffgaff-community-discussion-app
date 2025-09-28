@@ -33,9 +33,32 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                var result = await _dbContext.Posts.Where(x => x.PostId == Guid.Parse(post.PostId ?? "")).OrderByDescending(x => x.PostedDate).FirstOrDefaultAsync();
+                var result = await _dbContext.Posts
+                    .Join(
+                    _dbContext.Users,
+                        post => post.Owner,
+                        user => user.Email,
+                        (post, user) => new Post
+                        {
+                            PostId = post.PostId,
+                            Owner = post.Owner,
+                            OwnerName = user.Name,
+                            Title = post.Title,
+                            Description = post.Description,
+                            Category = post.Category,
+                            UpVotes = post.UpVotes,
+                            DownVotes = post.DownVotes,
+                            Comments = post.Comments,
+                            PostedDate = post.PostedDate,
+                            IsRemoved = post.IsRemoved,
+                            IsEdited = post.IsEdited
+                        })
+                    .Where(x => x.PostId == Guid.Parse(post.PostId ?? ""))
+                    .OrderByDescending(x => x.PostedDate)
+                    .FirstOrDefaultAsync();
                 if (result == null)
                     return new ResponseModelTask<Post>(new Post());
+
                 return new ResponseModelTask<Post>(result);
             }
             catch (Exception ex)

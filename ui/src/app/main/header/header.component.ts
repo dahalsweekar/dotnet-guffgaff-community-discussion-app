@@ -117,4 +117,16 @@ export class HeaderComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.subscriber.unsubscribe();
   }
+
+  getIconForAction(action: string): string {
+  if (!action) return 'notifications'; // default fallback
+
+  action = action.toLowerCase();
+
+  if (action.includes('upvoted')) return 'thumb_up';
+  if (action.includes('downvoted')) return 'thumb_down';
+  if (action.includes('commented')) return 'comment';
+
+  return 'email';
+}
 }

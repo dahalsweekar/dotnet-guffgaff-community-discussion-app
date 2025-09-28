@@ -29,8 +29,11 @@ namespace GuffGaff.Services.Services
                 Notification notice = new Notification();
                 notice.InitiatorId = comment.UserId;
                 notice.ActionPostId = comment.PostId;
-                notice.UserId = await _dbContext.Comments.Where(p => p.PostId == comment.PostId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
-                notice.ActionTaken = comment.UserId + " commented on your post.";
+                notice.UserId = await _dbContext.Posts.Where(p => p.PostId == Guid.Parse(comment.PostId)).Select(x => x.Owner).FirstOrDefaultAsync() ?? "";
+
+                string username = await _dbContext.Users.Where(x => x.Email == comment.UserId).Select(x => x.Name).FirstOrDefaultAsync() ?? "<unknown>";
+
+                notice.ActionTaken = username + " commented on your post.";
                 notice.ActionDate = DateTime.UtcNow;
                 notice.IsReadByUser = false;
 
@@ -64,12 +67,24 @@ namespace GuffGaff.Services.Services
                 notice.UserId = await _dbContext.Replies.Where(p => p.PostId == reply.PostId && p.CommentId == reply.ParentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
                 if (string.IsNullOrEmpty(notice.UserId))
                     notice.UserId = await _dbContext.Comments.Where(p => p.PostId == reply.PostId && p.CommentId == reply.ParentId).Select(x => x.UserId).FirstOrDefaultAsync() ?? "";
-                notice.ActionTaken = reply.UserId + " replied to your comment.";
+
+                string username = await _dbContext.Users.Where(x => x.Email == reply.UserId).Select(x => x.Name).FirstOrDefaultAsync() ?? "<unknown>";
+
+                notice.ActionTaken = username + " replied to your comment.";
                 notice.ActionDate = DateTime.UtcNow;
                 notice.IsReadByUser = false;
 
                 if (reply.UserId != notice.UserId)
                     await _dbContext.Notifications.AddAsync(notice);
+
+                var postOwner = await _dbContext.Posts.Where(p => p.PostId == Guid.Parse(reply.PostId)).Select(x => x.Owner).FirstOrDefaultAsync() ?? "";
+
+                if (reply.UserId != postOwner)
+                {
+                    notice.UserId = postOwner;
+                    notice.ActionTaken = username + " replied on your post.";
+                    await _dbContext.Notifications.AddAsync(notice);
+                }
 
                 _dbContext.SaveChanges();
                 return new ResponseModel(true, "Successfully saved.");
@@ -84,8 +99,45 @@ namespace GuffGaff.Services.Services
         {
             try
             {
-                var comments = await _dbContext.Comments.Where(c => c.PostId == post.PostId).ToListAsync();
-                var replies = await _dbContext.Replies.Where(r => r.PostId == post.PostId).ToListAsync();
+                var comments = await _dbContext.Comments
+                    .Join(
+                    _dbContext.Users,
+                    comment => comment.UserId,
+                    user => user.Email,
+                    (comment, user) => new Comment
+                    {
+                        CommentId = comment.CommentId,
+                        PostId = comment.PostId,
+                        UserId = comment.UserId,
+                        UserName = user.Name,
+                        CommentDescription = comment.CommentDescription,
+                        UpVotes = comment.UpVotes,
+                        DownVotes = comment.DownVotes,
+                        ParentId = comment.ParentId,
+                        CommentDate = comment.CommentDate,
+                        IsRemoved = comment.IsRemoved,
+                        IsEdited = comment.IsEdited
+                    }).Where(c => c.PostId == post.PostId).ToListAsync();
+                var replies = await _dbContext.Replies
+                    .Join(
+                    _dbContext.Users,
+                    reply => reply.UserId,
+                    user => user.Email,
+                    (reply, user) => new Reply
+                    {
+                        CommentId = reply.CommentId,
+                        PostId = reply.PostId,
+                        UserId = reply.UserId,
+                        UserName = user.Name,
+                        CommentDescription = reply.CommentDescription,
+                        UpVotes = reply.UpVotes,
+                        DownVotes = reply.DownVotes,
+                        ParentId = reply.ParentId,
+                        CommentDate = reply.CommentDate,
+                        IsRemoved = reply.IsRemoved,
+                        IsEdited = reply.IsEdited
+                    })
+                    .Where(r => r.PostId == post.PostId).ToListAsync();
                 CommentReply cr = new CommentReply();
                 cr.comments = comments;
                 cr.replies = replies;
@@ -150,13 +202,15 @@ namespace GuffGaff.Services.Services
                         notice.InitiatorId = vote.Voter;
                         notice.ActionPostId = vote.PostId;
                         notice.UserId = votedComment.UserId;
+
+                        string username = await _dbContext.Users.Where(x => x.Email == vote.Voter).Select(x => x.Name).FirstOrDefaultAsync() ?? "<unknown>";
                         switch (vote.UpVote)
                         {
                             case true:
-                                notice.ActionTaken = vote.Voter + " upvoted your comment.";
+                                notice.ActionTaken = username + " upvoted your comment.";
                                 break;
                             case false:
-                                notice.ActionTaken = vote.Voter + " downvoted your comment.";
+                                notice.ActionTaken = username + " downvoted your comment.";
                                 break;
                         }
                         notice.ActionDate = DateTime.UtcNow;
@@ -216,13 +270,16 @@ namespace GuffGaff.Services.Services
                             notice.InitiatorId = vote.Owner;
                             notice.ActionPostId = vote.PostId;
                             notice.UserId = votedReply.UserId;
+
+                            string username = await _dbContext.Users.Where(x => x.Email == vote.Voter).Select(x => x.Name).FirstOrDefaultAsync() ?? "<unknown>";
+
                             switch (vote.UpVote)
                             {
                                 case true:
-                                    notice.ActionTaken = vote.Voter + " upvoted your comment.";
+                                    notice.ActionTaken = username + " upvoted your comment.";
                                     break;
                                 case false:
-                                    notice.ActionTaken = vote.Voter + " downvoted your comment.";
+                                    notice.ActionTaken = username + " downvoted your comment.";
                                     break;
                             }
                             notice.ActionDate = DateTime.UtcNow;

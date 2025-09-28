@@ -12,7 +12,7 @@
                 @for(feed of feedList; track feed.PostId){
                     <div class="feed-card" (click)="redirectToPost(feed.PostId ?? '0')">
                          <div class="feed-category">
-                            <span>c/ {{feed.Category}} • {{ feed.PostedDate ? (feed.PostedDate | timeAgo) : 'Not posted' }}</span>
+                            <span>u/{{feed.OwnerName}} • c/{{feed.Category}} • {{ feed.PostedDate ? (feed.PostedDate | timeAgo) : 'Not posted' }}</span>
                         </div>
                         <div class="feed-title">
                             <h3>{{feed.Title}}</h3>

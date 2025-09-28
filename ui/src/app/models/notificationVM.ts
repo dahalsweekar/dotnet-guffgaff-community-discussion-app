@@ -1,6 +1,6 @@
 export interface NotificationModel{
  ActionPostId: string;
- UserId:string; 
+ UserId:string;
  InitiatorId: string; 
  ActionCommentId?: number;
  ActionTaken: string;
