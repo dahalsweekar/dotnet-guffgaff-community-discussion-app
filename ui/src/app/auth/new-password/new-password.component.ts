@@ -55,9 +55,8 @@ export class NewPasswordComponent implements OnInit {
 
   getUserIDfromToken(): void{
     this.userServices.getUserIDfromTokenfn(this.globalToken).subscribe({
-      next: (response) => {
-        debugger;
-        this.passwordDetails.Email = response;
+      next: (response: any) => {
+        this.passwordDetails.Email = response.Data;
       },
       error: (error) => {
         this.dialogServices.showError('Failed', 'There was an error while trying to get credentials.');
@@ -77,11 +76,7 @@ export class NewPasswordComponent implements OnInit {
             .subscribe(() => {
               this.userServices.deleteTokensfn({Email: this.passwordDetails.Email, TokenNo: this.globalToken}).subscribe({
                 next: (response) => {
-                  this.dialogServices.showValidation('Success', 'Password changed.')
-                  .afterClosed()
-                  .subscribe(() => {
-                     this.router.navigateByUrl('/feed');
-                  });
+                  this.router.navigateByUrl('/feed');
                 },
                 error: (error) => {
                   this.dialogServices.showError('Error', 'Unable to clear session token.');
