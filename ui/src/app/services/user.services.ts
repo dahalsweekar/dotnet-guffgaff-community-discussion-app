@@ -58,7 +58,7 @@ export class UserService{
         return this.http.post(this.generateTokenforPasswordResetApi, userDetail);
     }
     getUserIDfromTokenfn(token: string){
-        return this.http.post(this.getUserIDfromToken, {'TokenNo': token});
+        return this.http.post(this.getUserIDfromToken, {'Token': token});
     }
     deleteTokensfn(token: any){
         return this.http.post(this.deleteTokens, token);

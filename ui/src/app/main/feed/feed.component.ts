@@ -7,6 +7,7 @@ import { UserModel } from '../../models/userVM';
 import { LoginBox } from '../../auth/login-box/login-box';
 import { AuthService } from '../../auth/auth.services';
 import { LocalStorage } from '../../services/localStorage.services';
+import { SessionStorage } from '../../services/sessionStorage.service';
 import { FeedServices } from '../../services/feed.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 import { Search } from "../search/search";
@@ -53,7 +54,8 @@ export class FeedComponent implements OnInit {
       private feedServices:FeedServices,
       private dialog: MatDialog,
       private dialogServices: DialogBoxServices,
-      private refreshService: RefreshService){}
+      private refreshService: RefreshService,
+      private sessionStorage: SessionStorage){}
 
     ngOnInit(): void {
       this.refreshService.triggerRefreshB();
@@ -97,7 +99,7 @@ export class FeedComponent implements OnInit {
     }
 
     checkUserLogin(): void{
-      const token = this.localStorage.getSession('Token');
+      const token = this.sessionStorage.getSession('Token');
       if (!!token){
          this.redirectToPost('0');
       }
@@ -111,7 +113,7 @@ export class FeedComponent implements OnInit {
     }
 
     redirectToPost(postId: string): void{
-      this.localStorage.storeSession('PostID', postId.toString());
+      this.sessionStorage.storeSession('PostID', postId.toString());
       this.router.navigateByUrl('/discussion');
     }
 

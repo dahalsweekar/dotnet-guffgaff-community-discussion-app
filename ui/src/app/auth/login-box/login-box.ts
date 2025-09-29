@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { LocalStorage } from '../../services/localStorage.services';
+import { SessionStorage } from '../../services/sessionStorage.service';
 import { AuthService } from '../auth.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 import { PageServices } from '../../services/page.services';
@@ -36,6 +37,7 @@ export class LoginBox implements OnInit {
     private dialogServices: DialogBoxServices, 
     private dialogRef: MatDialogRef<LoginBox>,
     private localStorage: LocalStorage,
+    private sessionStorage: SessionStorage,
     private dialog:MatDialog,
     private router: Router,
     private pageService: PageServices) {}
@@ -67,7 +69,7 @@ export class LoginBox implements OnInit {
             .afterClosed()
             .subscribe(() => {
               this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
-              this.localStorage.storeSession('Token', response.Token);
+              this.sessionStorage.storeSession('Token', response.Token);
               this.dialogRef.close('0f115f4c-aedf-40bd-864c-0a28fe362fa7');
             })
           }

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { UserModel } from '../../models/userVM';
 import { LocalStorage } from '../../services/localStorage.services';
+import { SessionStorage } from '../../services/sessionStorage.service';
 import { AuthService } from '../../auth/auth.services';
 import { UserService } from '../../services/user.services';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
     private pageServices: PageServices,
     private dialog: MatDialog,
     private localStorage: LocalStorage,
+    private sessionStorage: SessionStorage,
     private router: Router,
     private refreshService: RefreshService,
    ) {}
@@ -51,7 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   refresh() {
     console.log('Header is being refreshed!');
-    const token = this.localStorage.getSession('Token');
+    const token = this.sessionStorage.getSession('Token');
     this.isLoggedIn = !!token;
     if (this.isLoggedIn){
       var userDetailsJson = this.localStorage.getSession('UserDetails');
@@ -81,7 +83,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
   goToNotification(notice: NotificationModel): void{
     this.userService.updateNotificationStatusfn(notice).subscribe({
       next: (response) => {
-        this.localStorage.storeSession('PostID', notice.ActionPostId);
+        this.sessionStorage.storeSession('PostID', notice.ActionPostId);
         this.router.navigateByUrl('/discussion');  
       },
       error: (error) => {
@@ -101,8 +103,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
         this.pageServices.reloadComponent('/feed');
       }
       else
-      {
-        //generatetoken and receive it. 
+      { 
         var user: UserModel = {
           Name: '',
           Password: '',
@@ -126,7 +127,8 @@ export class HeaderComponent implements OnInit, OnDestroy{
     this.dialogService.showValidation("Success", "You are logged out.")
     .afterClosed()
     .subscribe(() =>{
-      this.localStorage.deleteAllSession(['Token', 'UserDetails', 'UserID', 'PostID', 'PostEditMode']);
+      this.localStorage.deleteAllSession(['UserDetails', 'UserID']);
+      this.sessionStorage.deleteAllSession(['Token', 'PostID', 'PostEditMode']);
       this.refresh();
       this.pageServices.reloadComponent('/feed');
     })

@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { LoginBox } from '../../../auth/login-box/login-box';
 import { CommentServices } from '../../../services/comment.services';
 import { LocalStorage } from '../../../services/localStorage.services';
+import { SessionStorage } from '../../../services/sessionStorage.service';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 import { PageServices } from '../../../services/page.services';
 import { RefreshService } from '../../../services/refresh.services';
@@ -47,6 +48,7 @@ export class CommentItemComponent implements OnInit {
   
   constructor(private commentServices: CommentServices, 
     private localStorage: LocalStorage, 
+    private sessionStorage: SessionStorage,
     private dialogServices:DialogBoxServices,
     private pageServices: PageServices,
     private refreshServices: RefreshService,
@@ -54,7 +56,7 @@ export class CommentItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.localStorage.getSession('UserID');
-    this.currentPostID = this.localStorage.getSession('PostID');
+    this.currentPostID = this.sessionStorage.getSession('PostID');
   }
 
   onReplyClick(Mode: string): void {
