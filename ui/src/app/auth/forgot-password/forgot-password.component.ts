@@ -103,10 +103,6 @@ export class ForgotPasswordComponent {
     }
   }
 
-  onCancelBtn(){
-    this.dialog.closeAll();
-  }
-
   getEmail(): string{
     return this.ForgotPasswordForm.get('email')?.value || '';
   }
@@ -124,6 +120,6 @@ export class ForgotPasswordComponent {
 }
 
 onCancelClick(): void{
-  this.dialog.closeAll();
+  this.dialogRef.close('0f115f4c-aedf-40bd-864c-0a28fe362fa7');
 }
 }

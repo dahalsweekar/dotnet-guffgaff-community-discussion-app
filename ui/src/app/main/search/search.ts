@@ -13,6 +13,7 @@ import { PostServices } from '../../services/post.services';
 import { PostModel } from '../../models/postVM';
 import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box.services';
 import { LocalStorage } from '../../services/localStorage.services';
+import { SessionStorage } from '../../services/sessionStorage.service';
 
 @Component({
   selector: 'app-search',
@@ -25,7 +26,10 @@ export class Search {
   searchText: string = ''
   searchPost: PostModel[] = [];
 
-  constructor(private postServices: PostServices, private dialogServices:DialogBoxServices, private localStorage: LocalStorage,
+  constructor(private postServices: PostServices,
+     private dialogServices:DialogBoxServices,
+     private localStorage: LocalStorage,
+     private sessionStorage: SessionStorage,
     private router: Router
   ){}
 
@@ -42,7 +46,7 @@ export class Search {
 }
 
   navigateToPost(postId: string): void{
-    this.localStorage.storeSession('PostID', postId.toString());
+    this.sessionStorage.storeSession('PostID', postId.toString());
     this.router.navigateByUrl('/discussion');
   }
 

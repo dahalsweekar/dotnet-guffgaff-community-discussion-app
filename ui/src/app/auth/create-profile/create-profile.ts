@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { LocalStorage } from '../../services/localStorage.services';
+import { SessionStorage } from '../../services/sessionStorage.service';
 import { UserModel } from '../../models/userVM';
 import { AuthService } from '../auth.services';
 import { UserService } from '../../services/user.services';
@@ -41,6 +42,7 @@ export class CreateProfile implements OnInit{
     private router: Router, 
     private userService:UserService, 
     private localStorage: LocalStorage,
+    private sessionStorage: SessionStorage,
     private cdr: ChangeDetectorRef,
     private refreshService: RefreshService){
 
@@ -129,7 +131,7 @@ export class CreateProfile implements OnInit{
                 .afterClosed()
                 .subscribe(() => {
                   this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
-                  this.localStorage.storeSession('Token', response.Token);
+                  this.sessionStorage.storeSession('Token', response.Token);
                   this.refreshService.triggerRefreshB();
                   this.router.navigateByUrl('/feed');
                 })

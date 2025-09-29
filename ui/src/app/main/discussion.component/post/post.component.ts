@@ -21,6 +21,7 @@ import { VoteModel } from '../../../models/voteVM';
 import { UserModel } from '../../../models/userVM';
 
 import { LocalStorage } from '../../../services/localStorage.services';
+import { SessionStorage } from '../../../services/sessionStorage.service';
 
 @Component({
   selector: 'app-post',
@@ -116,15 +117,16 @@ export class PostComponent implements OnInit{
       private pageServices: PageServices,
        private router: Router,
         private authServices: AuthService,
-         private localStorage: LocalStorage){
+         private localStorage: LocalStorage,
+        private sessionStorage: SessionStorage){
 
   }
 
   ngOnInit(){
     
     this.currentUser.Email = this.localStorage.getSession('UserID');
-    this.currentPostId = this.localStorage.getSession('PostID');
-    this.isEditMode = this.localStorage.getSession('PostEditMode');
+    this.currentPostId = this.sessionStorage.getSession('PostID');
+    this.isEditMode = this.sessionStorage.getSession('PostEditMode');
     if (this.currentPostId !== '0')
       this.setPost();
   }
@@ -170,7 +172,7 @@ export class PostComponent implements OnInit{
                 this.dialogServices.showValidation('Information', 'Post successful.')
                 .afterClosed()
                 .subscribe(() => {
-                  this.localStorage.storeSession('PostID', response.Data.PostId);
+                  this.sessionStorage.storeSession('PostID', response.Data.PostId);
                   this.pageServices.reloadComponent('discussion');
                 })
               },
@@ -184,7 +186,7 @@ export class PostComponent implements OnInit{
             this.dialogServices.showValidation('Information', 'Post updated')
             .afterClosed()
             .subscribe(() => {
-              this.localStorage.deleteSession('PostEditMode');
+              this.sessionStorage.deleteSession('PostEditMode');
               this.pageServices.reloadComponent('discussion');
             })
           },
@@ -220,7 +222,7 @@ export class PostComponent implements OnInit{
   }
 
   onEditClick(post: PostModel): void{
-    this.localStorage.storeSession('PostEditMode', 'True');
+    this.sessionStorage.storeSession('PostEditMode', 'True');
     this.pageServices.reloadComponent('/discussion');
   }
 
@@ -242,5 +244,10 @@ export class PostComponent implements OnInit{
 
       }
     });
+  }
+
+  cancelEdit(): void{
+    this.sessionStorage.deleteSession('PostEditMode');
+    this.pageServices.reloadComponent('discussion');
   }
 }

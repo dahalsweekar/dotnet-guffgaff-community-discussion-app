@@ -14,6 +14,7 @@ import { CommentItemComponent } from '../comment-item/comment-item';
 import { CommentServices } from '../../../services/comment.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 import { LocalStorage } from '../../../services/localStorage.services';
+import { SessionStorage } from '../../../services/sessionStorage.service';
 import { PageServices } from '../../../services/page.services';
 
 
@@ -42,12 +43,17 @@ export class CommentsComponent implements OnInit {
   flatComments: CommentModel[] = [];
   isEditMode: boolean = false;
 
-  constructor(private commentServices: CommentServices, private router: Router, private dialogServices: DialogBoxServices, private localStorage: LocalStorage, private pageServices: PageServices) { }
+  constructor(private commentServices: CommentServices,
+     private router: Router,
+      private dialogServices: DialogBoxServices,
+       private localStorage: LocalStorage,
+       private sessionStorage: SessionStorage,
+        private pageServices: PageServices) { }
 
   ngOnInit(): void 
   {
     this.userId = this.localStorage.getSession('UserID');
-    this.postId = this.localStorage.getSession('PostID');
+    this.postId = this.sessionStorage.getSession('PostID');
     if (this.postId !== '0'){
       this.IsCommentVisible = true;
     }
