@@ -312,6 +312,7 @@ namespace GuffGaff.Services.Services
                     Hasher hashPassword = new Hasher();
                     user.Password = hashPassword.hashPassword(user.Password);
                     userDetails.Password = user.Password;
+                    _dbContext.Update(userDetails);
                     await _dbContext.SaveChangesAsync();
                 }
 
