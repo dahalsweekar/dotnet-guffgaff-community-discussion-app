@@ -1,29 +1,29 @@
 <div class="search-card">
-  <div class="sub-main-search-card" style="width: 100%;">
- <div class="search-bar">
-        <mat-form-field appearance="outline" class="small full-width">
-              <mat-label>Search posts...</mat-label>
-              <input
-                matInput
-                [(ngModel)]="searchText"
-                (keyup)="onSearchChange()"
-                placeholder="write keywords..." />
-        </mat-form-field>
-      </div>
-      <div class="search-result">
-        @for(post of searchPost; track post.PostId){
-          <div class="sub-search-card fade-slide" (click)="navigateToPost(post.PostId ?? '0')">
-              <span style="font-size: 0.7rem; color:#888">c/ {{post.Category}} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }}</span>
-              <h3 [innerHTML]="post.Title | highlight:searchText"></h3>
-              @if(post.IsRemoved){
-                <p style="font-style: italic;color:#888"> This post has already been removed by its owner. </p>
-              }
-              @else {
-                <p [innerHTML]="post.Description | highlight:searchText"></p>
-              }
-              
-          </div>
-        }
-      </div>
+  <div class="sub-main-search-card">
+  <div class="search-bar" style="width: 210px; margin-top:10px;">
+          <mat-form-field appearance="outline" class="small full-width">
+                <mat-label>Search posts...</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="searchText"
+                  (keyup)="onSearchChange()"
+                  placeholder="write keywords..." />
+          </mat-form-field>
+        </div>
   </div>
+  <div class="search-result" style="width:600px;">
+          @for(post of searchPost; track post.PostId){
+            <div class="sub-search-card fade-slide" (click)="navigateToPost(post.PostId ?? '0')">
+                <span style="font-size: 0.7rem; color:#888">c/ {{post.Category}} • {{ post.PostedDate ? (post.PostedDate | timeAgo) : 'Not posted' }}</span>
+                <h3 [innerHTML]="post.Title | highlight:searchText"></h3>
+                @if(post.IsRemoved){
+                  <p style="font-style: italic;color:#888"> This post has already been removed by its owner. </p>
+                }
+                @else {
+                  <p [innerHTML]="post.Description | highlight:searchText"></p>
+                }
+                
+            </div>
+          }
+        </div>
 </div>

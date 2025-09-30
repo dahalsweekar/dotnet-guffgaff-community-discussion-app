@@ -5,16 +5,17 @@
 
 .search-card{
   background: #fff;
-  display: flex;
+}
+
+.sub-main-search-card{
+    display: flex;
   justify-content: center;
 }
 
 .sub-search-card{
- background: #fff;
+  background: #fff;
   padding: 20px;
   border-bottom: 1px solid #ddd;
-  //border-radius: 8px;
-  //box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   margin-bottom: 5px;
 }
 
