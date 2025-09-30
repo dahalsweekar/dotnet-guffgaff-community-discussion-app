@@ -23,15 +23,17 @@
             <!-- <textarea matInput [(ngModel)]="post.Description" draggable="false" placeholder="Your thoughts..." rows="5"></textarea> -->
           <!-- </mat-form-field> -->
 
-          <mat-form-field appearance="outline" class="small">
+          <div class="side-by-side" style="display: flex;">
+               <mat-form-field appearance="outline" class="small" style="width: 90%; margin-top:10px;">
             <mat-label>Category (Subreddit)</mat-label>
             <input matInput [(ngModel)]="post.Category" placeholder="e.g. Angular, Gaming..." />
           </mat-form-field>
 
-          <button mat-flat-button color="primary" style="margin:2px;" (click)="putPost()"><mat-icon>add_box</mat-icon>Post</button>
+          <button mat-flat-button color="primary" style="margin:10px;" (click)="putPost()"><mat-icon>add_box</mat-icon>Post</button>
           @if (isEditMode){
             <button mat-stroked-button style="margin:2px;" (click)="cancelEdit()"><mat-icon>cancel</mat-icon>Cancel</button>
           }
+          </div>
         </div>
       }
       @else

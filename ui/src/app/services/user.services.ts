@@ -57,8 +57,8 @@ export class UserService{
     generateTokenforPasswordResetfn(userDetail: any): Observable<any>{
         return this.http.post(this.generateTokenforPasswordResetApi, userDetail);
     }
-    getUserIDfromTokenfn(token: string){
-        return this.http.post(this.getUserIDfromToken, {'Token': token});
+    getUserIDfromTokenfn(token: any){
+        return this.http.post(this.getUserIDfromToken, token);
     }
     deleteTokensfn(token: any){
         return this.http.post(this.deleteTokens, token);

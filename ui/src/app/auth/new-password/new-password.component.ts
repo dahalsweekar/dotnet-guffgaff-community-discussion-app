@@ -38,7 +38,11 @@ export class NewPasswordComponent implements OnInit {
     Password: '',
   };
 
-  globalToken: string = ''
+  globalToken: any = {
+    Email: '',
+    Id: 0,
+    TokenNo: ''
+  }
 
   constructor(
     private router: Router,
@@ -49,7 +53,7 @@ export class NewPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     const token = this.route.snapshot.paramMap.get('token');
-    this.globalToken = token?.toString() ?? '';
+    this.globalToken.TokenNo = token?.toString() ?? '';
     this.getUserIDfromToken();
   }
 
@@ -71,7 +75,7 @@ export class NewPasswordComponent implements OnInit {
         next: (response) => {
           const resp: any = response;
           this.dialogServices
-            .showInfo('Success', resp._message)
+            .showValidation('Success', resp._message)
             .afterClosed()
             .subscribe(() => {
               this.userServices.deleteTokensfn({Email: this.passwordDetails.Email, TokenNo: this.globalToken}).subscribe({
