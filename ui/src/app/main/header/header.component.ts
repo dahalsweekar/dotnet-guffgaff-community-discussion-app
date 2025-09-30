@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
 
   refresh() {
     console.log('Header is being refreshed!');
-    const token = this.sessionStorage.getSession('Token');
+    const token = this.localStorage.getSession('Token');
     this.isLoggedIn = !!token;
     if (this.isLoggedIn){
       var userDetailsJson = this.localStorage.getSession('UserDetails');
@@ -127,8 +127,8 @@ export class HeaderComponent implements OnInit, OnDestroy{
     this.dialogService.showValidation("Success", "You are logged out.")
     .afterClosed()
     .subscribe(() =>{
-      this.localStorage.deleteAllSession(['UserDetails', 'UserID']);
-      this.sessionStorage.deleteAllSession(['Token', 'PostID', 'PostEditMode']);
+      this.localStorage.deleteAllSession(['UserDetails', 'UserID', 'Token']);
+      this.sessionStorage.deleteAllSession(['PostID', 'PostEditMode']);
       this.refresh();
       this.pageServices.reloadComponent('/feed');
     })

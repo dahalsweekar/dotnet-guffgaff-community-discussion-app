@@ -15,10 +15,13 @@ import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-
 import { PageServices } from '../../../services/page.services';
 import { AuthService } from '../../../auth/auth.services';
 import { TimeAgoPipe } from '../../../services/time-ago/time-ago-pipe';
+import { RefreshService } from '../../../services/refresh.services';
 
 import { PostModel } from '../../../models/postVM';
 import { VoteModel } from '../../../models/voteVM';
 import { UserModel } from '../../../models/userVM';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginBox } from '../../../auth/login-box/login-box';
 
 import { LocalStorage } from '../../../services/localStorage.services';
 import { SessionStorage } from '../../../services/sessionStorage.service';
@@ -118,7 +121,9 @@ export class PostComponent implements OnInit{
        private router: Router,
         private authServices: AuthService,
          private localStorage: LocalStorage,
-        private sessionStorage: SessionStorage){
+        private sessionStorage: SessionStorage,
+        private dialog:MatDialog,
+        private refreshServices: RefreshService){
 
   }
 
@@ -199,7 +204,7 @@ export class PostComponent implements OnInit{
   }
 
   updateVote(val: number): void{
-    if (this.currentUser?.Email !== null){
+    if (this.currentUser?.Email !== ''){
       this.vote.UpVote = val == 1 ? true: false;
       this.vote.Voter = this.currentUser?.Email;
       this.vote.PostId = this.currentPostId;
@@ -217,7 +222,14 @@ export class PostComponent implements OnInit{
       });
     }
     else{
-      this.router.navigateByUrl('/oauth');
+      const dialog = this.dialog.open(LoginBox, {
+            width: '300px',
+            height: '350px'
+          });
+          dialog.afterClosed().subscribe(() => {
+              this.refreshServices.triggerRefreshB();
+              this.pageServices.reloadComponent('discussion');
+          });
     }
   }
 

@@ -131,7 +131,7 @@ export class CreateProfile implements OnInit{
                 .afterClosed()
                 .subscribe(() => {
                   this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
-                  this.sessionStorage.storeSession('Token', response.Token);
+                  this.localStorage.storeSession('Token', response.Token);
                   this.refreshService.triggerRefreshB();
                   this.router.navigateByUrl('/feed');
                 })
