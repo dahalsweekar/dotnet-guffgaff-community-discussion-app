@@ -8,14 +8,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatDialog } from '@angular/material/dialog';
 import { CommentItemComponent } from '../comment-item/comment-item';
+import { LoginBox } from '../../../auth/login-box/login-box';
 
 import { CommentServices } from '../../../services/comment.services';
 import { DialogBoxServices } from '../../../presets/dialog-box.component/dialog-box.services';
 import { LocalStorage } from '../../../services/localStorage.services';
 import { SessionStorage } from '../../../services/sessionStorage.service';
 import { PageServices } from '../../../services/page.services';
+import { RefreshService } from '../../../services/refresh.services';
 
 
 @Component({
@@ -48,7 +50,9 @@ export class CommentsComponent implements OnInit {
       private dialogServices: DialogBoxServices,
        private localStorage: LocalStorage,
        private sessionStorage: SessionStorage,
-        private pageServices: PageServices) { }
+        private pageServices: PageServices,
+        private refreshServices: RefreshService,
+        private dialog: MatDialog) { }
 
   ngOnInit(): void 
   {
@@ -115,9 +119,21 @@ export class CommentsComponent implements OnInit {
 
 
   openNewCommentBox(commentText: string, commentId: number): void {
-    this.topLevelBoxOpen = true;
-    this.newCommentText = commentText;
-    this.editCommentId = commentId;
+    if (this.userId !== ''){
+      this.topLevelBoxOpen = true;
+      this.newCommentText = commentText;
+      this.editCommentId = commentId;
+    }
+    else{
+      const dialog = this.dialog.open(LoginBox, {
+                  width: '300px',
+                  height: '350px'
+                });
+      dialog.afterClosed().subscribe(() => {
+          this.refreshServices.triggerRefreshB();
+          this.pageServices.reloadComponent('discussion');
+      });
+    }
   }
 
   saveNewComment(): void {
