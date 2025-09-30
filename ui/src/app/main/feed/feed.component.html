@@ -22,7 +22,7 @@
                                 <p style="font-style: italic;color:#888"> This post has already been removed by its owner. </p>
                             }
                             @else {
-                                <p [innerHTML]="feed.Description"></p>
+                                <p [innerHTML]="feed.Description | truncateWords:75"></p>
                             }
                         </div>
                         <div class="feed-footer">

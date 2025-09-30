@@ -13,11 +13,12 @@ import { DialogBoxServices } from '../../presets/dialog-box.component/dialog-box
 import { Search } from "../search/search";
 import { MatIconModule } from '@angular/material/icon';
 import { TimeAgoPipe } from '../../services/time-ago/time-ago-pipe';
+import { TruncateWordsPipe } from '../../services/truncate-words/truncate-pipe';
 import { RefreshService } from '../../services/refresh.services';
 
 @Component({
   selector: 'app-feed.component',
-  imports: [MatButtonModule, Search, MatIconModule, TimeAgoPipe],
+  imports: [MatButtonModule, Search, MatIconModule, TimeAgoPipe, TruncateWordsPipe],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss'
 })
@@ -99,7 +100,7 @@ export class FeedComponent implements OnInit {
     }
 
     checkUserLogin(): void{
-      const token = this.sessionStorage.getSession('Token');
+      const token = this.localStorage.getSession('Token');
       if (!!token){
          this.redirectToPost('0');
       }

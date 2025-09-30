@@ -40,7 +40,9 @@ export class LoginBox implements OnInit {
     private sessionStorage: SessionStorage,
     private dialog:MatDialog,
     private router: Router,
-    private pageService: PageServices) {}
+    private pageService: PageServices) {
+      dialogRef.disableClose = true;
+    }
 
   async ngOnInit(): Promise<void> {
       await this.authServices.whenLoginProcessed;
@@ -69,7 +71,7 @@ export class LoginBox implements OnInit {
             .afterClosed()
             .subscribe(() => {
               this.localStorage.storeSession('UserDetails', JSON.stringify(response.ResponseDetails.Data));
-              this.sessionStorage.storeSession('Token', response.Token);
+              this.localStorage.storeSession('Token', response.Token);
               this.dialogRef.close('0f115f4c-aedf-40bd-864c-0a28fe362fa7');
             })
           }

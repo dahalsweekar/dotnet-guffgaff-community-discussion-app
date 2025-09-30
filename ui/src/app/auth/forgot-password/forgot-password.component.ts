@@ -50,7 +50,9 @@ export class ForgotPasswordComponent {
        private dialogBoxServices: DialogBoxServices,
        private authService: AuthService,
        private dialogRef: MatDialogRef<ForgotPasswordComponent>
-      ) {  }
+      ) { 
+          dialogRef.disableClose = true;
+       }
 
   validateCredentials(){
     if (this.Email != ''){
@@ -76,10 +78,10 @@ export class ForgotPasswordComponent {
             const dialogRef = this.dialog.open(OtpPageComponent,{
                 data: {
                   email: this.emailPackage.ToEmail
-                }
+                },
+                 disableClose: true
               }
             );
-            //this.localStorage.storeSession('UserIdforNewPassword', this.userDetails.UserID);
             dialogRef.afterClosed().subscribe((response) => {
               this.emailPackage.otp = '';
               this.emailPackage.ToEmail = '';

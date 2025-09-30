@@ -1,5 +1,7 @@
- <div class="spinner-overlay" *ngIf="loadingService.loading$ | async">
+ <div class="bar-overlay" *ngIf="loadingService.loading$ | async">
+  <div class="loading-bar">
     <mat-progress-bar
       mode="indeterminate">
     </mat-progress-bar>
+  </div>
 </div>

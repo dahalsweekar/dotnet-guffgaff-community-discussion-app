@@ -119,13 +119,16 @@ namespace GuffGaff.Services.Services
                         notice.InitiatorId = vote.Voter;
                         notice.ActionPostId = vote.PostId;
                         notice.UserId = vote.Owner;
+
+                        string username = await _dbContext.Users.Where(x => x.Email == vote.Voter).Select(x => x.Name).FirstOrDefaultAsync() ?? "<unknown>";
+
                         switch (vote.UpVote)
                         {
                             case true:
-                                notice.ActionTaken = vote.Voter + " upvoted your post.";
+                                notice.ActionTaken = username + " upvoted your post.";
                                 break;
                             case false:
-                                notice.ActionTaken = vote.Voter + " downvoted your post.";
+                                notice.ActionTaken = username + " downvoted your post.";
                                 break;
                         }
                         notice.ActionDate = DateTime.UtcNow;

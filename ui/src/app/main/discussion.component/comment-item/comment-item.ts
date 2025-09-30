@@ -60,12 +60,23 @@ export class CommentItemComponent implements OnInit {
   }
 
   onReplyClick(Mode: string): void {
+    if (this.currentUser !== ''){
     if(Mode == 'EditMode')
       this.comment.localIsEditing = true;
     else
       this.comment.localIsEditing = false;
     this.openReply.emit(this.comment);
-  }
+  }else{
+      const dialog = this.dialog.open(LoginBox, {
+            width: '300px',
+            height: '350px'
+          });
+          dialog.afterClosed().subscribe(() => {
+              this.refreshServices.triggerRefreshB();
+              this.pageServices.reloadComponent('discussion');
+          });
+    }
+}
 
   onCancelReply(): void {
     this.cancelReply.emit(this.comment.CommentId);
