@@ -159,21 +159,24 @@ export class CreateProfile implements OnInit{
   }
 
   onNameChange(): void{
+    debugger;
     if(this.user.Name == ''){
       this.isNameValid = false;
     }
-    this.userService.validateUserNamefn(this.user).subscribe({
-      next:(response) => {
-        if (response._message === 'Does not Exist'){
-          this.isNameValid = true;
+    else{
+        this.userService.validateUserNamefn(this.user).subscribe({
+        next:(response) => {
+          if (response._message === 'Does not Exist'){
+            this.isNameValid = true;
+          }
+          else {
+            this.isNameValid = false;
+          }
+        },
+        error: (error) => {
+          this.dialogServices.showError('Failed', 'Could not verify username');
         }
-        else {
-          this.isNameValid = false;
-        }
-      },
-      error: (error) => {
-        this.dialogServices.showError('Failed', 'Could not verify username');
-      }
-    })
+      })
+    }
   }
 }
