@@ -41,8 +41,8 @@ Before running the application, ensure you have the following installed:
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/project-name.git
-cd project-name
+git clone https://github.com/dahalsweekar/GuffGaff
+cd GuffGaff
 ```
 
 #### 2. Set Up the Frontend (Angular)
