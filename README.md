@@ -41,7 +41,7 @@ Before running the application, ensure you have the following installed:
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/dahalsweekar/GuffGaff
+git clone https://github.com/dahalsweekar/dotnet-guffgaff-community-discussion-app
 cd GuffGaff
 ```
 
