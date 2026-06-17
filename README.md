@@ -1,6 +1,4 @@
-# GuffGaff
-
-[Visit](https://ggaff.onrender.com/)
+# GuffGaff - Discussion app
 
 ## Features
 
